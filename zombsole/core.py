@@ -19,9 +19,9 @@ class World(object):
     def draw(self):
         '''Draw the world'''
         os.system('clear')
-        print '\n'.join(''.join(self.thing_at(x, y)
-                                for x in xrange(self.size[0]))
-                        for y in xrange(self.size[1]))
+        return '\n'.join(''.join(self.thing_at(x, y)
+                                 for x in xrange(self.size[0]))
+                         for y in xrange(self.size[1]))
 
     def t(self):
         '''Forward one instant of time.'''
@@ -34,6 +34,6 @@ def main_loop(world):
 
     while playing:
         world.t()
-        world.draw()
+        print world.draw()
         time.sleep(0.5)
 
