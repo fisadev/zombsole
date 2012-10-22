@@ -7,8 +7,27 @@ class World(object):
     '''World where to play the game.'''
     def __init__(self, size):
         self.size = size
-        self.things = {}
         self.t = None
+        self.things = {}
+
+    def _check_free_position(self, position):
+        if self.things[position] is not None:
+            raise Exception('two things in the same place!')
+
+    def add_thing(self, thing, position):
+        '''Add something to the world.'''
+        self._check_free_position(position)
+        thing.position = position
+        self.things[position] = thing
+
+    def move_thing(self, old_position, new_position):
+        '''Move one thing on the world.'''
+        self._check_free_position(new_position)
+
+        thing = self.things[old_position]
+        thing.position = new_position
+        self.things[old_position], self.things[new_position] = None, thing
+
 
     def draw(self):
         '''Draw the world'''
@@ -38,30 +57,19 @@ def main_loop(world):
 
 class Thing(object):
     '''Something in the world.'''
-    def __init__(self, world, position):
-        self.world = world
-        self.position = position
+    def __init__(self):
+        self.x, self.y = None, None
+        self.world = None
         self.t = None
         self.to_do = []
 
     def position_get(self):
-        return self._position
+        return self.x, self.y
 
     def position_set(self, value):
-        x, y = value
-        if x is None:
-            x = self._position[0]
-        if y is None:
-            y = self._position[1]
+        self.x, self.y = value
 
-        if self.world[x, y] is not None:
-            raise Exception('two things in the same place!')
-
-        self.world[self._position] = None
-        self._position = x, y
-        self.world[self._position] = self
-
-    position = property(position_get, position_set, doc='Position of the thing.')
+    position = property(position_get, position_set)
 
     def time(self, t):
         '''Forward one instant of time.'''
@@ -72,8 +80,8 @@ class Thing(object):
 
 class MovingThing(Thing):
     '''Something that's able to move by it's own.'''
-    def __init__(self, world, position, speed):
-        super(MovingThing, self).__init__(world, position)
+    def __init__(self, speed):
+        super(MovingThing, self).__init__()
         self.speed = speed
         self.to_do.append(self._move)
         self.moving_to = None
@@ -89,8 +97,22 @@ class MovingThing(Thing):
     def _move(self):
         '''Perform movement for time instant.'''
         if self.moving_to:
+            x, y = self.position
             move_to = self.moving_to
             if isinstance(move_to, Thing):
                 move_to = move_to.position
-            # TODO move to position in direction to move_to
+
+            # TODO fix this to avoid obstacles
+            if move_to == (x, y):
+                self.stop_moving()
+            else:
+                if move_to[0] > x:
+                    x += self.speed
+                elif move_to[0] < x:
+                    x -= self.speed
+                elif move_to[1] > y:
+                    y += self.speed
+                elif move_to[1] < y:
+                    y -= self.speed
+                self.world.move_thing(self.position, (x, y))
 
