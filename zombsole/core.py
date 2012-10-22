@@ -17,7 +17,7 @@ class World(object):
 
     def add_thing(self, thing, position):
         '''Add something to the world.'''
-        if isinstance(thing, ComplexThing):
+        if isinstance(thing, ComplexThingBuilder):
             new_things = thing.create_parts(position)
         else:
             new_things = [(thing, position),]
@@ -131,7 +131,7 @@ class MovingThing(Thing):
                 self.world.move_thing(self.position, (x, y))
 
 
-class ComplexThing(object):
+class ComplexThingBuilder(object):
     def create_parts(self, position):
         '''
         Create the things that compose this complex thing.
@@ -142,7 +142,7 @@ class ComplexThing(object):
         raise NotImplementedError('Implement the complex thing parts builder')
 
 
-class SolidBoxBuilder(ComplexThing):
+class SolidBoxBuilder(ComplexThingBuilder):
     '''Solid box.'''
     def __init__(self, size):
         self.size = size
