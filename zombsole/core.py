@@ -17,10 +17,16 @@ class World(object):
 
     def add_thing(self, thing, position):
         '''Add something to the world.'''
-        self._check_free_position(position)
-        thing.position = position
-        thing.world = self
-        self.things[position] = thing
+        if isinstance(thing, ComplexThing):
+            new_things = thing.create_parts(position)
+        else:
+            new_things = [(thing, position),]
+
+        for new_thing, new_position in new_things:
+            self._check_free_position(new_position)
+            new_thing.position = new_position
+            new_thing.world = self
+            self.things[new_position] = new_thing
 
     def move_thing(self, old_position, new_position):
         '''Move one thing on the world.'''
@@ -124,3 +130,25 @@ class MovingThing(Thing):
                     y -= self.speed
                 self.world.move_thing(self.position, (x, y))
 
+
+class ComplexThing(object):
+    def create_parts(self, position):
+        '''
+        Create the things that compose this complex thing.
+
+        Should return a list of tuples, each of one having the thing (part)
+        as first element, and the desired position as seccond element.
+        '''
+        raise NotImplementedError('Implement the complex thing parts builder')
+
+
+class SolidBoxBuilder(ComplexThing):
+    '''Solid box.'''
+    def __init__(self, size):
+        self.size = size
+
+    def create_parts(self, position):
+        '''Create parts for a solid box of the given size.'''
+        return [(Thing('#'), (x, y))
+                for x in range(position[0], position[0] + self.size[0])
+                for y in range(position[1], position[1] + self.size[1])]
