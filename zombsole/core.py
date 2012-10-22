@@ -43,10 +43,13 @@ class Thing(object):
         self.world = world
         self.objetive = objetive
         self.t = None
+        self.to_do = []
 
     def time(self, t):
         '''Forward one instant of time.'''
         self.t = t
+        for to_do in self.to_do:
+            to_do()
 
 
 class MovingThing(Thing):
@@ -54,4 +57,22 @@ class MovingThing(Thing):
     def __init__(self, position, world, speed):
         super(MovingThing, self).__init__(position, world)
         self.speed = speed
+        self.to_do.append(self._move)
+        self.moving_to = None
+
+    def move_to(self, objetive):
+        '''Order thing to move to a target (thing or position).'''
+        self.moving_to = objetive
+
+    def stop_moving(self):
+        '''Order thing to stop moving.'''
+        self.moving_to = None
+
+    def _move(self):
+        '''Perform movement for time instant.'''
+        if self.moving_to:
+            move_to = self.moving_to
+            if isinstance(move_to, Thing):
+                move_to = move_to.position
+            # TODO move to position in direction to move_to
 
