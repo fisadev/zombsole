@@ -23,7 +23,7 @@ class World(object):
             self.t = -1
         self.t += 1
         for thing in self.things:
-            thing.time(t)
+            thing.time(self.t)
 
 
 def main_loop(world):
