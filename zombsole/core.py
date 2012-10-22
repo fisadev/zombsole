@@ -27,7 +27,8 @@ class World(object):
 
         thing = self.things[old_position]
         thing.position = new_position
-        self.things[old_position], self.things[new_position] = None, thing
+        self.things[new_position] = thing
+        del self.things[old_position]
 
 
     def draw(self):
