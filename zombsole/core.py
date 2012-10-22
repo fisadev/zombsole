@@ -38,12 +38,30 @@ def main_loop(world):
 
 class Thing(object):
     '''Something in the world.'''
-    def __init__(self, position, world, objetive):
-        self.position = position
+    def __init__(self, world, position):
         self.world = world
-        self.objetive = objetive
+        self.position = position
         self.t = None
         self.to_do = []
+
+    def position_get(self):
+        return self._position
+
+    def position_set(self, value):
+        x, y = value
+        if x is None:
+            x = self._position[0]
+        if y is None:
+            y = self._position[1]
+
+        if self.world[x, y] is not None:
+            raise Exception('two things in the same place!')
+
+        self.world[self._position] = None
+        self._position = x, y
+        self.world[self._position] = self
+
+    position = property(position_get, position_set, doc='Position of the thing.')
 
     def time(self, t):
         '''Forward one instant of time.'''
@@ -54,8 +72,8 @@ class Thing(object):
 
 class MovingThing(Thing):
     '''Something that's able to move by it's own.'''
-    def __init__(self, position, world, speed):
-        super(MovingThing, self).__init__(position, world)
+    def __init__(self, world, position, speed):
+        super(MovingThing, self).__init__(world, position)
         self.speed = speed
         self.to_do.append(self._move)
         self.moving_to = None
