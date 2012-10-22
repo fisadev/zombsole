@@ -42,7 +42,7 @@ class World(object):
         if self.t is None:
             self.t = -1
         self.t += 1
-        for thing in self.things:
+        for thing in self.things.values():
             thing.time(self.t)
 
 
