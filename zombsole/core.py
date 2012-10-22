@@ -48,9 +48,9 @@ class World(object):
     def draw(self):
         '''Draw the world'''
         empty_thing = Thing(' ')
-        return [[self.things.get((x, y), empty_thing).draw()
-                 for x in xrange(self.size[0])]
-                for y in xrange(self.size[1])]
+        return '\n'.join(''.join(self.things.get((x, y), empty_thing).draw()
+                                 for x in xrange(self.size[0]))
+                         for y in xrange(self.size[1]))
 
     def time(self):
         '''Forward one instant of time.'''
@@ -68,11 +68,7 @@ def main_loop(world):
     while playing:
         world.time()
         os.system('clear')
-        pixels = world.draw()
-        drawing = '\n'.join(''.join(colored(*pixel)
-                                    for pixel in l)
-                            for l in pixels)
-        print drawing
+        print world.draw()
         time.sleep(1)
 
 
@@ -104,7 +100,7 @@ class Thing(object):
 
     def draw(self):
         '''Return the thing bit to add on the draw of the world.'''
-        return self.label, self.color
+        return colored(self.label, self.color)
 
 
 class MovingThing(Thing):
