@@ -2,7 +2,12 @@
 import time
 import os
 
+from termcolor import colored
+
 from zombsole.utils import get_position
+
+
+DEFAULT_COLOR = 'white'
 
 
 class World(object):
@@ -42,9 +47,10 @@ class World(object):
 
     def draw(self):
         '''Draw the world'''
-        return '\n'.join(''.join(str(self.things.get((x, y), ' '))
-                                 for x in xrange(self.size[0]))
-                         for y in xrange(self.size[1]))
+        empty_thing = Thing(' ')
+        return [[self.things.get((x, y), empty_thing).draw()
+                 for x in xrange(self.size[0])]
+                for y in xrange(self.size[1])]
 
     def time(self):
         '''Forward one instant of time.'''
@@ -62,16 +68,21 @@ def main_loop(world):
     while playing:
         world.time()
         os.system('clear')
-        print world.draw()
+        pixels = world.draw()
+        drawing = '\n'.join(''.join(colored(*pixel)
+                                    for pixel in l)
+                            for l in pixels)
+        print drawing
         time.sleep(1)
 
 
 class Thing(object):
     '''Something in the world.'''
-    def __init__(self, label):
+    def __init__(self, label, color=DEFAULT_COLOR):
         if len(label) != 1:
             raise ValueError('label must be a string of length 1')
         self.label = label
+        self.color = color
         self.x, self.y = None, None
         self.world = None
         self.t = None
@@ -91,14 +102,15 @@ class Thing(object):
         for to_do in self.to_do:
             to_do()
 
-    def __str__(self):
-        return self.label
+    def draw(self):
+        '''Return the thing bit to add on the draw of the world.'''
+        return self.label, self.color
 
 
 class MovingThing(Thing):
     '''Something that's able to move by it's own.'''
-    def __init__(self, label, speed):
-        super(MovingThing, self).__init__(label)
+    def __init__(self, label, speed, color=DEFAULT_COLOR):
+        super(MovingThing, self).__init__(label, color)
         self.speed = speed
         self.to_do.append(self._move)
         self.moving_to = None
