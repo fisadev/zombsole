@@ -21,7 +21,7 @@ class World(object):
         if isinstance(thing, ComplexThingBuilder):
             new_things = thing.create_parts(position)
         else:
-            new_things = [(thing, position),]
+            new_things = [(thing, position), ]
 
         for new_thing, new_position in new_things:
             if self.thing_in(new_position):
