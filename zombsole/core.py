@@ -11,7 +11,8 @@ class World(object):
         self.things = {}
 
     def _check_free_position(self, position):
-        if self.things.get(position) is not None:
+        '''Check if position is free.'''
+        if position in self.things:
             raise Exception('two things in the same place!')
 
     def add_thing(self, thing, position):
