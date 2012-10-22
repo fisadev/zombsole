@@ -39,7 +39,6 @@ class World(object):
 
     def draw(self):
         '''Draw the world'''
-        os.system('clear')
         return '\n'.join(''.join(str(self.things.get((x, y), ' '))
                                  for x in xrange(self.size[0]))
                          for y in xrange(self.size[1]))
@@ -59,6 +58,7 @@ def main_loop(world):
 
     while playing:
         world.time()
+        os.system('clear')
         print world.draw()
         time.sleep(1)
 
