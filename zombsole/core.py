@@ -10,10 +10,9 @@ class World(object):
         self.t = None
         self.things = {}
 
-    def _check_free_position(self, position):
-        '''Check if position is free.'''
-        if position in self.things:
-            raise Exception('two things in the same place!')
+    def thing_in(self, position):
+        '''Get thing in position (or None if nothing there).'''
+        return self.things.get(position)
 
     def add_thing(self, thing, position):
         '''Add something to the world.'''
@@ -23,14 +22,16 @@ class World(object):
             new_things = [(thing, position),]
 
         for new_thing, new_position in new_things:
-            self._check_free_position(new_position)
+            if self.thing_in(new_position):
+                raise Exception('position occupied!')
             new_thing.position = new_position
             new_thing.world = self
             self.things[new_position] = new_thing
 
     def move_thing(self, old_position, new_position):
         '''Move one thing on the world.'''
-        self._check_free_position(new_position)
+        if self.thing_in(new_position):
+            raise Exception('position occupied!')
 
         thing = self.things[old_position]
         thing.position = new_position
@@ -103,6 +104,24 @@ class MovingThing(Thing):
     def move_to(self, objetive):
         '''Order thing to move to a target (thing or position).'''
         self.moving_to = objetive
+        self.path = []
+
+        x, y = self.position
+        move_to = self.moving_to
+        if isinstance(move_to, Thing):
+            move_to = move_to.position
+
+        # TODO fix this to avoid obstacles
+        while (x, y) != move_to:
+            if move_to[0] > x:
+                x += self.speed
+            elif move_to[0] < x:
+                x -= self.speed
+            elif move_to[1] > y:
+                y += self.speed
+            elif move_to[1] < y:
+                y -= self.speed
+            self.path.append((x, y))
 
     def stop_moving(self):
         '''Order thing to stop moving.'''
@@ -111,24 +130,17 @@ class MovingThing(Thing):
     def _move(self):
         '''Perform movement for time instant.'''
         if self.moving_to:
-            x, y = self.position
-            move_to = self.moving_to
-            if isinstance(move_to, Thing):
-                move_to = move_to.position
-
-            # TODO fix this to avoid obstacles
-            if move_to == (x, y):
-                self.stop_moving()
+            # TODO what if pursuing moving target? recalculate path?
+            if self.path:
+                next_position = self.path.pop(0)
+                if self.world.thing_in(next_position):
+                    # TODO find new path? something different?
+                    pass
+                else:
+                    self.world.move_thing(self.position, next_position)
             else:
-                if move_to[0] > x:
-                    x += self.speed
-                elif move_to[0] < x:
-                    x -= self.speed
-                elif move_to[1] > y:
-                    y += self.speed
-                elif move_to[1] < y:
-                    y -= self.speed
-                self.world.move_thing(self.position, (x, y))
+                # TODO find new path? something different?
+                self.stop_moving()
 
 
 class ComplexThingBuilder(object):
