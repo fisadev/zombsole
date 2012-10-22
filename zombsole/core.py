@@ -18,6 +18,7 @@ class World(object):
         '''Add something to the world.'''
         self._check_free_position(position)
         thing.position = position
+        thing.world = self
         self.things[position] = thing
 
     def move_thing(self, old_position, new_position):
@@ -57,7 +58,10 @@ def main_loop(world):
 
 class Thing(object):
     '''Something in the world.'''
-    def __init__(self):
+    def __init__(self, label):
+        if len(label) != 1:
+            raise ValueError('label must be a string of length 1')
+        self.label = label
         self.x, self.y = None, None
         self.world = None
         self.t = None
@@ -80,8 +84,8 @@ class Thing(object):
 
 class MovingThing(Thing):
     '''Something that's able to move by it's own.'''
-    def __init__(self, speed):
-        super(MovingThing, self).__init__()
+    def __init__(self, label, speed):
+        super(MovingThing, self).__init__(label)
         self.speed = speed
         self.to_do.append(self._move)
         self.moving_to = None
