@@ -5,7 +5,7 @@ from zombsole.core import Thing, ComplexThingBuilder
 class SolidBox(Thing):
     '''Solid box.'''
     def __init__(self):
-        super(SolidBox, self).__init__('#')
+        super(SolidBox, self).__init__('#', 'grey')
 
 
 class BigSolidBoxBuilder(ComplexThingBuilder):

@@ -47,7 +47,7 @@ class World(object):
 
     def draw(self):
         '''Draw the world'''
-        empty_thing = Thing(' ')
+        empty_thing = Thing(' ', DEFAULT_COLOR)
         return '\n'.join(''.join(self.things.get((x, y), empty_thing).draw()
                                  for x in xrange(self.size[0]))
                          for y in xrange(self.size[1]))
@@ -74,7 +74,7 @@ def main_loop(world):
 
 class Thing(object):
     '''Something in the world.'''
-    def __init__(self, label, color=DEFAULT_COLOR):
+    def __init__(self, label, color):
         if len(label) != 1:
             raise ValueError('label must be a string of length 1')
         self.label = label
@@ -105,7 +105,7 @@ class Thing(object):
 
 class MovingThing(Thing):
     '''Something that's able to move by it's own.'''
-    def __init__(self, label, speed, color=DEFAULT_COLOR):
+    def __init__(self, label, color, speed):
         super(MovingThing, self).__init__(label, color)
         self.speed = speed
         self.to_do.append(self._move)
