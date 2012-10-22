@@ -12,14 +12,12 @@ class World(object):
 
     def thing_at(self, x, y):
         '''Return the thing at the given position.'''
-        return self.actors.get((x, y)) or \
-               self.terrain.get((x, y)) or \
-               ' '
+        return self.actors.get((x, y)) or self.terrain.get((x, y))
 
     def draw(self):
         '''Draw the world'''
         os.system('clear')
-        return '\n'.join(''.join(self.thing_at(x, y)
+        return '\n'.join(''.join(str(self.thing_at(x, y))
                                  for x in xrange(self.size[0]))
                          for y in xrange(self.size[1]))
 
