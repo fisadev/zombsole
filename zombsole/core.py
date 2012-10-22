@@ -31,7 +31,6 @@ class World(object):
         self.things[new_position] = thing
         del self.things[old_position]
 
-
     def draw(self):
         '''Draw the world'''
         os.system('clear')
@@ -125,3 +124,26 @@ class MovingThing(Thing):
                     y -= self.speed
                 self.world.move_thing(self.position, (x, y))
 
+
+class ComplexThing(list):
+    '''Thing composed of many parts (things).'''
+    def world_get(self):
+        return self[0].world
+
+    def world_set(self, value):
+        for thing in self:
+            thing.world = value
+
+    world = property(world_get, world_set)
+
+    def position_get(self):
+        return self[0].position
+
+    def position_set(self, value):
+        self.set_parts_positions(value)
+
+    position = property(position_get, position_set)
+
+    def set_parts_positions(self, position):
+        '''Set position for each part of the complex thing.'''
+        raise NotImplementedError('logic for parts position not implemented')
