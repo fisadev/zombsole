@@ -2,6 +2,8 @@
 import time
 import os
 
+from zombsole.utils import get_position
+
 
 class World(object):
     '''World where to play the game.'''
@@ -106,20 +108,22 @@ class MovingThing(Thing):
         self.moving_to = objetive
         self.path = []
 
+    def calculate_path(self):
+        '''Calculates path to the moving_to objective.'''
         x, y = self.position
-        move_to = self.moving_to
-        if isinstance(move_to, Thing):
-            move_to = move_to.position
+        to_position = get_position(self.moving_to)
 
-        # TODO fix this to avoid obstacles
-        while (x, y) != move_to:
-            if move_to[0] > x:
+        self.path = []
+
+        # TODO fix this to avoid collisions
+        while (x, y) != to_position:
+            if to_position[0] > x:
                 x += self.speed
-            elif move_to[0] < x:
+            elif to_position[0] < x:
                 x -= self.speed
-            elif move_to[1] > y:
+            elif to_position[1] > y:
                 y += self.speed
-            elif move_to[1] < y:
+            elif to_position[1] < y:
                 y -= self.speed
             self.path.append((x, y))
 
@@ -130,17 +134,15 @@ class MovingThing(Thing):
     def _move(self):
         '''Perform movement for time instant.'''
         if self.moving_to:
-            # TODO what if pursuing moving target? recalculate path?
+            if not self.path or self.path[-1] != get_position(self.moving_to):
+                self.calculate_path()
+
             if self.path:
                 next_position = self.path.pop(0)
                 if self.world.thing_in(next_position):
-                    # TODO find new path? something different?
-                    pass
+                    self.path = []
                 else:
                     self.world.move_thing(self.position, next_position)
-            else:
-                # TODO find new path? something different?
-                self.stop_moving()
 
 
 class ComplexThingBuilder(object):
