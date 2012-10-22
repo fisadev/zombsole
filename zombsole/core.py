@@ -54,7 +54,7 @@ def main_loop(world):
     while playing:
         world.time()
         print world.draw()
-        time.sleep(0.5)
+        time.sleep(1)
 
 
 class Thing(object):
