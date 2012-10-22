@@ -82,6 +82,9 @@ class Thing(object):
         for to_do in self.to_do:
             to_do()
 
+    def __str__(self):
+        return self.label
+
 
 class MovingThing(Thing):
     '''Something that's able to move by it's own.'''
