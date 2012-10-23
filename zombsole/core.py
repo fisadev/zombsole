@@ -47,6 +47,7 @@ class World(object):
     def remove_thing(self, thing):
         '''Removen a thing from the world.'''
         del self.things[thing.position]
+        thing.position = None, None
 
     def draw(self):
         '''Draw the world'''
