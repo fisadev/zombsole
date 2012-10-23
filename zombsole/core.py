@@ -103,9 +103,10 @@ class Thing(object):
 
     def time(self, t):
         '''Forward one instant of time.'''
-        self.t = t
-        for to_do in self.to_do:
-            to_do()
+        if self.position != (None, None):  # alive
+            self.t = t
+            for to_do in self.to_do:
+                to_do()
 
     def draw(self):
         '''Return the thing bit to add on the draw of the world.'''
