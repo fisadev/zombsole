@@ -1,5 +1,6 @@
 #coding: utf-8
-from zombsole.core import Thing, ComplexThingBuilder
+import random
+from zombsole.core import Thing, FightingThing, ComplexThingBuilder, Weapon
 
 
 class SolidBox(Thing):
@@ -18,3 +19,18 @@ class BigSolidBoxBuilder(ComplexThingBuilder):
         return [(SolidBox(), (x, y))
                 for x in range(position[0], position[0] + self.size[0])
                 for y in range(position[1], position[1] + self.size[1])]
+
+
+class ZombieClaws(Weapon):
+    def __init__(self):
+        super(ZombieClaws, self).__init__('claws',
+                                          1,
+                                          random.randint(5, 10))
+
+class Zombie(FightingThing):
+    def __init__(self):
+        super(Zombie, self).__init__('z',
+                                     'green',
+                                     random.randint(50, 100),
+                                     random.randint(1, 2),
+                                     ZombieClaws())
