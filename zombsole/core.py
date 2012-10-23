@@ -108,8 +108,8 @@ class MovingThing(Thing):
     def __init__(self, label, color, speed):
         super(MovingThing, self).__init__(label, color)
         self.speed = speed
-        self.to_do.append(self._move)
         self.moving_to = None
+        self.to_do.append(self._move)
 
     def move_to(self, objetive):
         '''Order thing to move to a target (thing or position).'''
