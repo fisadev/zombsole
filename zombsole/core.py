@@ -111,9 +111,9 @@ class MovingThing(Thing):
         self.moving_to = None
         self.to_do.append(self._move)
 
-    def move_to(self, objetive):
-        '''Order thing to move to a target (thing or position).'''
-        self.moving_to = objetive
+    def move(self, objective):
+        '''Order thing to move to an objective (thing or position).'''
+        self.moving_to = objective
         self.path = []
 
     def calculate_path(self):
