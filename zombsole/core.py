@@ -49,6 +49,10 @@ class World(object):
         del self.things[thing.position]
         thing.position = None, None
 
+    def exists(self, objective):
+        '''Determines if an objective (position or thing) exists.'''
+        return get_position(objective) != (None, None)
+
     def draw(self):
         '''Draw the world'''
         empty_thing = Thing(' ', DEFAULT_COLOR, 0)
@@ -147,15 +151,18 @@ class MovingThing(Thing):
     def _move(self):
         '''Perform movement for time instant.'''
         if self.moving_to:
-            if not self.path or self.path[-1] != get_position(self.moving_to):
-                self.calculate_path()
+            if self.world.exists(self.moving_to):
+                if not self.path or self.path[-1] != get_position(self.moving_to):
+                    self.calculate_path()
 
-            if self.path:
-                next_position = self.path.pop(0)
-                if self.world.thing_in(next_position):
-                    self.path = []
-                else:
-                    self.world.move_thing(self, next_position)
+                if self.path:
+                    next_position = self.path.pop(0)
+                    if self.world.thing_in(next_position):
+                        self.path = []
+                    else:
+                        self.world.move_thing(self, next_position)
+            else:
+                self.stop_moving()
 
 
 class Weapon(object):
