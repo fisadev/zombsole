@@ -165,10 +165,12 @@ class Weapon(object):
         self.damage = damage
 
     def shoot(self, objective):
-        '''Shoot the weapon to an objective.'''
+        '''Shoot the weapon to an objective, returns True if it died.'''
         objective.life -= self.damage
         if objective.life <= 0:
             objective.world.remove_thing(objective)
+            return True
+        return False
 
 
 class FightingThing(MovingThing):
@@ -191,7 +193,9 @@ class FightingThing(MovingThing):
         '''Perform movement for time instant.'''
         if self.attacking_to:
             if distance(self, self.attacking_to) <= self.weapon.max_range:
-                self.weapon.shoot(self.attacking_to)
+                died = self.weapon.shoot(self.attacking_to)
+                if died:
+                    self.stop_attacking()
 
 
 class ComplexThingBuilder(object):
