@@ -77,5 +77,5 @@ class Survivor(FightingThing):
         super(Survivor, self).__init__('s',
                                        'blue',
                                        100,
-                                       1.5,
+                                       1,
                                        random.choice(weapons)())
