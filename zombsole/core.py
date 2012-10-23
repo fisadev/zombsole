@@ -135,13 +135,13 @@ class MovingThing(Thing):
         # TODO fix this to avoid collisions
         while (x, y) != to_position:
             if to_position[0] > x:
-                x += self.speed
+                x = min(to_position[0], x + self.speed)
             elif to_position[0] < x:
-                x -= self.speed
+                x = max(to_position[0], x - self.speed)
             elif to_position[1] > y:
-                y += self.speed
+                y = min(to_position[1], y + self.speed)
             elif to_position[1] < y:
-                y -= self.speed
+                y = max(to_position[1], y - self.speed)
             self.path.append((x, y))
 
     def stop_moving(self):
