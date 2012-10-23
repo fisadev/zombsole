@@ -50,7 +50,7 @@ class World(object):
 
     def draw(self):
         '''Draw the world'''
-        empty_thing = Thing(' ', DEFAULT_COLOR)
+        empty_thing = Thing(' ', DEFAULT_COLOR, 0)
         return '\n'.join(''.join(self.things.get((x, y), empty_thing).draw()
                                  for x in xrange(self.size[0]))
                          for y in xrange(self.size[1]))
