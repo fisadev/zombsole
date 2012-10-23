@@ -88,7 +88,7 @@ class Thing(object):
         self.label = label
         self.color = color
         self.life = life
-        self.x, self.y = None, None
+        self.position = None, None
         self.world = None
         self.t = None
         self.to_do = []
