@@ -35,15 +35,14 @@ class World(object):
             new_thing.world = self
             self.things[new_position] = new_thing
 
-    def move_thing(self, old_position, new_position):
+    def move_thing(self, thing, new_position):
         '''Move one thing on the world.'''
         if self.thing_in(new_position):
             raise Exception('position occupied!')
 
-        thing = self.things[old_position]
+        del self.things[thing.position]
         thing.position = new_position
         self.things[new_position] = thing
-        del self.things[old_position]
 
     def remove_thing(self, thing):
         '''Removen a thing from the world.'''
@@ -155,7 +154,7 @@ class MovingThing(Thing):
                 if self.world.thing_in(next_position):
                     self.path = []
                 else:
-                    self.world.move_thing(self.position, next_position)
+                    self.world.move_thing(self, next_position)
 
 
 class Weapon(object):
