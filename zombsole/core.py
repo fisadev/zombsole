@@ -45,6 +45,10 @@ class World(object):
         self.things[new_position] = thing
         del self.things[old_position]
 
+    def remove_thing(self, thing):
+        '''Removen a thing from the world.'''
+        del self.things[thing.position]
+
     def draw(self):
         '''Draw the world'''
         empty_thing = Thing(' ', DEFAULT_COLOR)
@@ -74,11 +78,12 @@ def main_loop(world):
 
 class Thing(object):
     '''Something in the world.'''
-    def __init__(self, label, color):
+    def __init__(self, label, color, life):
         if len(label) != 1:
             raise ValueError('label must be a string of length 1')
         self.label = label
         self.color = color
+        self.life = life
         self.x, self.y = None, None
         self.world = None
         self.t = None
@@ -105,8 +110,8 @@ class Thing(object):
 
 class MovingThing(Thing):
     '''Something that's able to move by it's own.'''
-    def __init__(self, label, color, speed):
-        super(MovingThing, self).__init__(label, color)
+    def __init__(self, label, color, life, speed):
+        super(MovingThing, self).__init__(label, color, life)
         self.speed = speed
         self.moving_to = None
         self.to_do.append(self._move)
@@ -153,6 +158,20 @@ class MovingThing(Thing):
                     self.world.move_thing(self.position, next_position)
 
 
+class Weapon(object):
+    '''Weapon, capable of doing damage to things.'''
+    def __init__(self, name, max_range, damage):
+        self.name = name
+        self.max_range = max_range
+        self.damage = damage
+
+    def shoot(self, objective):
+        '''Shoot the weapon to an objective.'''
+        objective.life -= self.damage
+        if objective.life <= 0:
+            objective.world.remove_thing(objective)
+
+
 class FightingThing(MovingThing):
     '''Thing that moves and attacks.'''
     def __init__(self, label, color, speed, weapon):
@@ -172,7 +191,7 @@ class FightingThing(MovingThing):
     def _attack(self):
         '''Perform movement for time instant.'''
         if self.attacking_to:
-            if distance(self, self.attacking_to) <= self.weapon.range_:
+            if distance(self, self.attacking_to) <= self.weapon.max_range:
                 self.weapon.shoot(self.attacking_to)
 
 
