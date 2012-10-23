@@ -1,6 +1,7 @@
 #coding: utf-8
 import time
 import os
+import random
 
 from termcolor import colored
 
@@ -168,14 +169,16 @@ class MovingThing(Thing):
 
 class Weapon(object):
     '''Weapon, capable of doing damage to things.'''
-    def __init__(self, name, max_range, damage):
+    def __init__(self, name, max_range, damage_range):
         self.name = name
         self.max_range = max_range
-        self.damage = damage
+        self.damage_range = damage_range
 
     def shoot(self, objective):
         '''Shoot the weapon to an objective, returns True if it died.'''
-        objective.life -= self.damage
+        damage = random.randint(*self.damage_range)
+
+        objective.life -= damage
         if objective.life <= 0:
             objective.world.remove_thing(objective)
             return True
