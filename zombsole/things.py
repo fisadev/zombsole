@@ -25,7 +25,7 @@ def _new_weapon_class(name, max_range, damage_range):
     '''Create new weapon class.'''
     class NewWeapon(Weapon):
         def __init__(self):
-            super(NewWeapon, self).__init__(name.lower(),
+            super(NewWeapon, self).__init__(name,
                                             max_range,
                                             damage_range)
 
