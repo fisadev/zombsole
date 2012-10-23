@@ -173,8 +173,8 @@ class Weapon(object):
 
 class FightingThing(MovingThing):
     '''Thing that moves and attacks.'''
-    def __init__(self, label, color, speed, weapon):
-        super(FightingThing, self).__init__(label, color, speed)
+    def __init__(self, label, color, life, speed, weapon):
+        super(FightingThing, self).__init__(label, color, life, speed)
         self.weapon = weapon
         self.attacking_to = None
         self.to_do.append(self._attack)
