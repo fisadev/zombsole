@@ -153,6 +153,27 @@ class MovingThing(Thing):
                     self.world.move_thing(self.position, next_position)
 
 
+class FightingThing(MovingThing):
+    '''Thing that moves and attacks.'''
+    def __init__(self, label, color, speed, weapon):
+        super(FightingThing, self).__init__(label, color, speed)
+        self.weapon = weapon
+        self.attacking_to = None
+        self.to_do.append(self._attack)
+
+    def attack(self, objective):
+        '''Order thing to attack an objective (thing).'''
+        self.attacking_to = objective
+
+    def stop_attacking(self):
+        '''Order thing to stop attacking.'''
+        self.attacking_to = None
+
+    def _attack(self):
+        '''Perform movement for time instant.'''
+        pass
+
+
 class ComplexThingBuilder(object):
     def create_parts(self, position):
         '''
