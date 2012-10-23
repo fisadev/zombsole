@@ -4,7 +4,7 @@ import os
 
 from termcolor import colored
 
-from zombsole.utils import get_position
+from zombsole.utils import get_position, distance
 
 
 DEFAULT_COLOR = 'white'
@@ -171,7 +171,9 @@ class FightingThing(MovingThing):
 
     def _attack(self):
         '''Perform movement for time instant.'''
-        pass
+        if self.attacking_to:
+            if distance(self, self.attacking_to) <= self.weapon.range_:
+                self.weapon.shoot(self.attacking_to)
 
 
 class ComplexThingBuilder(object):

@@ -1,4 +1,5 @@
 #coding: utf-8
+import math
 
 
 def get_position(something):
@@ -7,3 +8,13 @@ def get_position(something):
         return something.position
     elif isinstance(something, tuple):
         return something
+
+
+def distance(a, b):
+    '''Calculates distance between two things/positions.'''
+    x1, y1 = get_position(a)
+    x2, y2 = get_position(b)
+
+    dx = abs(x1 - x2)
+    dy = abs(y1 - y2)
+    return math.sqrt((dx ** 2) + (dy ** 2))
