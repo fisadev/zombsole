@@ -18,3 +18,9 @@ def distance(a, b):
     dx = abs(x1 - x2)
     dy = abs(y1 - y2)
     return math.sqrt((dx ** 2) + (dy ** 2))
+
+
+def closest(self, others):
+    '''Returns the closest other to self.'''
+    if others:
+        return sorted(others, lambda x: distance(self, x))[0]

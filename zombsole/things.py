@@ -1,6 +1,7 @@
 #coding: utf-8
 import random
 from zombsole.core import Thing, FightingThing, ComplexThingBuilder, Weapon
+from zombsole.utils import closest
 
 
 class SolidBox(Thing):
@@ -51,10 +52,19 @@ class Zombie(FightingThing):
 
 
 class Survivor(FightingThing):
-    def __init__(self):
-        weapons = [Gun, Shotgun, Rifle, Knife, Sword]
+    def __init__(self, weapon=None):
+        if weapon is None:
+            weapon = random.choice([Gun, Shotgun, Rifle, Knife, Sword])()
         super(Survivor, self).__init__('s',
                                        'blue',
                                        100,
                                        1,
-                                       random.choice(weapons)())
+                                       weapon)
+        self.to_do.append(self._think)
+
+    def _think(self):
+        '''Think and decide what to do.'''
+        zombies = [thing for thing in self.world.things
+                   if isinstance(thing, Zombie)]
+        closest_zombie = closest(self, zombies)
+        self.attack(closest_zombie)
