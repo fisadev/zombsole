@@ -66,7 +66,9 @@ class World(object):
         if self.t is None:
             self.t = -1
         self.t += 1
-        for thing in self.things.values():
+        things = self.things.values()[:]
+        random.shuffle(things)
+        for thing in things:
             thing.time(self.t)
 
 
