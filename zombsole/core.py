@@ -200,10 +200,13 @@ class FightingThing(MovingThing):
     def _attack(self):
         '''Perform movement for time instant.'''
         if self.attacking_to:
-            if distance(self, self.attacking_to) <= self.weapon.max_range:
-                died = self.weapon.shoot(self.attacking_to)
-                if died:
-                    self.stop_attacking()
+            if self.world.exists(self.attacking_to):
+                if distance(self, self.attacking_to) <= self.weapon.max_range:
+                    died = self.weapon.shoot(self.attacking_to)
+                    if died:
+                        self.stop_attacking()
+            else:
+                self.stop_attacking()
 
 
 class ComplexThingBuilder(object):
