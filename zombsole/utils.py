@@ -23,4 +23,4 @@ def distance(a, b):
 def closest(self, others):
     '''Returns the closest other to self.'''
     if others:
-        return sorted(others, lambda x: distance(self, x))[0]
+        return sorted(others, key=lambda x: distance(self, x))[0]
