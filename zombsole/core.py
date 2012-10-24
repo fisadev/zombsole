@@ -59,6 +59,7 @@ class World(object):
         '''Removen a thing from the world.'''
         del self.things[thing.position]
         thing.position = None, None
+        thing.world = None
 
     def exists(self, objective):
         '''Determines if an objective (position or thing) exists.'''
