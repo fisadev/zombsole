@@ -218,9 +218,7 @@ class FightingThing(MovingThing):
         if self.attacking_to:
             if self.world.exists(self.attacking_to):
                 if distance(self, self.attacking_to) <= self.weapon.max_range:
-                    died = self.weapon.shoot(self.attacking_to)
-                    if died:
-                        self.stop_attacking()
+                    self.weapon.shoot(self.attacking_to)
             else:
                 self.stop_attacking()
 
