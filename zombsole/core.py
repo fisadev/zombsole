@@ -80,7 +80,8 @@ class World(object):
         things = self.things.values()
         random.shuffle(things)
         for thing in things:
-            thing.time(self.t)
+            if self.exists(thing):
+                thing.time(self.t)
 
 
 def main_loop(world):
