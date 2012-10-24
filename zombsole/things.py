@@ -64,7 +64,6 @@ class Survivor(FightingThing):
 
     def _think(self):
         '''Think and decide what to do.'''
-        zombies = [thing for thing in self.world.things.values()
-                   if isinstance(thing, Zombie)]
+        zombies = self.world.all_things(Zombie)
         closest_zombie = closest(self, zombies)
         self.attack(closest_zombie)

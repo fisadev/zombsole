@@ -22,6 +22,16 @@ class World(object):
         '''Get thing in position (or None if nothing there).'''
         return self.things.get(position)
 
+    def all_things(self, kind=None):
+        '''
+        Returns all the things in the world.
+        If kind is specified, only that kind of things.
+        '''
+        things = self.things.values()
+        if kind is not None:
+            things = [thing for thing in things if isinstance(thing, kind)]
+        return things
+
     def add_thing(self, thing, position):
         '''Add something to the world.'''
         if isinstance(thing, ComplexThingBuilder):
