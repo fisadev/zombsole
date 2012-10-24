@@ -47,7 +47,7 @@ class Zombie(FightingThing):
         super(Zombie, self).__init__('z',
                                      'green',
                                      random.randint(50, 100),
-                                     random.randint(1, 2),
+                                     random.randint(1, 3),
                                      ZombieClaws())
 
 
