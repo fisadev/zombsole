@@ -20,7 +20,7 @@ def distance(a, b):
     return math.sqrt((dx ** 2) + (dy ** 2))
 
 
-def closest(self, others):
-    '''Returns the closest other to self.'''
+def closest(something, others):
+    '''Returns the closest other to something.'''
     if others:
-        return sorted(others, key=lambda x: distance(self, x))[0]
+        return sorted(others, key=lambda x: distance(something, x))[0]
