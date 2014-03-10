@@ -51,15 +51,15 @@ class Zombie(FightingThing):
                                      ZombieClaws())
 
 
-class Survivor(FightingThing):
+class Human(FightingThing):
     def __init__(self, weapon=None):
         if weapon is None:
             weapon = random.choice([Gun, Shotgun, Rifle, Knife, Sword])()
-        super(Survivor, self).__init__('s',
-                                       'blue',
-                                       100,
-                                       1,
-                                       weapon)
+        super(Human, self).__init__('h',
+                                    'blue',
+                                    100,
+                                    1,
+                                    weapon)
         self.to_do.append(self._think)
 
     def _think(self):
