@@ -89,7 +89,7 @@ class World(object):
 
         return result
 
-    def main_loop(self, frames_per_second=2.0):
+    def play(self, frames_per_second=2.0):
         '''Game main loop.'''
         while True:
             self.step()
