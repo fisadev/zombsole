@@ -138,7 +138,10 @@ class World(object):
         while True:
             self.step()
             self.draw()
-            time.sleep(1.0 / frames_per_second)
+            if self.debug:
+                raw_input()
+            else:
+                time.sleep(1.0 / frames_per_second)
 
 
 class Thing(object):
