@@ -66,8 +66,6 @@ class World(object):
                 self.event(thing, 'error with next_step or its result (%s)' % err.message)
                 if self.debug:
                     raise err
-            else:
-                self.event(thing, 'idle')
 
         # execute the actions on the queue, and add their results as events
         for thing, action, parameter in actions:
