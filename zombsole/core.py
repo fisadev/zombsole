@@ -57,6 +57,8 @@ class World(object):
             if next_step is not None:
                 action, parameter = next_step
                 actions.append((thing, action, parameter))
+            else:
+                self.events.append((self.t, thing, 'idle'))
 
         for thing, action, parameter in actions:
             method = getattr(self, 'thing_' + action)
