@@ -78,30 +78,22 @@ class World(object):
 
         return event
 
-    def thing_attack(self, thing, target_position):
-        target = self.things.get(target_position)
-
-        if target is None:
-            event = 'attacked and missed'
-        elif distance(thing.position, target_position) > thing.weapon.max_range:
+    def thing_attack(self, thing, target):
+        if distance(thing.position, target.position) > thing.weapon.max_range:
             event = 'tried to attack %s, but it is too far for a %s' % (target.name, thing.weapon.name)
         else:
             damage = random.randint(thing.weapon.damage_range)
             target.life -= damage
             if target.life <= 0:
-                del self.things[target_position]
+                del self.things[target.position]
                 event = 'killed %s with a %s' % (target.name, thing.weapon.name)
             else:
                 event = 'injured %s with a %s' % (target.name, thing.weapon.name)
 
         return event
 
-    def thing_heal(self, thing, heal_position):
-        target = self.things.get(heal_position)
-
-        if target is None:
-            event = 'healed a nearby fly'
-        elif distance(thing.position, heal_position) > HEALING_RANGE:
+    def thing_heal(self, thing, target):
+        if distance(thing.position, target.position) > HEALING_RANGE:
             event = 'tried to heal %s, but it is too far away' % target.name
         else:
             # heal half max_life, avoiding health overflow
