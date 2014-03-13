@@ -63,6 +63,11 @@ class World(object):
                 event = method(thing, parameter)
                 self.events.append((self.t, thing, event))
 
+        for thing in self.things.values():
+            if thing.life <= 0:
+                del self.things[thing.position]
+                self.events.append((self.t, thing, 'died'))
+
     def thing_move(self, thing, destination):
         obstacle = self.things.get(destination)
         if obstacle is not None:
@@ -84,11 +89,7 @@ class World(object):
         else:
             damage = random.randint(thing.weapon.damage_range)
             target.life -= damage
-            if target.life <= 0:
-                del self.things[target.position]
-                event = 'killed %s with a %s' % (target.name, thing.weapon.name)
-            else:
-                event = 'injured %s with a %s' % (target.name, thing.weapon.name)
+            event = 'injured %s with a %s' % (target.name, thing.weapon.name)
 
         return event
 
