@@ -15,4 +15,4 @@ def distance(a, b):
 def closest(something, others):
     '''Returns the closest other to something.'''
     if others:
-        return sorted(others, key=lambda x: distance(something, x))[0]
+        return sorted(others, key=lambda other: distance(something.position, other.position))[0]
