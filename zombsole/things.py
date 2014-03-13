@@ -37,10 +37,10 @@ class Building(ComplexThingBuilder):
         end_y = start_y + self.size[1]
 
         # building walls
-        top = [Wall((x, start_y)) for x in range(start_x, end_x)]
-        bottom = [Wall((x, end_y)) for x in range(start_x, end_x)]
-        left = [Wall((start_x, y)) for y in range(start_y, end_y)]
-        right = [Wall((end_x, y)) for y in range(start_y, end_y)]
+        top = [Wall((x, start_y)) for x in range(start_x, end_x + 1)]
+        bottom = [Wall((x, end_y)) for x in range(start_x, end_x + 1)]
+        left = [Wall((start_x, y)) for y in range(start_y + 1, end_y)]
+        right = [Wall((end_x, y)) for y in range(start_y + 1, end_y)]
 
         walls = top + bottom + left + right
 
