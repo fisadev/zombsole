@@ -67,6 +67,8 @@ class World(object):
         obstacle = self.things.get(destination)
         if obstacle is not None:
             event = 'hit %s with his head' % obstacle.name
+        elif distance(thing.position, destination) > 1:
+            event = 'tried to walk too fast, but physics forbade it'
         else:
             self.things[destination] = thing
             del self.things[thing.position]
