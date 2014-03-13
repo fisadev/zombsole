@@ -41,7 +41,7 @@ class World(object):
         actions = []
 
         for position, thing in things:
-            intended_action = thing.next_step(position, self.things)
+            intended_action = thing.next_step(self.things)
             if intended_action:
                 actions.append(intended_action)
 
