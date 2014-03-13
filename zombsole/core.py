@@ -69,15 +69,15 @@ class World(object):
         if target is None:
             result = 'attacked and missed'
         elif distance(thing.position, target_position) > thing.weapon.max_range:
-            result = 'tried to attack something too far for a ' + thing.weapon.name
+            result = 'tried to attack %s, but it is too far for a %s' % (target.name, thing.weapon.name)
         else:
             damage = random.randint(thing.weapon.damage_range)
             target.life -= damage
             if target.life <= 0:
                 self.things[target_position] = None
-                result = 'killed ' + target.name
+                result = 'killed %s with a %s' % (target.name, thing.weapon.name)
             else:
-                result = 'injured ' + target.name
+                result = 'injured %s with a %s' % (target.name, thing.weapon.name)
 
         return result
 
@@ -87,7 +87,7 @@ class World(object):
         if target is None:
             result = 'healed a nearby fly'
         elif distance(thing.position, heal_position) > HEALING_RANGE:
-            result = 'tried to heal something too far away'
+            result = 'tried to heal %s, but it is too far away' % target.name
         else:
             # heal half max_life, avoiding health overflow
             target.life = min(target.life + target.MAX_LIFE / 2,
