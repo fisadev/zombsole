@@ -53,31 +53,30 @@ class World(object):
         actions = []
 
         for thing in things:
-            next_step = thing.next_step(self.things.values())
-            if next_step is not None:
-                if isinstance(next_step, tuple) and len(next_step) == 2:
+            try:
+                next_step = thing.next_step(self.things.values())
+                if next_step is not None:
                     action, parameter = next_step
                     actions.append((thing, action, parameter))
-                else:
-                    error_message = 'wrong format of next_step result, should be None or tuple of (action, parameter), was: %s' % repr(next_step)
-                    self.events.append((self.t, thing, error_message))
-                    if self.debug:
-                        raise Exception(error_message)
+            except Exception as err:
+                self.events.append((self.t, thing, 'error with next_step or its result (%s)' % err.message))
+                if self.debug:
+                    raise err
             else:
                 self.events.append((self.t, thing, 'idle'))
 
         for thing, action, parameter in actions:
             try:
-                method = getattr(self, 'thing_' + action)
+                method = getattr(self, 'thing_' + action, None)
                 if method:
                     event = method(thing, parameter)
                     self.events.append((self.t, thing, event))
+                else:
+                    self.events.append((self.t, thing, 'unknown action "%s"' % action))
             except Exception as err:
                 self.events.append((self.t, thing, 'error excuting %s action (%s)' % (action, err.message)))
                 if self.debug:
                     raise err
-            else:
-                self.events.append((self.t, thing, 'unknown action "%s"' % action))
 
         for thing in self.things.values():
             if thing.life <= 0:
