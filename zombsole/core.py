@@ -47,11 +47,12 @@ class World(object):
     def step(self):
         '''Forward one instant of time.'''
         self.t += 1
-
         things = self.things.values()
         random.shuffle(things)
         actions = []
 
+        # for each thing, call its next_step and add its desired action to the
+        # queue
         for thing in things:
             try:
                 next_step = thing.next_step(self.things.values())
@@ -65,6 +66,7 @@ class World(object):
             else:
                 self.events.append((self.t, thing, 'idle'))
 
+        # execute the actions on the queue, and add their results as events
         for thing, action, parameter in actions:
             try:
                 method = getattr(self, 'thing_' + action, None)
@@ -78,6 +80,7 @@ class World(object):
                 if self.debug:
                     raise err
 
+        # remove dead things at the end
         for thing in self.things.values():
             if thing.life <= 0:
                 del self.things[thing.position]
