@@ -77,6 +77,9 @@ class World(object):
                 self.events.append((self.t, thing, 'died'))
 
     def thing_move(self, thing, destination):
+        if not isinstance(destination, tuple):
+            raise Exception('Destination of movement should be a tuple')
+
         obstacle = self.things.get(destination)
         if obstacle is not None:
             event = 'hit %s with his head' % obstacle.name
@@ -92,6 +95,9 @@ class World(object):
         return event
 
     def thing_attack(self, thing, target):
+        if not isinstance(target, Thing):
+            raise Exception('Target of attack should be a thing')
+
         if distance(thing.position, target.position) > thing.weapon.max_range:
             event = 'tried to attack %s, but it is too far for a %s' % (target.name, thing.weapon.name)
         else:
@@ -102,6 +108,9 @@ class World(object):
         return event
 
     def thing_heal(self, thing, target):
+        if not isinstance(target, Thing):
+            raise Exception('Target of healing should be a thing')
+
         if distance(thing.position, target.position) > HEALING_RANGE:
             event = 'tried to heal %s, but it is too far away' % target.name
         else:
