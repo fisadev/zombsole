@@ -65,10 +65,9 @@ class World(object):
                     event = method(thing, parameter)
                     self.events.append((self.t, thing, event))
                 except Exception as err:
-                    self.events.append((self.t, thing, 'error excuting %s action' % action))
+                    self.events.append((self.t, thing, 'error excuting %s action (%s)' % (action, err.message)))
                     if self.debug:
                         raise err
-
             else:
                 self.events.append((self.t, thing, 'unknown action "%s"' % action))
 
