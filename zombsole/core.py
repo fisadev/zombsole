@@ -18,6 +18,7 @@ class World(object):
         self.size = size
         self.logs = []
         self.things = {}
+        self.t = -1
 
     def add_thing(self, thing):
         if isinstance(thing, ComplexThingBuilder):
@@ -39,69 +40,76 @@ class World(object):
 
     def step(self):
         '''Forward one instant of time.'''
+        self.t += 1
+
         things = self.things.values()
         random.shuffle(things)
         actions = []
+        events = []
 
         for thing in things:
-            result = thing.next_step(self.things)
-            if result is not None:
-                action, parameter = result
+            next_step = thing.next_step(self.things)
+            if next_step is not None:
+                action, parameter = next_step
                 actions.append((thing, action, parameter))
 
         for thing, action, parameter in actions:
             method = getattr(self, 'thing_' + action)
             if method:
-                method(thing, parameter)
+                event = method(thing, parameter)
+                events.append((self.t, event))
+
+        return events
 
     def thing_move(self, thing, destination):
         obstacle = self.things.get(destination)
         if obstacle is not None:
-            result = 'hit %s with his head' % obstacle.name
+            event = 'hit %s with his head' % obstacle.name
         else:
             self.things[destination] = thing
             del self.things[thing.position]
             thing.position = destination
 
-            result = 'moved to ' + str(destination)
+            event = 'moved to ' + str(destination)
 
-        return result
+        return event
 
     def thing_attack(self, thing, target_position):
         target = self.things.get(target_position)
 
         if target is None:
-            result = 'attacked and missed'
+            event = 'attacked and missed'
         elif distance(thing.position, target_position) > thing.weapon.max_range:
-            result = 'tried to attack %s, but it is too far for a %s' % (target.name, thing.weapon.name)
+            event = 'tried to attack %s, but it is too far for a %s' % (target.name, thing.weapon.name)
         else:
             damage = random.randint(thing.weapon.damage_range)
             target.life -= damage
             if target.life <= 0:
                 del self.things[target_position]
-                result = 'killed %s with a %s' % (target.name, thing.weapon.name)
+                event = 'killed %s with a %s' % (target.name, thing.weapon.name)
             else:
-                result = 'injured %s with a %s' % (target.name, thing.weapon.name)
+                event = 'injured %s with a %s' % (target.name, thing.weapon.name)
 
-        return result
+        return event
 
     def thing_heal(self, thing, heal_position):
         target = self.things.get(heal_position)
 
         if target is None:
-            result = 'healed a nearby fly'
+            event = 'healed a nearby fly'
         elif distance(thing.position, heal_position) > HEALING_RANGE:
-            result = 'tried to heal %s, but it is too far away' % target.name
+            event = 'tried to heal %s, but it is too far away' % target.name
         else:
             # heal half max_life, avoiding health overflow
             target.life = min(target.life + target.MAX_LIFE / 2,
                               target.MAX_LIFE)
-            result = 'healed ' + target.name
+            event = 'healed ' + target.name
 
-        return result
+        return event
 
     def play(self, frames_per_second=2.0):
         '''Game main loop.'''
+        self.t = -1
         while True:
             self.step()
             self.draw()
