@@ -39,6 +39,10 @@ class World(object):
                                 for x in xrange(self.size[0]))
                         for y in xrange(self.size[1]))
 
+        print '\n'.join(['%s: %s' % (thing.name, event)
+                         for t, thing, event in self.events
+                         if t == self.t])
+
     def step(self):
         '''Forward one instant of time.'''
         self.t += 1
@@ -57,7 +61,7 @@ class World(object):
             method = getattr(self, 'thing_' + action)
             if method:
                 event = method(thing, parameter)
-                self.events.append((self.t, event))
+                self.events.append((self.t, thing, event))
 
     def thing_move(self, thing, destination):
         obstacle = self.things.get(destination)
