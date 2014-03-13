@@ -14,8 +14,9 @@ HEALING_RANGE = 3
 
 class World(object):
     '''World where to play the game.'''
-    def __init__(self, size):
+    def __init__(self, size, debug=True):
         self.size = size
+        self.debug = debug
 
         self.things = {}
         self.t = -1
@@ -60,8 +61,14 @@ class World(object):
         for thing, action, parameter in actions:
             method = getattr(self, 'thing_' + action)
             if method:
-                event = method(thing, parameter)
-                self.events.append((self.t, thing, event))
+                try:
+                    event = method(thing, parameter)
+                    self.events.append((self.t, thing, event))
+                except Exception as err:
+                    self.events.append((self.t, thing, 'error excuting %s action' % action))
+                    if self.debug:
+                        raise err
+
             else:
                 self.events.append((self.t, thing, 'unknown action "%s"' % action))
 
