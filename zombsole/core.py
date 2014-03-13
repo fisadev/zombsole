@@ -59,10 +59,10 @@ class World(object):
             result = 'hit %s with his head' % obstacle.name
         else:
             self.things[destination] = thing
-            self.things[thing.position] = None
+            del self.things[thing.position]
             thing.position = destination
 
-            result = 'moved to ' + destination
+            result = 'moved to ' + str(destination)
 
         return result
 
@@ -77,7 +77,7 @@ class World(object):
             damage = random.randint(thing.weapon.damage_range)
             target.life -= damage
             if target.life <= 0:
-                self.things[target_position] = None
+                del self.things[target_position]
                 result = 'killed %s with a %s' % (target.name, thing.weapon.name)
             else:
                 result = 'injured %s with a %s' % (target.name, thing.weapon.name)
