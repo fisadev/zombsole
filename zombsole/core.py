@@ -20,7 +20,7 @@ class World(object):
         self.things = {}
 
     def add_thing(self, thing):
-        if self.things[thing.position] is None:
+        if self.things.get(thing.position) is None:
             self.things[thing.position] = thing
         else:
             raise Exception('Trying to place %s in a position already occupied by %s.' % (thing.name,
