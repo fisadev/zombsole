@@ -39,10 +39,13 @@ class World(object):
         '''Draw the world'''
         os.system('clear')
         empty_thing = Thing('air', ' ', DEFAULT_COLOR, None, None)
+
+        # print the world
         print '\n'.join(''.join(self.things.get((x, y), empty_thing).draw()
                                 for x in xrange(self.size[0]))
                         for y in xrange(self.size[1]))
 
+        # print events for debugging
         if self.debug:
             print '\n'.join([colored('%s: %s'% (thing.name, event), thing.color)
                             for t, thing, event in self.events
