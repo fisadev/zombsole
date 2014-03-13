@@ -143,11 +143,9 @@ class FightingThing(Thing):
 
 
 class ComplexThingBuilder(object):
-    def create_parts(self, position):
+    def create_parts(self):
         '''
         Create the things that compose this complex thing.
-
-        Should return a list of tuples, each of one having the thing (part)
-        as first element, and the desired position as seccond element.
+        Should return a list of things.
         '''
         raise NotImplementedError('Implement the complex thing parts builder')
