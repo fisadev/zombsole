@@ -32,11 +32,11 @@ class World(object):
 
     def step(self):
         '''Forward one instant of time.'''
-        things = self.things.values()
+        things = self.things.items()
         random.shuffle(things)
         actions = []
 
-        for position, thing in things.items():
+        for position, thing in things:
             intended_action = thing.next_step(position, self.things)
             if intended_action:
                 actions.append(intended_action)
