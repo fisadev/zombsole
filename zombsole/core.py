@@ -14,10 +14,13 @@ HEALING_RANGE = 3
 
 class World(object):
     '''World where to play the game.'''
-    def __init__(self, size, things):
+    def __init__(self, size, things=None):
+        if things is None:
+            things = {}
+
         self.size = size
-        self.things = {}
         self.logs = []
+        self.things = things
 
     def draw(self):
         '''Draw the world'''
