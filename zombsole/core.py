@@ -43,9 +43,10 @@ class World(object):
                                 for x in xrange(self.size[0]))
                         for y in xrange(self.size[1]))
 
-        print '\n'.join([colored('%s: %s'% (thing.name, event), thing.color)
-                         for t, thing, event in self.events
-                         if t == self.t])
+        if self.debug:
+            print '\n'.join([colored('%s: %s'% (thing.name, event), thing.color)
+                            for t, thing, event in self.events
+                            if t == self.t])
 
     def step(self):
         '''Forward one instant of time.'''
