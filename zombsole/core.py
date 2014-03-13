@@ -38,7 +38,7 @@ class World(object):
     def draw(self):
         '''Draw the world'''
         os.system('clear')
-        empty_thing = Thing('air', ' ', DEFAULT_COLOR, None, None)
+        empty_thing = Thing('air', ' ', DEFAULT_COLOR, None, None, False, False)
 
         # print the world
         print '\n'.join(''.join(self.things.get((x, y), empty_thing).draw()
@@ -60,12 +60,15 @@ class World(object):
 
         # for each thing, call its next_step and add its desired action to the
         # queue
-        for thing in things:
+        actors = [thing for thing in things if thing.ask_for_actions]
+        for thing in actors:
             try:
                 next_step = thing.next_step(self.things.values())
                 if next_step is not None:
                     action, parameter = next_step
                     actions.append((thing, action, parameter))
+                else:
+                    self.event(thing, 'idle')
             except Exception as err:
                 self.event(thing, 'error with next_step or its result (%s)' % err.message)
                 if self.debug:
@@ -151,13 +154,15 @@ class Thing(object):
     '''Something in the world.'''
     MAX_LIFE = 1
 
-    def __init__(self, name, icon, color, life, position):
+    def __init__(self, name, icon, color, life, position, ask_for_actions, show_in_stats):
         self.name = name
         self.icon = icon
         self.color = color
         self.life = life
         self.position = position
         self.status = ''
+        self.ask_for_actions = ask_for_actions
+        self.show_in_stats = show_in_stats
 
     def next_step(self, things):
         return None
@@ -176,8 +181,8 @@ class Weapon(object):
 
 class FightingThing(Thing):
     '''Thing that has a weapon.'''
-    def __init__(self, name, icon, color, life, position, weapon):
-        super(FightingThing, self).__init__(name, icon, color, life, position)
+    def __init__(self, name, icon, color, life, position, weapon, show_in_stats):
+        super(FightingThing, self).__init__(name, icon, color, life, position, True, show_in_stats)
         self.weapon = weapon
 
 

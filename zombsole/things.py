@@ -1,6 +1,7 @@
 #coding: utf-8
 import random
 from zombsole.core import Thing, FightingThing, ComplexThingBuilder, Weapon
+from zombsole.utils import closest
 
 
 class Box(Thing):
@@ -10,7 +11,9 @@ class Box(Thing):
     def __init__(self, position):
         super(Box, self).__init__('box', '#', 'yellow',
                                   Box.MAX_LIFE,
-                                  position)
+                                  position,
+                                  False,
+                                  False)
 
 
 class Wall(Thing):
@@ -20,7 +23,9 @@ class Wall(Thing):
     def __init__(self, position):
         super(Wall, self).__init__('wall', '#', 'grey',
                                    Wall.MAX_LIFE,
-                                   position)
+                                   position,
+                                   False,
+                                   False)
 
 
 class Building(ComplexThingBuilder):
@@ -81,7 +86,8 @@ class Zombie(FightingThing):
         super(Zombie, self).__init__('zombie', 'z', 'green',
                                      life,
                                      position,
-                                     ZombieClaws())
+                                     ZombieClaws(),
+                                     False)
 
 
 class Human(FightingThing):
@@ -94,4 +100,5 @@ class Human(FightingThing):
         super(Human, self).__init__(name, 'h', color,
                                     Human.MAX_LIFE,
                                     position,
-                                    weapon)
+                                    weapon,
+                                    True)
