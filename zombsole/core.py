@@ -62,6 +62,8 @@ class World(object):
             if method:
                 event = method(thing, parameter)
                 self.events.append((self.t, thing, event))
+            else:
+                self.events.append((self.t, thing, 'unknown action "%s"' % action))
 
         for thing in self.things.values():
             if thing.life <= 0:
