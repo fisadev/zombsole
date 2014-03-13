@@ -40,7 +40,7 @@ class World(object):
                                 for x in xrange(self.size[0]))
                         for y in xrange(self.size[1]))
 
-        print '\n'.join(['%s: %s' % (thing.name, event)
+        print '\n'.join([colored('%s: %s'% (thing.name, event), thing.color)
                          for t, thing, event in self.events
                          if t == self.t])
 
