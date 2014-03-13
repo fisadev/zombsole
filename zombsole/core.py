@@ -14,13 +14,17 @@ HEALING_RANGE = 3
 
 class World(object):
     '''World where to play the game.'''
-    def __init__(self, size, things=None):
-        if things is None:
-            things = {}
-
+    def __init__(self, size):
         self.size = size
         self.logs = []
-        self.things = things
+        self.things = {}
+
+    def add_thing(self, thing):
+        if self.things[thing.position] is None:
+            self.things[thing.position] = thing
+        else:
+            raise Exception('Trying to place %s in a position already occupied by %s.' % (thing.name,
+                                                                                          self.things[thing.position].name))
 
     def draw(self):
         '''Draw the world'''
