@@ -44,11 +44,12 @@ class World(object):
         actions = []
 
         for position, thing in things:
-            intended_action = thing.next_step(self.things)
-            if intended_action:
-                actions.append(intended_action)
+            result = thing.next_step(self.things)
+            if result is not None:
+                action, parameter = result
+                actions.append((thing, action, parameter))
 
-        for action, parameter in actions:
+        for thing, action, parameter in actions:
             method = getattr(self, 'thing_' + action)
             if method:
                 method(thing, parameter)
