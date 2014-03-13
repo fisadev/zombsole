@@ -16,9 +16,10 @@ class World(object):
     '''World where to play the game.'''
     def __init__(self, size):
         self.size = size
-        self.logs = []
+
         self.things = {}
         self.t = -1
+        self.events = []
 
     def add_thing(self, thing):
         if isinstance(thing, ComplexThingBuilder):
@@ -45,7 +46,6 @@ class World(object):
         things = self.things.values()
         random.shuffle(things)
         actions = []
-        events = []
 
         for thing in things:
             next_step = thing.next_step(self.things)
@@ -57,9 +57,7 @@ class World(object):
             method = getattr(self, 'thing_' + action)
             if method:
                 event = method(thing, parameter)
-                events.append((self.t, event))
-
-        return events
+                self.events.append((self.t, event))
 
     def thing_move(self, thing, destination):
         obstacle = self.things.get(destination)
@@ -109,7 +107,6 @@ class World(object):
 
     def play(self, frames_per_second=2.0):
         '''Game main loop.'''
-        self.t = -1
         while True:
             self.step()
             self.draw()
