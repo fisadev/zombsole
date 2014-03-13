@@ -45,6 +45,22 @@ class World(object):
                                 for x in xrange(self.size[0]))
                         for y in xrange(self.size[1]))
 
+        # print player stats
+        stats_things = [thing for thing in self.things.values()
+                        if thing.show_in_stats]
+        stats_things = sorted(stats_things, key=lambda x: x.name)
+        for thing in stats_things:
+            try:
+                weapon_name = thing.weapon.name
+            except:
+                weapon_name = 'unarmed'
+
+            life_chars_count = int((10.0 / thing.MAX_LIFE) * thing.life)
+            life_chars = '[%s%s]' % (life_chars_count * '*', (10 - life_chars_count) * ' ')
+
+            print colored('%s - %s: %s %i' % (thing.name, weapon_name, life_chars, thing.life),
+                          thing.color)
+
         # print events for debugging
         if self.debug:
             print '\n'.join([colored('%s: %s'% (thing.name, event), thing.color)
