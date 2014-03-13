@@ -5,8 +5,22 @@ from zombsole.core import Thing, FightingThing, ComplexThingBuilder, Weapon
 
 class SolidBox(Thing):
     '''Solid box.'''
-    def __init__(self):
-        super(SolidBox, self).__init__('#', 'grey', 100)
+    MAX_LIFE = 10
+
+    def __init__(self, position):
+        super(SolidBox, self).__init__('box', '#', 'brown',
+                                       SolidBox.MAX_LIFE,
+                                       position)
+
+
+class Wall(Thing):
+    '''Solid section of wall.'''
+    MAX_LIFE = 200
+
+    def __init__(self, position):
+        super(Wall, self).__init__('wall', '#', 'grey',
+                                   Wall.MAX_LIFE,
+                                   position)
 
 
 class Building(ComplexThingBuilder):
@@ -23,10 +37,10 @@ class Building(ComplexThingBuilder):
         end_y = start_y + self.size[1]
 
         # building walls
-        top = [(x, start_y) for x in range(start_x, end_x)]
-        bottom = [(x, end_y) for x in range(start_x, end_x)]
-        left = [(start_x, y) for y in range(start_y, end_y)]
-        right = [(end_x, y) for y in range(start_y, end_y)]
+        top = [Wall(x, start_y) for x in range(start_x, end_x)]
+        bottom = [Wall(x, end_y) for x in range(start_x, end_x)]
+        left = [Wall(start_x, y) for y in range(start_y, end_y)]
+        right = [Wall(end_x, y) for y in range(start_y, end_y)]
 
         walls = top + bottom + left + right
 
