@@ -32,6 +32,9 @@ class World(object):
                 raise Exception('Trying to place %s in a position already occupied by %s.' % (thing.name,
                                                                                               self.things[thing.position].name))
 
+    def event(self, thing, message):
+        self.events.append((self.t, thing, message))
+
     def draw(self):
         '''Draw the world'''
         os.system('clear')
@@ -60,11 +63,11 @@ class World(object):
                     action, parameter = next_step
                     actions.append((thing, action, parameter))
             except Exception as err:
-                self.events.append((self.t, thing, 'error with next_step or its result (%s)' % err.message))
+                self.event(thing, 'error with next_step or its result (%s)' % err.message)
                 if self.debug:
                     raise err
             else:
-                self.events.append((self.t, thing, 'idle'))
+                self.event(thing, 'idle')
 
         # execute the actions on the queue, and add their results as events
         for thing, action, parameter in actions:
@@ -72,11 +75,11 @@ class World(object):
                 method = getattr(self, 'thing_' + action, None)
                 if method:
                     event = method(thing, parameter)
-                    self.events.append((self.t, thing, event))
+                    self.event(thing, event)
                 else:
-                    self.events.append((self.t, thing, 'unknown action "%s"' % action))
+                    self.event(thing, 'unknown action "%s"' % action)
             except Exception as err:
-                self.events.append((self.t, thing, 'error excuting %s action (%s)' % (action, err.message)))
+                self.event(thing, 'error excuting %s action (%s)' % (action, err.message))
                 if self.debug:
                     raise err
 
@@ -84,7 +87,7 @@ class World(object):
         for thing in self.things.values():
             if thing.life <= 0:
                 del self.things[thing.position]
-                self.events.append((self.t, thing, 'died'))
+                self.event(thing, 'died')
 
     def thing_move(self, thing, destination):
         if not isinstance(destination, tuple):
