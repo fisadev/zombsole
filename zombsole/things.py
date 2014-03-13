@@ -8,7 +8,7 @@ class Box(Thing):
     MAX_LIFE = 10
 
     def __init__(self, position):
-        super(Box, self).__init__('box', '#', 'brown',
+        super(Box, self).__init__('box', '#', 'yellow',
                                   Box.MAX_LIFE,
                                   position)
 
