@@ -1,7 +1,6 @@
 #coding: utf-8
 import random
 from zombsole.core import Thing, FightingThing, ComplexThingBuilder, Weapon
-from zombsole.utils import closest
 
 
 class SolidBox(Thing):
@@ -10,16 +9,30 @@ class SolidBox(Thing):
         super(SolidBox, self).__init__('#', 'grey', 100)
 
 
-class BigSolidBoxBuilder(ComplexThingBuilder):
-    '''Big solid box builder.'''
-    def __init__(self, size):
+class Building(ComplexThingBuilder):
+    '''Building builder.'''
+    def __init__(self, position, size, doors=2):
+        self.position = position
         self.size = size
+        self.doors = doors
 
-    def create_parts(self, position):
-        '''Create parts for a solid box of the given size.'''
-        return [(SolidBox(), (x, y))
-                for x in range(position[0], position[0] + self.size[0])
-                for y in range(position[1], position[1] + self.size[1])]
+    def create_parts(self):
+        '''Create parts for a building of the given size.'''
+        start_x, start_y = self.position
+        end_x = start_x + self.size[0]
+        end_y = start_y + self.size[1]
+
+        # building walls
+        top = [(x, start_y) for x in range(start_x, end_x)]
+        bottom = [(x, end_y) for x in range(start_x, end_x)]
+        left = [(start_x, y) for y in range(start_y, end_y)]
+        right = [(end_x, y) for y in range(start_y, end_y)]
+
+        walls = top + bottom + left + right
+
+        # create doors by removing random wall segments
+        random.shuffle(walls)
+        walls = walls[self.doors:]
 
 
 def _new_weapon_class(name, max_range, damage_range):
@@ -36,34 +49,21 @@ def _new_weapon_class(name, max_range, damage_range):
 
 ZombieClaws = _new_weapon_class('ZombieClaws', 1, (5, 10))
 Gun = _new_weapon_class('Gun', 10, (10, 50))
-Shotgun = _new_weapon_class('Shotgun', 6, (50, 150))
-Rifle = _new_weapon_class('Rifle', 15, (50, 75))
+Shotgun = _new_weapon_class('Shotgun', 6, (50, 100))
+Rifle = _new_weapon_class('Rifle', 15, (25, 75))
 Knife = _new_weapon_class('Knife', 1, (5, 10))
-Sword = _new_weapon_class('Sword', 2, (25, 100))
+Sword = _new_weapon_class('Sword', 2, (75, 100))
 
 
 class Zombie(FightingThing):
-    def __init__(self):
-        super(Zombie, self).__init__('z',
-                                     'green',
-                                     random.randint(50, 100),
-                                     random.randint(1, 3),
-                                     ZombieClaws())
+    def __init__(self, position, life=None):
+        if life is None:
+            life = random.randint(50, 100)
+        super(Zombie, self).__init__('zombie', 'z', 'green', life, position, ZombieClaws())
 
 
 class Human(FightingThing):
-    def __init__(self, weapon=None):
+    def __init__(self, name, color, position, weapon=None):
         if weapon is None:
             weapon = random.choice([Gun, Shotgun, Rifle, Knife, Sword])()
-        super(Human, self).__init__('h',
-                                    'blue',
-                                    100,
-                                    1,
-                                    weapon)
-        self.to_do.append(self._think)
-
-    def _think(self):
-        '''Think and decide what to do.'''
-        zombies = self.world.all_things(Zombie)
-        closest_zombie = closest(self, zombies)
-        self.attack(closest_zombie)
+        super(Human, self).__init__(name, 'h', color, 100, position, weapon)

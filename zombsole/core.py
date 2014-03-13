@@ -9,176 +9,105 @@ from zombsole.utils import get_position, distance
 
 
 DEFAULT_COLOR = 'white'
+HEALING_RANGE = 3
 
 
 class World(object):
     '''World where to play the game.'''
-    def __init__(self, size):
+    def __init__(self, size, things):
         self.size = size
-        self.t = None
         self.things = {}
-
-    def thing_in(self, position):
-        '''Get thing in position (or None if nothing there).'''
-        return self.things.get(position)
-
-    def all_things(self, kind=None):
-        '''
-        Returns all the things in the world.
-        If kind is specified, only that kind of things.
-        '''
-        things = self.things.values()
-        if kind is not None:
-            things = [thing for thing in things if isinstance(thing, kind)]
-        return things
-
-    def add_thing(self, thing, position):
-        '''Add something to the world.'''
-        if isinstance(thing, ComplexThingBuilder):
-            new_things = thing.create_parts(position)
-        else:
-            new_things = [(thing, position), ]
-
-        for new_thing, new_position in new_things:
-            if self.thing_in(new_position):
-                raise Exception('position occupied!')
-            new_thing.position = new_position
-            new_thing.world = self
-            self.things[new_position] = new_thing
-
-    def move_thing(self, thing, new_position):
-        '''Move one thing on the world.'''
-        if self.thing_in(new_position):
-            raise Exception('position occupied!')
-
-        del self.things[thing.position]
-        thing.position = new_position
-        self.things[new_position] = thing
-
-    def remove_thing(self, thing):
-        '''Removen a thing from the world.'''
-        del self.things[thing.position]
-        thing.position = None, None
-        thing.world = None
-
-    def exists(self, objective):
-        '''Determines if an objective (position or thing) exists.'''
-        return get_position(objective) != (None, None)
+        self.logs = []
 
     def draw(self):
         '''Draw the world'''
+        os.system('clear')
         empty_thing = Thing(' ', DEFAULT_COLOR, 0)
-        return '\n'.join(''.join(self.things.get((x, y), empty_thing).draw()
-                                 for x in xrange(self.size[0]))
-                         for y in xrange(self.size[1]))
+        print '\n'.join(''.join(self.things.get((x, y), empty_thing).draw()
+                                for x in xrange(self.size[0]))
+                        for y in xrange(self.size[1]))
 
-    def time(self):
+    def step(self):
         '''Forward one instant of time.'''
-        if self.t is None:
-            self.t = -1
-        self.t += 1
         things = self.things.values()
         random.shuffle(things)
-        for thing in things:
-            if self.exists(thing):
-                thing.time(self.t)
+        actions = []
 
+        for position, thing in things.items():
+            intended_action = thing.next_step(position, self.things)
+            if intended_action:
+                actions.append(intended_action)
 
-def main_loop(world):
-    '''Game main loop.'''
-    playing = True
+        for action, parameter in actions:
+            method = getattr(self, 'thing_' + action)
+            if method:
+                method(thing, parameter)
 
-    while playing:
-        world.time()
-        os.system('clear')
-        print world.draw()
-        time.sleep(1)
+    def thing_move(self, thing, destination):
+        obstacle = self.things.get(destination)
+        if obstacle is not None:
+            result = 'hit %s with his head' % obstacle.name
+        else:
+            self.things[destination] = thing
+            self.things[thing.position] = None
+            thing.position = destination
+
+            result = 'moved to ' + destination
+
+        return result
+
+    def thing_attack(self, thing, target_position):
+        target = self.things.get(target_position)
+
+        if target is None:
+            result = 'attacked and missed'
+        elif distance(thing.position, target_position) > thing.weapon.max_range:
+            result = 'tried to attack something too far for a ' + thing.weapon.name
+        else:
+            damage = random.randint(thing.weapon.damage_range)
+            target.life -= damage
+            if target.life <= 0:
+                self.things[target_position] = None
+                result = 'killed ' + target.name
+            else:
+                result = 'injured ' + target.name
+
+        return result
+
+    def thing_heal(self, thing, heal_position):
+        target = self.things.get(heal_position)
+
+        if target is None:
+            result = 'healed a nearby fly'
+        elif distance(thing.position, heal_position) > HEALING_RANGE:
+            result = 'tried to heal something too far away'
+        else:
+            damage = random.randint(thing.weapon.damage_range)
+            target.life -= damage
+            if target.life <= 0:
+                self.things[target_position] = None
+                result = 'killed ' + target.name
+
+    def main_loop(self, frames_per_second=2.0):
+        '''Game main loop.'''
+        while True:
+            self.step()
+            self.draw()
+            time.sleep(1.0 / frames_per_second)
 
 
 class Thing(object):
     '''Something in the world.'''
-    def __init__(self, label, color, life):
-        if len(label) != 1:
-            raise ValueError('label must be a string of length 1')
-        self.label = label
+    def __init__(self, name, icon, color, life, position):
+        self.name = name
+        self.icon = icon
         self.color = color
         self.life = life
-        self.position = None, None
-        self.world = None
-        self.t = None
-        self.to_do = []
+        self.position = position
+        self.status = ''
 
-    def position_get(self):
-        return self.x, self.y
-
-    def position_set(self, value):
-        self.x, self.y = value
-
-    position = property(position_get, position_set)
-
-    def time(self, t):
-        '''Forward one instant of time.'''
-        self.t = t
-        for to_do in self.to_do:
-            to_do()
-
-    def draw(self):
-        '''Return the thing bit to add on the draw of the world.'''
-        return colored(self.label, self.color)
-
-
-class MovingThing(Thing):
-    '''Something that's able to move by it's own.'''
-    def __init__(self, label, color, life, speed):
-        super(MovingThing, self).__init__(label, color, life)
-        self.speed = speed
-        self.moving_to = None
-        self.to_do.append(self._move)
-
-    def move(self, objective):
-        '''Order thing to move to an objective (thing or position).'''
-        self.moving_to = objective
-        self.path = []
-
-    def calculate_path(self):
-        '''Calculates path to the moving_to objective.'''
-        x, y = self.position
-        to_position = get_position(self.moving_to)
-
-        self.path = []
-
-        # TODO fix this to avoid collisions
-        while (x, y) != to_position:
-            if to_position[0] > x:
-                x = min(to_position[0], x + self.speed)
-            elif to_position[0] < x:
-                x = max(to_position[0], x - self.speed)
-            elif to_position[1] > y:
-                y = min(to_position[1], y + self.speed)
-            elif to_position[1] < y:
-                y = max(to_position[1], y - self.speed)
-            self.path.append((x, y))
-
-    def stop_moving(self):
-        '''Order thing to stop moving.'''
-        self.moving_to = None
-
-    def _move(self):
-        '''Perform movement for time instant.'''
-        if self.moving_to:
-            if self.world.exists(self.moving_to):
-                if not self.path or self.path[-1] != get_position(self.moving_to):
-                    self.calculate_path()
-
-                if self.path:
-                    next_position = self.path.pop(0)
-                    if self.world.thing_in(next_position):
-                        self.path = []
-                    else:
-                        self.world.move_thing(self, next_position)
-            else:
-                self.stop_moving()
-
+    def next_step(self, things):
+        return None
 
 class Weapon(object):
     '''Weapon, capable of doing damage to things.'''
@@ -187,41 +116,12 @@ class Weapon(object):
         self.max_range = max_range
         self.damage_range = damage_range
 
-    def shoot(self, objective):
-        '''Shoot the weapon to an objective, returns True if it died.'''
-        damage = random.randint(*self.damage_range)
 
-        objective.life -= damage
-        if objective.life <= 0:
-            objective.world.remove_thing(objective)
-            return True
-        return False
-
-
-class FightingThing(MovingThing):
-    '''Thing that moves and attacks.'''
-    def __init__(self, label, color, life, speed, weapon):
-        super(FightingThing, self).__init__(label, color, life, speed)
+class FightingThing(Thing):
+    '''Thing that has a weapon.'''
+    def __init__(self, name, icon, color, life, position, weapon):
+        super(FightingThing, self).__init__(name, icon, color, life, position)
         self.weapon = weapon
-        self.attacking_to = None
-        self.to_do.append(self._attack)
-
-    def attack(self, objective):
-        '''Order thing to attack an objective (thing).'''
-        self.attacking_to = objective
-
-    def stop_attacking(self):
-        '''Order thing to stop attacking.'''
-        self.attacking_to = None
-
-    def _attack(self):
-        '''Perform movement for time instant.'''
-        if self.attacking_to:
-            if self.world.exists(self.attacking_to):
-                if distance(self, self.attacking_to) <= self.weapon.max_range:
-                    self.weapon.shoot(self.attacking_to)
-            else:
-                self.stop_attacking()
 
 
 class ComplexThingBuilder(object):
