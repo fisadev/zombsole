@@ -52,7 +52,7 @@ class World(object):
         actions = []
 
         for thing in things:
-            next_step = thing.next_step(self.things)
+            next_step = thing.next_step(self.things.values())
             if next_step is not None:
                 action, parameter = next_step
                 actions.append((thing, action, parameter))
