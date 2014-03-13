@@ -25,7 +25,7 @@ class World(object):
     def draw(self):
         '''Draw the world'''
         os.system('clear')
-        empty_thing = Thing(' ', DEFAULT_COLOR, 0)
+        empty_thing = Thing('air', ' ', DEFAULT_COLOR, None, None)
         print '\n'.join(''.join(self.things.get((x, y), empty_thing).draw()
                                 for x in xrange(self.size[0]))
                         for y in xrange(self.size[1]))
