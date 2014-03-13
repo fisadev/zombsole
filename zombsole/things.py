@@ -3,14 +3,14 @@ import random
 from zombsole.core import Thing, FightingThing, ComplexThingBuilder, Weapon
 
 
-class SolidBox(Thing):
+class Box(Thing):
     '''Solid box.'''
     MAX_LIFE = 10
 
     def __init__(self, position):
-        super(SolidBox, self).__init__('box', '#', 'brown',
-                                       SolidBox.MAX_LIFE,
-                                       position)
+        super(Box, self).__init__('box', '#', 'brown',
+                                  Box.MAX_LIFE,
+                                  position)
 
 
 class Wall(Thing):
