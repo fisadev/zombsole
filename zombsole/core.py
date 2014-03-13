@@ -5,7 +5,7 @@ import random
 
 from termcolor import colored
 
-from zombsole.utils import get_position, distance
+from zombsole.utils import distance
 
 
 DEFAULT_COLOR = 'white'
@@ -111,6 +111,10 @@ class Thing(object):
 
     def next_step(self, things):
         return None
+
+    def draw(self):
+        return colored(self.icon, self.color)
+
 
 class Weapon(object):
     '''Weapon, capable of doing damage to things.'''
