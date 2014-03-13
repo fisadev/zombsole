@@ -82,11 +82,12 @@ class World(object):
         elif distance(thing.position, heal_position) > HEALING_RANGE:
             result = 'tried to heal something too far away'
         else:
-            damage = random.randint(thing.weapon.damage_range)
-            target.life -= damage
-            if target.life <= 0:
-                self.things[target_position] = None
-                result = 'killed ' + target.name
+            # heal half max_life, avoiding health overflow
+            target.life = min(target.life + target.MAX_LIFE / 2,
+                              target.MAX_LIFE)
+            result = 'healed ' + target.name
+
+        return result
 
     def main_loop(self, frames_per_second=2.0):
         '''Game main loop.'''
