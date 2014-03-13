@@ -56,14 +56,26 @@ Sword = _new_weapon_class('Sword', 2, (75, 100))
 
 
 class Zombie(FightingThing):
+    MAX_LIFE = 100
+
     def __init__(self, position, life=None):
         if life is None:
-            life = random.randint(50, 100)
-        super(Zombie, self).__init__('zombie', 'z', 'green', life, position, ZombieClaws())
+            life = random.randint(Zombie.MAX_LIFE / 2, Zombie.MAX_LIFE)
+
+        super(Zombie, self).__init__('zombie', 'z', 'green',
+                                     life,
+                                     position,
+                                     ZombieClaws())
 
 
 class Human(FightingThing):
+    MAX_LIFE = 100
+
     def __init__(self, name, color, position, weapon=None):
         if weapon is None:
             weapon = random.choice([Gun, Shotgun, Rifle, Knife, Sword])()
-        super(Human, self).__init__(name, 'h', color, 100, position, weapon)
+
+        super(Human, self).__init__(name, 'h', color,
+                                    Human.MAX_LIFE,
+                                    position,
+                                    weapon)

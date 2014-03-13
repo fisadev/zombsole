@@ -98,6 +98,8 @@ class World(object):
 
 class Thing(object):
     '''Something in the world.'''
+    MAX_LIFE = 1
+
     def __init__(self, name, icon, color, life, position):
         self.name = name
         self.icon = icon
