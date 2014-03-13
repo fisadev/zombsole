@@ -87,7 +87,7 @@ class World(object):
         if distance(thing.position, target.position) > thing.weapon.max_range:
             event = 'tried to attack %s, but it is too far for a %s' % (target.name, thing.weapon.name)
         else:
-            damage = random.randint(thing.weapon.damage_range)
+            damage = random.randint(*thing.weapon.damage_range)
             target.life -= damage
             event = 'injured %s with a %s' % (target.name, thing.weapon.name)
 
