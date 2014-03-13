@@ -48,6 +48,8 @@ class Building(ComplexThingBuilder):
         random.shuffle(walls)
         walls = walls[self.doors:]
 
+        return walls
+
 
 def _new_weapon_class(name, max_range, damage_range):
     '''Create new weapon class.'''
