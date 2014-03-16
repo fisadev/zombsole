@@ -50,8 +50,8 @@ class Game(object):
 
             if player.life > 0:
                 life_chars_count = int((10.0 / player.MAX_LIFE) * player.life)
-                life = u'[%s%s] %i' % (life_chars_count * '*',
-                                       (10 - life_chars_count) * ' ',
+                life = u'[%s%s] %i' % (life_chars_count * u'\u2665',
+                                       (10 - life_chars_count) * u' ',
                                        player.life)
             else:
                 life = u'dead'
