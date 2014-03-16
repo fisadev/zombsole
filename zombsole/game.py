@@ -5,13 +5,23 @@ import time
 from termcolor import colored
 
 from zombsole.core import World
+from zombsole.things import Box, Wall
 
 
 class Game(object):
-    def __init__(self, world_size, players, map, debug=False):
-        self.world = World(world_size, debug=debug)
+    def __init__(self, players, size, player_spawns=None, zombie_spawns=None, objetives=None, map_file=None, debug=False):
         self.players = players
+        self.size = size
+
+        self.player_spawns = player_spawns
+        self.zombie_spawns = zombie_spawns
+        self.objetives = objetives
         self.debug = debug
+
+        self.world = World(debug=debug)
+
+        if map_file is not None:
+            self.import_map(map_file)
 
     def play(self, frames_per_second=2.0):
         '''Game main loop.'''
@@ -47,8 +57,8 @@ class Game(object):
 
         # print the world
         print '\n'.join(u''.join(self.position_draw((x, y))
-                                 for x in xrange(self.world.size[0]))
-                        for y in xrange(self.world.size[1]))
+                                 for x in xrange(self.size[0]))
+                        for y in xrange(self.size[1]))
 
         # print player stats
         players = sorted(self.players, key=lambda x: x.name)
@@ -75,3 +85,33 @@ class Game(object):
                                       thing.color)
                               for t, thing, event in self.world.events
                               if t == self.world.t])
+
+    def import_map(self, file_path):
+        '''Import things from a utf-8 map file.'''
+        with open(file_path) as map_file:
+            lines = unicode(map_file.read(), 'utf-8').split('\n')
+
+            zombie_spawns = []
+            player_spawns = []
+            objetives = []
+
+            for row_index, line in enumerate(lines):
+                for col_index, char in enumerate(line):
+                    position = (col_index, row_index)
+                    if char == Box.ICON:
+                        self.world.add_thing(Box(position))
+                    elif char == Wall.ICON:
+                        self.world.add_thing(Wall(position))
+                    elif char == 'p':
+                        player_spawns.append(position)
+                    elif char == 'z':
+                        zombie_spawns.append(position)
+                    elif char == 'o':
+                        objetives.append(position)
+
+            if player_spawns:
+                self.player_spawns = player_spawns
+            if zombie_spawns:
+                self.zombie_spawns = zombie_spawns
+            if objetives:
+                self.objetives = objetives

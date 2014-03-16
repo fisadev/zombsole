@@ -12,10 +12,8 @@ HEALING_RANGE = 3
 
 class World(object):
     '''World where to play the game.'''
-    def __init__(self, size, debug=True):
-        self.size = size
+    def __init__(self, debug=True):
         self.debug = debug
-
         self.things = {}
         self.decoration = {}
         self.t = -1
