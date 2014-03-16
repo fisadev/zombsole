@@ -20,7 +20,7 @@ class Wall(Thing):
     MAX_LIFE = 200
 
     def __init__(self, position):
-        super(Wall, self).__init__(u'wall', u'\u2588', 'grey',
+        super(Wall, self).__init__(u'wall', u'\u2588', 'white',
                                    Wall.MAX_LIFE,
                                    position,
                                    False)
