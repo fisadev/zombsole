@@ -12,6 +12,7 @@ class Box(Thing):
         super(Box, self).__init__(u'box', u'\u25A4', 'yellow',
                                   Box.MAX_LIFE,
                                   position,
+                                  False,
                                   False)
 
 
@@ -23,6 +24,7 @@ class DeadBody(Thing):
         super(DeadBody, self).__init__(u'dead body', u'\u2620', color,
                                        DeadBody.MAX_LIFE,
                                        position,
+                                       False,
                                        False)
 
 
@@ -34,6 +36,7 @@ class Wall(Thing):
         super(Wall, self).__init__(u'wall', u'\u2593', 'white',
                                    Wall.MAX_LIFE,
                                    position,
+                                   False,
                                    False)
 
 

@@ -75,8 +75,12 @@ class World(object):
         # remove dead things at the end
         for thing in self.things.values():
             if thing.life <= 0:
-                self.things[thing.position] = DeadBody(thing.position, thing.color)
-                self.event(thing, u'died')
+                if thing.leaves_dead_body:
+                    self.things[thing.position] = DeadBody(thing.position, thing.color)
+                    self.event(thing, u'died')
+                else:
+                    del self.things[thing.position]
+                    self.event(thing, u'destroyed')
 
     def thing_move(self, thing, destination):
         if not isinstance(destination, tuple):
@@ -128,7 +132,7 @@ class Thing(object):
     '''Something in the world.'''
     MAX_LIFE = 1
 
-    def __init__(self, name, icon, color, life, position, ask_for_actions):
+    def __init__(self, name, icon, color, life, position, ask_for_actions, leaves_dead_body):
         if len(icon) != 1:
             raise Exception(u'The icon must be a 1 char unicode or string.')
 
@@ -139,6 +143,7 @@ class Thing(object):
         self.position = position
         self.status = u''
         self.ask_for_actions = ask_for_actions
+        self.leaves_dead_body = leaves_dead_body
 
     def next_step(self, things):
         return None
@@ -158,7 +163,7 @@ class Weapon(object):
 class FightingThing(Thing):
     '''Thing that has a weapon.'''
     def __init__(self, name, icon, color, life, position, weapon):
-        super(FightingThing, self).__init__(name, icon, color, life, position, True)
+        super(FightingThing, self).__init__(name, icon, color, life, position, True, True)
         self.weapon = weapon
 
 
