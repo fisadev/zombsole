@@ -5,17 +5,20 @@ import time
 from termcolor import colored
 
 from zombsole.core import World
-from zombsole.things import Box, Wall
+from zombsole.things import Box, Wall, Zombie
 
 
 class Game(object):
-    def __init__(self, players, size, player_spawns=None, zombie_spawns=None, objetives=None, map_file=None, debug=False):
+    def __init__(self, players, size, map_file, player_spawns=None,
+                 zombie_spawns=None, objetives=None, initial_zombies=0,
+                 maintain_zombies_count=0, debug=False):
         self.players = players
         self.size = size
 
         self.player_spawns = player_spawns
         self.zombie_spawns = zombie_spawns
         self.objetives = objetives
+        self.maintain_zombies_count = maintain_zombies_count
         self.debug = debug
 
         self.world = World(debug=debug)
@@ -23,19 +26,9 @@ class Game(object):
         if map_file is not None:
             self.import_map(map_file)
 
-    def play(self, frames_per_second=2.0):
-        '''Game main loop.'''
-        while True:
-            self.world.step()
-            self.draw()
-
-            if self.debug:
-                raw_input()
-            else:
-                time.sleep(1.0 / frames_per_second)
-
-            if self.game_ended():
-                return
+        zombies = [Zombie() for i in range(initial_zombies)]
+        self.world.spawn_in_random(self.players, self.player_spawns)
+        self.world.spawn_in_random(zombies, self.zombie_spawns)
 
     def game_ended(self):
         return False
@@ -50,6 +43,20 @@ class Game(object):
             return decoration.draw()
         else:
             return u' '
+
+    def play(self, frames_per_second=2.0):
+        '''Game main loop.'''
+        while True:
+            self.world.step()
+            self.draw()
+
+            if self.debug:
+                raw_input()
+            else:
+                time.sleep(1.0 / frames_per_second)
+
+            if self.game_ended():
+                return
 
     def draw(self):
         '''Draw the world'''
@@ -99,9 +106,9 @@ class Game(object):
                 for col_index, char in enumerate(line):
                     position = (col_index, row_index)
                     if char == Box.ICON:
-                        self.world.add_thing(Box(position))
+                        self.world.spawn_thing(Box(position))
                     elif char == Wall.ICON:
-                        self.world.add_thing(Wall(position))
+                        self.world.spawn_thing(Wall(position))
                     elif char == 'p':
                         player_spawns.append(position)
                     elif char == 'z':

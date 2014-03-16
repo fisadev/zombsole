@@ -19,7 +19,7 @@ class World(object):
         self.t = -1
         self.events = []
 
-    def add_thing(self, thing, decoration=False):
+    def spawn_thing(self, thing, decoration=False):
         if decoration:
             self.decoration[thing.position] = thing
         else:
@@ -29,6 +29,25 @@ class World(object):
             else:
                 message = u"Can't place %s in a position occupied by %s."
                 raise Exception(message % (thing.name, other.name))
+
+    def spawn_in_random(self, things, possible_positions=None):
+        if possible_positions is None:
+            spawns = [(x, y)
+                      for x in range(self.size[0])
+                      for y in range(self.size[1])]
+        else:
+            spawns = possible_positions[:]
+
+        spawns = [spawn for spawn in spawns
+                  if self.things.get(spawn) is None]
+        random.shuffle(spawns)
+
+        for thing in things:
+            if spawns:
+                thing.position = spawns.pop()
+                self.spawn_thing(thing)
+            else:
+                raise Exception('Not enough space to spawn %s' % thing.name)
 
     def event(self, thing, message):
         self.events.append((self.t, thing, message))
@@ -85,7 +104,7 @@ class World(object):
             if thing.life <= 0:
                 if thing.dead_decoration is not None:
                     thing.dead_decoration.position = thing.position
-                    self.add_thing(thing.dead_decoration, True)
+                    self.spawn_thing(thing.dead_decoration, True)
 
                 del self.things[thing.position]
                 self.event(thing, u'died')
@@ -141,7 +160,7 @@ class Thing(object):
     '''Something in the world.'''
     MAX_LIFE = 1
 
-    def __init__(self, name, icon, color, life, position,
+    def __init__(self, name, icon, color, life, position=None,
                  ask_for_actions=False, dead_decoration=None):
         if len(icon) != 1:
             raise Exception(u'The icon must be a 1 char unicode or string.')
@@ -172,9 +191,10 @@ class Weapon(object):
 
 class FightingThing(Thing):
     '''Thing that has a weapon.'''
-    def __init__(self, name, icon, color, life, position, weapon,
-                 dead_decoration):
+    def __init__(self, name, icon, color, life, weapon, position=None,
+                 dead_decoration=None):
         super(FightingThing, self).__init__(name, icon, color, life, position,
                                             ask_for_actions=True,
                                             dead_decoration=dead_decoration)
+
         self.weapon = weapon
