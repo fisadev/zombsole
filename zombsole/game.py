@@ -9,7 +9,7 @@ from zombsole.things import Box, Wall, Zombie
 
 
 class Game(object):
-    def __init__(self, players, size, map_file, player_spawns=None,
+    def __init__(self, players, size, map_file=None, player_spawns=None,
                  zombie_spawns=None, objetives=None, initial_zombies=0,
                  minimum_zombies=0, debug=False):
         self.players = players
