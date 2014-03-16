@@ -34,8 +34,14 @@ class Game(object):
                                    self.zombie_spawns,
                                    fail_if_cant=False)
 
-    def game_ended(self):
+    def players_alive(self):
+        for player in self.players:
+            if player.life > 0:
+                return True
         return False
+
+    def game_ended(self):
+        return not self.players_alive()
 
     def position_draw(self, position):
         thing = self.world.things.get(position)
@@ -132,3 +138,21 @@ class Game(object):
                 self.zombie_spawns = zombie_spawns
             if objetives:
                 self.objetives = objetives
+
+
+class SafeHouseGame(Game):
+    '''A kind of game where players must get into a safe house.
+
+       Team wins when all alive players are inside the safe house.
+    '''
+    def game_ended(self):
+        if self.objetives is None:
+            raise Exception('Safe house game requires objetives defined.')
+
+        if not self.players_alive():
+            return True
+        else:
+            alives_in_house = [player.position in self.objetives
+                               for player in self.players
+                               if player.life > 0]
+            return all(alives_in_house)
