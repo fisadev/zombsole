@@ -4,7 +4,7 @@ import time
 
 from termcolor import colored
 
-from zombsole.core import World, Thing, DEFAULT_COLOR
+from zombsole.core import World
 
 
 class Game(object):
