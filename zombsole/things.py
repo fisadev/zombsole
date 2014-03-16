@@ -18,8 +18,8 @@ class DeadBody(Thing):
     '''Dead body.'''
     MAX_LIFE = 50
 
-    def __init__(self, position, color):
-        super(DeadBody, self).__init__(u'dead body', u'\u2620', color,
+    def __init__(self, name, color, position):
+        super(DeadBody, self).__init__(name, u'\u2620', color,
                                        DeadBody.MAX_LIFE,
                                        position)
 
@@ -89,10 +89,13 @@ class Zombie(FightingThing):
         if life is None:
             life = random.randint(Zombie.MAX_LIFE / 2, Zombie.MAX_LIFE)
 
+        remains = DeadBody('zombie remains', 'green', None)
+
         super(Zombie, self).__init__(u'zombie', u'\u2A30', 'green',
                                      life,
                                      position,
-                                     ZombieClaws())
+                                     ZombieClaws(),
+                                     remains)
 
     def next_step(self, things):
         action = None
@@ -124,7 +127,10 @@ class Human(FightingThing):
         if weapon is None:
             weapon = random.choice([Gun, Shotgun, Rifle, Knife, Axe])()
 
+        remains = DeadBody('dead ' + name, color, None)
+
         super(Human, self).__init__(name, u'\u2A30', color,
                                     Human.MAX_LIFE,
                                     position,
-                                    weapon)
+                                    weapon,
+                                    remains)

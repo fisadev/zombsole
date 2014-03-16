@@ -35,8 +35,6 @@ class World(object):
 
     def step(self):
         '''Forward one instant of time.'''
-        from zombsole.things import DeadBody  # here to avoid circular import
-
         self.t += 1
         things = self.things.values()
         random.shuffle(things)
@@ -75,8 +73,9 @@ class World(object):
         # remove dead things at the end
         for thing in self.things.values():
             if thing.life <= 0:
-                if thing.leaves_dead_body:
-                    self.things[thing.position] = DeadBody(thing.position, thing.color)
+                if thing.after_dead_thing is not None:
+                    self.things[thing.position] = thing.after_dead_thing
+                    thing.after_dead_thing.position = thing.position
                     self.event(thing, u'died')
                 else:
                     del self.things[thing.position]
@@ -132,7 +131,7 @@ class Thing(object):
     '''Something in the world.'''
     MAX_LIFE = 1
 
-    def __init__(self, name, icon, color, life, position, ask_for_actions=False, leaves_dead_body=False):
+    def __init__(self, name, icon, color, life, position, ask_for_actions=False, after_dead_thing=None):
         if len(icon) != 1:
             raise Exception(u'The icon must be a 1 char unicode or string.')
 
@@ -143,7 +142,7 @@ class Thing(object):
         self.position = position
         self.status = u''
         self.ask_for_actions = ask_for_actions
-        self.leaves_dead_body = leaves_dead_body
+        self.after_dead_thing = after_dead_thing
 
     def next_step(self, things):
         return None
@@ -162,10 +161,10 @@ class Weapon(object):
 
 class FightingThing(Thing):
     '''Thing that has a weapon.'''
-    def __init__(self, name, icon, color, life, position, weapon):
+    def __init__(self, name, icon, color, life, position, weapon, after_dead_thing):
         super(FightingThing, self).__init__(name, icon, color, life, position,
                                             ask_for_actions=True,
-                                            leaves_dead_body=True)
+                                            after_dead_thing=after_dead_thing)
         self.weapon = weapon
 
 
