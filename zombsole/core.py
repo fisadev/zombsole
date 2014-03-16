@@ -45,7 +45,7 @@ class World(object):
         actors = [thing for thing in things if thing.ask_for_actions]
         for thing in actors:
             try:
-                next_step = thing.next_step(self.things.values())
+                next_step = thing.next_step(self.things)
                 if next_step is not None:
                     action, parameter = next_step
                     actions.append((thing, action, parameter))

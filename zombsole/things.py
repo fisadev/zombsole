@@ -1,7 +1,7 @@
 #coding: utf-8
 import random
 from zombsole.core import Thing, FightingThing, ComplexThingBuilder, Weapon
-from zombsole.utils import closest
+from zombsole.utils import closest, distance, possible_moves
 
 
 class Box(Thing):
@@ -85,6 +85,28 @@ class Zombie(FightingThing):
                                      life,
                                      position,
                                      ZombieClaws())
+
+    def next_step(self, things):
+        action = None
+
+        humans = [thing for thing in things.values()
+                  if isinstance(thing, Human)]
+        positions = possible_moves(self.position, things)
+
+        if humans:
+            target = closest(self, humans)
+
+            if distance(self.position, target.position) < self.weapon.max_range:
+                action = 'attack', target
+            else:
+                if positions:
+                    best_position = sorted(positions, key=lambda position: distance(target.position, position))[0]
+                    action = 'move', best_position
+        else:
+            if positions:
+                action = 'move', random.choice(positions)
+
+        return action
 
 
 class Human(FightingThing):
