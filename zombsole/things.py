@@ -12,7 +12,6 @@ class Box(Thing):
         super(Box, self).__init__('box', '#', 'yellow',
                                   Box.MAX_LIFE,
                                   position,
-                                  False,
                                   False)
 
 
@@ -24,7 +23,6 @@ class Wall(Thing):
         super(Wall, self).__init__('wall', '#', 'grey',
                                    Wall.MAX_LIFE,
                                    position,
-                                   False,
                                    False)
 
 
@@ -86,8 +84,7 @@ class Zombie(FightingThing):
         super(Zombie, self).__init__('zombie', 'z', 'green',
                                      life,
                                      position,
-                                     ZombieClaws(),
-                                     False)
+                                     ZombieClaws())
 
 
 class Human(FightingThing):
@@ -100,5 +97,4 @@ class Human(FightingThing):
         super(Human, self).__init__(name, 'h', color,
                                     Human.MAX_LIFE,
                                     position,
-                                    weapon,
-                                    True)
+                                    weapon)

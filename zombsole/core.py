@@ -1,6 +1,4 @@
 #coding: utf-8
-import time
-import os
 import random
 
 from termcolor import colored
@@ -34,38 +32,6 @@ class World(object):
 
     def event(self, thing, message):
         self.events.append((self.t, thing, message))
-
-    def draw(self):
-        '''Draw the world'''
-        os.system('clear')
-        empty_thing = Thing('air', ' ', DEFAULT_COLOR, None, None, False, False)
-
-        # print the world
-        print '\n'.join(''.join(self.things.get((x, y), empty_thing).draw()
-                                for x in xrange(self.size[0]))
-                        for y in xrange(self.size[1]))
-
-        # print player stats
-        stats_things = [thing for thing in self.things.values()
-                        if thing.show_in_stats]
-        stats_things = sorted(stats_things, key=lambda x: x.name)
-        for thing in stats_things:
-            try:
-                weapon_name = thing.weapon.name
-            except:
-                weapon_name = 'unarmed'
-
-            life_chars_count = int((10.0 / thing.MAX_LIFE) * thing.life)
-            life_chars = '[%s%s]' % (life_chars_count * '*', (10 - life_chars_count) * ' ')
-
-            print colored('%s - %s: %s %i' % (thing.name, weapon_name, life_chars, thing.life),
-                          thing.color)
-
-        # print events for debugging
-        if self.debug:
-            print '\n'.join([colored('%s: %s'% (thing.name, event), thing.color)
-                            for t, thing, event in self.events
-                            if t == self.t])
 
     def step(self):
         '''Forward one instant of time.'''
@@ -155,22 +121,12 @@ class World(object):
 
         return event
 
-    def play(self, frames_per_second=2.0):
-        '''Game main loop.'''
-        while True:
-            self.step()
-            self.draw()
-            if self.debug:
-                raw_input()
-            else:
-                time.sleep(1.0 / frames_per_second)
-
 
 class Thing(object):
     '''Something in the world.'''
     MAX_LIFE = 1
 
-    def __init__(self, name, icon, color, life, position, ask_for_actions, show_in_stats):
+    def __init__(self, name, icon, color, life, position, ask_for_actions):
         self.name = name
         self.icon = icon
         self.color = color
@@ -178,7 +134,6 @@ class Thing(object):
         self.position = position
         self.status = ''
         self.ask_for_actions = ask_for_actions
-        self.show_in_stats = show_in_stats
 
     def next_step(self, things):
         return None
@@ -197,8 +152,8 @@ class Weapon(object):
 
 class FightingThing(Thing):
     '''Thing that has a weapon.'''
-    def __init__(self, name, icon, color, life, position, weapon, show_in_stats):
-        super(FightingThing, self).__init__(name, icon, color, life, position, True, show_in_stats)
+    def __init__(self, name, icon, color, life, position, weapon):
+        super(FightingThing, self).__init__(name, icon, color, life, position, True)
         self.weapon = weapon
 
 
