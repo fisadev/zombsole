@@ -9,7 +9,7 @@ class Box(Thing):
     MAX_LIFE = 10
 
     def __init__(self, position):
-        super(Box, self).__init__(u'box', u'#', 'yellow',
+        super(Box, self).__init__(u'box', u'\u25A0', 'yellow',
                                   Box.MAX_LIFE,
                                   position,
                                   False)
@@ -20,7 +20,7 @@ class Wall(Thing):
     MAX_LIFE = 200
 
     def __init__(self, position):
-        super(Wall, self).__init__(u'wall', u'#', 'grey',
+        super(Wall, self).__init__(u'wall', u'\u2588', 'grey',
                                    Wall.MAX_LIFE,
                                    position,
                                    False)
@@ -81,7 +81,7 @@ class Zombie(FightingThing):
         if life is None:
             life = random.randint(Zombie.MAX_LIFE / 2, Zombie.MAX_LIFE)
 
-        super(Zombie, self).__init__(u'zombie', u'z', 'green',
+        super(Zombie, self).__init__(u'zombie', u'\u2A30', 'green',
                                      life,
                                      position,
                                      ZombieClaws())
@@ -94,7 +94,7 @@ class Human(FightingThing):
         if weapon is None:
             weapon = random.choice([Gun, Shotgun, Rifle, Knife, Axe])()
 
-        super(Human, self).__init__(name, u'h', color,
+        super(Human, self).__init__(name, u'\u2A30', color,
                                     Human.MAX_LIFE,
                                     position,
                                     weapon)
