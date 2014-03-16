@@ -66,11 +66,11 @@ def _new_weapon_class(name, max_range, damage_range):
     return NewWeapon
 
 
-ZombieClaws = _new_weapon_class('ZombieClaws', 1, (5, 10))
+ZombieClaws = _new_weapon_class('ZombieClaws', 1.5, (5, 10))
 Gun = _new_weapon_class('Gun', 10, (10, 50))
 Shotgun = _new_weapon_class('Shotgun', 6, (75, 100))
 Rifle = _new_weapon_class('Rifle', 15, (25, 50))
-Knife = _new_weapon_class('Knife', 1, (5, 10))
+Knife = _new_weapon_class('Knife', 1.5, (5, 10))
 Axe = _new_weapon_class('Axe', 2, (75, 100))
 
 
