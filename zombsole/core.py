@@ -17,18 +17,23 @@ class World(object):
         self.debug = debug
 
         self.things = {}
+        self.decoration = {}
         self.t = -1
         self.events = []
 
-    def add_thing(self, thing):
+    def add_thing(self, thing, decoration=False):
         if isinstance(thing, ComplexThingBuilder):
-            map(self.add_thing, thing.create_parts())
+            for part in thing.create_parts():
+                self.add_thing(part, decoration)
         else:
-            if self.things.get(thing.position) is None:
-                self.things[thing.position] = thing
+            if decoration:
+                self.decoration[thing.position] = thing
             else:
-                raise Exception(u'Trying to place %s in a position already occupied by %s.' % (thing.name,
-                                                                                               self.things[thing.position].name))
+                if self.things.get(thing.position) is None:
+                    self.things[thing.position] = thing
+                else:
+                    raise Exception(u'Trying to place %s in a position already occupied by %s.' % (thing.name,
+                                                                                                   self.things[thing.position].name))
 
     def event(self, thing, message):
         self.events.append((self.t, thing, message))
@@ -73,13 +78,12 @@ class World(object):
         # remove dead things at the end
         for thing in self.things.values():
             if thing.life <= 0:
-                if thing.after_dead_thing is not None:
-                    self.things[thing.position] = thing.after_dead_thing
-                    thing.after_dead_thing.position = thing.position
-                    self.event(thing, u'died')
-                else:
-                    del self.things[thing.position]
-                    self.event(thing, u'destroyed')
+                if thing.dead_decoration is not None:
+                    thing.dead_decoration.position = thing.position
+                    self.add_thing(thing.dead_decoration, True)
+
+                del self.things[thing.position]
+                self.event(thing, u'died')
 
     def thing_move(self, thing, destination):
         if not isinstance(destination, tuple):
@@ -131,7 +135,7 @@ class Thing(object):
     '''Something in the world.'''
     MAX_LIFE = 1
 
-    def __init__(self, name, icon, color, life, position, ask_for_actions=False, after_dead_thing=None):
+    def __init__(self, name, icon, color, life, position, ask_for_actions=False, dead_decoration=None):
         if len(icon) != 1:
             raise Exception(u'The icon must be a 1 char unicode or string.')
 
@@ -142,7 +146,7 @@ class Thing(object):
         self.position = position
         self.status = u''
         self.ask_for_actions = ask_for_actions
-        self.after_dead_thing = after_dead_thing
+        self.dead_decoration = dead_decoration
 
     def next_step(self, things):
         return None
@@ -161,10 +165,10 @@ class Weapon(object):
 
 class FightingThing(Thing):
     '''Thing that has a weapon.'''
-    def __init__(self, name, icon, color, life, position, weapon, after_dead_thing):
+    def __init__(self, name, icon, color, life, position, weapon, dead_decoration):
         super(FightingThing, self).__init__(name, icon, color, life, position,
                                             ask_for_actions=True,
-                                            after_dead_thing=after_dead_thing)
+                                            dead_decoration=dead_decoration)
         self.weapon = weapon
 
 

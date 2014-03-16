@@ -89,13 +89,13 @@ class Zombie(FightingThing):
         if life is None:
             life = random.randint(Zombie.MAX_LIFE / 2, Zombie.MAX_LIFE)
 
-        remains = DeadBody('zombie remains', 'green', None)
+        dead_decoration = DeadBody('zombie remains', 'green', None)
 
         super(Zombie, self).__init__(u'zombie', u'\u2A30', 'green',
                                      life,
                                      position,
                                      ZombieClaws(),
-                                     remains)
+                                     dead_decoration)
 
     def next_step(self, things):
         action = None
@@ -127,10 +127,10 @@ class Human(FightingThing):
         if weapon is None:
             weapon = random.choice([Gun, Shotgun, Rifle, Knife, Axe])()
 
-        remains = DeadBody('dead ' + name, color, None)
+        dead_decoration = DeadBody('dead ' + name, color, None)
 
         super(Human, self).__init__(name, u'\u2A30', color,
                                     Human.MAX_LIFE,
                                     position,
                                     weapon,
-                                    remains)
+                                    dead_decoration)

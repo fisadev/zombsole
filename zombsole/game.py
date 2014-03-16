@@ -30,14 +30,25 @@ class Game(object):
     def game_ended(self):
         return False
 
+    def position_draw(self, position):
+        thing = self.world.things.get(position)
+        decoration = self.world.decoration.get(position)
+
+        if thing is not None:
+            return thing.draw()
+        elif decoration is not None:
+            return decoration.draw()
+        else:
+            return u' '
+
+
     def draw(self):
         '''Draw the world'''
         os.system('clear')
-        empty_thing = Thing(u'air', u' ', DEFAULT_COLOR, None, None)
 
         # print the world
-        print '\n'.join(u''.join(self.world.things.get((x, y), empty_thing).draw()
-                                for x in xrange(self.world.size[0]))
+        print '\n'.join(u''.join(self.position_draw((x, y))
+                                 for x in xrange(self.world.size[0]))
                         for y in xrange(self.world.size[1]))
 
         # print player stats
