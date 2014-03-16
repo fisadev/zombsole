@@ -153,7 +153,7 @@ class World(object):
             event = u'tried to heal %s, but it is too far away' % target.name
         else:
             # heal half max_life, avoiding health overflow
-            target.life = min(target.life + target.MAX_LIFE / 2,
+            target.life = min(target.life + target.MAX_LIFE / 4,
                               target.MAX_LIFE)
             event = u'healed ' + target.name
 
