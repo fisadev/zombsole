@@ -44,11 +44,15 @@ class World(object):
         self.t += 1
         things = self.things.values()
         random.shuffle(things)
-        actions = []
+        actions = self.get_actions()
+        self.execute_actions(actions)
+        self.clean_dead_things()
 
-        # for each thing, call its next_step and add its desired action to the
-        # queue
-        actors = [thing for thing in things if thing.ask_for_actions]
+    def get_actions(self):
+        '''For each thing, call its next_step to get its desired action.'''
+        actions = []
+        actors = [thing for thing in self.things.values()
+                  if thing.ask_for_actions]
         for thing in actors:
             try:
                 next_step = thing.next_step(self.things)
@@ -63,7 +67,10 @@ class World(object):
                 if self.debug:
                     raise err
 
-        # execute the actions on the queue, and add their results as events
+        return actions
+
+    def execute_actions(self, actions):
+        '''Execute actions, and add their results as events.'''
         for thing, action, parameter in actions:
             try:
                 method = getattr(self, 'thing_' + action, None)
@@ -78,7 +85,8 @@ class World(object):
                 if self.debug:
                     raise err
 
-        # remove dead things at the end
+    def clean_dead_things(self):
+        '''Remove dead things, and add dead decorations.'''
         for thing in self.things.values():
             if thing.life <= 0:
                 if thing.dead_decoration is not None:
