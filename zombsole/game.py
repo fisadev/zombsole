@@ -18,10 +18,17 @@ class Game(object):
         while True:
             self.world.step()
             self.draw()
+
             if self.debug:
                 raw_input()
             else:
                 time.sleep(1.0 / frames_per_second)
+
+            if self.game_ended():
+                return
+
+    def game_ended(self):
+        return False
 
     def draw(self):
         '''Draw the world'''
