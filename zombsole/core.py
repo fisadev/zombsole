@@ -22,19 +22,15 @@ class World(object):
         self.events = []
 
     def add_thing(self, thing, decoration=False):
-        if isinstance(thing, ComplexThingBuilder):
-            for part in thing.create_parts():
-                self.add_thing(part, decoration)
+        if decoration:
+            self.decoration[thing.position] = thing
         else:
-            if decoration:
-                self.decoration[thing.position] = thing
+            other = self.things.get(thing.position)
+            if other is None:
+                self.things[thing.position] = thing
             else:
-                other = self.things.get(thing.position)
-                if other is None:
-                    self.things[thing.position] = thing
-                else:
-                    message = u"Can't place %s in a position occupied by %s."
-                    raise Exception(message % (thing.name, other.name))
+                message = u"Can't place %s in a position occupied by %s."
+                raise Exception(message % (thing.name, other.name))
 
     def event(self, thing, message):
         self.events.append((self.t, thing, message))
@@ -184,12 +180,3 @@ class FightingThing(Thing):
                                             ask_for_actions=True,
                                             dead_decoration=dead_decoration)
         self.weapon = weapon
-
-
-class ComplexThingBuilder(object):
-    def create_parts(self):
-        '''
-        Create the things that compose this complex thing.
-        Should return a list of things.
-        '''
-        raise NotImplementedError(u'Implement the complex thing parts builder')

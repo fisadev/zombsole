@@ -1,7 +1,7 @@
 #coding: utf-8
 import random
 
-from zombsole.core import Thing, FightingThing, ComplexThingBuilder
+from zombsole.core import Thing, FightingThing
 from zombsole.utils import closest, distance, possible_moves
 from zombsole.weapons import ZombieClaws, Knife, Axe, Gun, Rifle, Shotgun
 
@@ -34,34 +34,6 @@ class Wall(Thing):
         super(Wall, self).__init__(u'wall', u'\u2593', 'white',
                                    Wall.MAX_LIFE,
                                    position)
-
-
-class Building(ComplexThingBuilder):
-    '''Building builder.'''
-    def __init__(self, position, size, doors=2):
-        self.position = position
-        self.size = size
-        self.doors = doors
-
-    def create_parts(self):
-        '''Create parts for a building of the given size.'''
-        start_x, start_y = self.position
-        end_x = start_x + self.size[0]
-        end_y = start_y + self.size[1]
-
-        # building walls
-        top = [Wall((x, start_y)) for x in range(start_x, end_x + 1)]
-        bottom = [Wall((x, end_y)) for x in range(start_x, end_x + 1)]
-        left = [Wall((start_x, y)) for y in range(start_y + 1, end_y)]
-        right = [Wall((end_x, y)) for y in range(start_y + 1, end_y)]
-
-        walls = top + bottom + left + right
-
-        # create doors by removing random wall segments
-        random.shuffle(walls)
-        walls = walls[self.doors:]
-
-        return walls
 
 
 class Zombie(FightingThing):
