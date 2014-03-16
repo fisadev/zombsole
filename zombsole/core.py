@@ -30,7 +30,7 @@ class World(object):
                 message = u"Can't place %s in a position occupied by %s."
                 raise Exception(message % (thing.name, other.name))
 
-    def spawn_in_random(self, things, possible_positions=None):
+    def spawn_in_random(self, things, possible_positions=None, fail_if_cant=True):
         if possible_positions is None:
             spawns = [(x, y)
                       for x in range(self.size[0])
@@ -47,7 +47,10 @@ class World(object):
                 thing.position = spawns.pop()
                 self.spawn_thing(thing)
             else:
-                raise Exception('Not enough space to spawn %s' % thing.name)
+                if fail_if_cant:
+                    raise Exception('Not enough space to spawn %s' % thing.name)
+                else:
+                    return
 
     def event(self, thing, message):
         self.events.append((self.t, thing, message))

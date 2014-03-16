@@ -31,7 +31,9 @@ class Game(object):
 
     def spawn_zombies(self, count):
         zombies = [Zombie() for i in range(count)]
-        self.world.spawn_in_random(zombies, self.zombie_spawns)
+        self.world.spawn_in_random(zombies,
+                                   self.zombie_spawns,
+                                   fail_if_cant=False)
 
     def game_ended(self):
         return False
