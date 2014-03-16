@@ -127,6 +127,9 @@ class Thing(object):
     MAX_LIFE = 1
 
     def __init__(self, name, icon, color, life, position, ask_for_actions):
+        if len(icon) != 1:
+            raise Exception(u'The icon must be a 1 char unicode or string.')
+
         self.name = name
         self.icon = icon
         self.color = color
