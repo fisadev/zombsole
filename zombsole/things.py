@@ -1,5 +1,6 @@
 #coding: utf-8
 import random
+
 from zombsole.core import Thing, FightingThing, ComplexThingBuilder
 from zombsole.utils import closest, distance, possible_moves
 from zombsole.weapons import ZombieClaws, Knife, Axe, Gun, Rifle, Shotgun
@@ -92,7 +93,9 @@ class Zombie(FightingThing):
                 action = 'attack', target
             else:
                 if positions:
-                    best_position = sorted(positions, key=lambda position: distance(target.position, position))[0]
+                    by_distance = lambda position: distance(target.position,
+                                                            position)
+                    best_position = sorted(positions, key=by_distance)[0]
                     action = 'move', best_position
         else:
             if positions:

@@ -29,11 +29,12 @@ class World(object):
             if decoration:
                 self.decoration[thing.position] = thing
             else:
-                if self.things.get(thing.position) is None:
+                other = self.things.get(thing.position)
+                if other is None:
                     self.things[thing.position] = thing
                 else:
-                    raise Exception(u'Trying to place %s in a position already occupied by %s.' % (thing.name,
-                                                                                                   self.things[thing.position].name))
+                    message = u"Can't place %s in a position occupied by %s."
+                    raise Exception(message % (thing.name, other.name))
 
     def event(self, thing, message):
         self.events.append((self.t, thing, message))
@@ -57,7 +58,8 @@ class World(object):
                 else:
                     self.event(thing, u'idle')
             except Exception as err:
-                self.event(thing, u'error with next_step or its result (%s)' % err.message)
+                event = u'error with next_step or its result: %s' % err.message
+                self.event(thing, event)
                 if self.debug:
                     raise err
 
@@ -71,7 +73,8 @@ class World(object):
                 else:
                     self.event(thing, u'unknown action "%s"' % action)
             except Exception as err:
-                self.event(thing, u'error excuting %s action (%s)' % (action, err.message))
+                event = u'error excuting %s action: %s' % (action, err.message)
+                self.event(thing, event)
                 if self.debug:
                     raise err
 
@@ -108,7 +111,8 @@ class World(object):
             raise Exception(u'Target of attack should be a thing')
 
         if distance(thing.position, target.position) > thing.weapon.max_range:
-            event = u'tried to attack %s, but it is too far for a %s' % (target.name, thing.weapon.name)
+            event = u'tried to attack %s, but it is too far for a %s'
+            event = event % (target.name, thing.weapon.name)
         else:
             damage = random.randint(*thing.weapon.damage_range)
             target.life -= damage
@@ -135,7 +139,8 @@ class Thing(object):
     '''Something in the world.'''
     MAX_LIFE = 1
 
-    def __init__(self, name, icon, color, life, position, ask_for_actions=False, dead_decoration=None):
+    def __init__(self, name, icon, color, life, position,
+                 ask_for_actions=False, dead_decoration=None):
         if len(icon) != 1:
             raise Exception(u'The icon must be a 1 char unicode or string.')
 
@@ -165,7 +170,8 @@ class Weapon(object):
 
 class FightingThing(Thing):
     '''Thing that has a weapon.'''
-    def __init__(self, name, icon, color, life, position, weapon, dead_decoration):
+    def __init__(self, name, icon, color, life, position, weapon,
+                 dead_decoration):
         super(FightingThing, self).__init__(name, icon, color, life, position,
                                             ask_for_actions=True,
                                             dead_decoration=dead_decoration)

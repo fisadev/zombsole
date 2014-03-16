@@ -41,7 +41,6 @@ class Game(object):
         else:
             return u' '
 
-
     def draw(self):
         '''Draw the world'''
         os.system('clear')
@@ -72,7 +71,7 @@ class Game(object):
 
         # print events for debugging
         if self.debug:
-            print u'\n'.join([colored(u'%s: %s'% (thing.name, event), thing.color)
+            print u'\n'.join([colored(u'%s: %s' % (thing.name, event),
+                                      thing.color)
                               for t, thing, event in self.world.events
                               if t == self.world.t])
-
