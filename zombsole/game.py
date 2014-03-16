@@ -13,7 +13,6 @@ class Game(object):
                  zombie_spawns=None, objetives=None, initial_zombies=0,
                  minimum_zombies=0, debug=False):
         self.players = players
-        self.size = size
 
         self.player_spawns = player_spawns
         self.zombie_spawns = zombie_spawns
@@ -21,7 +20,7 @@ class Game(object):
         self.minimum_zombies = minimum_zombies
         self.debug = debug
 
-        self.world = World(debug=debug)
+        self.world = World(size, debug=debug)
 
         if map_file is not None:
             self.import_map(map_file)
@@ -75,8 +74,8 @@ class Game(object):
 
         # print the world
         print '\n'.join(u''.join(self.position_draw((x, y))
-                                 for x in xrange(self.size[0]))
-                        for y in xrange(self.size[1]))
+                                 for x in xrange(self.world.size[0]))
+                        for y in xrange(self.world.size[1]))
 
         # print player stats
         players = sorted(self.players, key=lambda x: x.name)
