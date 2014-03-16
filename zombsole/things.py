@@ -15,6 +15,17 @@ class Box(Thing):
                                   False)
 
 
+class DeadBody(Thing):
+    '''Dead body.'''
+    MAX_LIFE = 50
+
+    def __init__(self, position, color):
+        super(DeadBody, self).__init__(u'dead body', u'\u2620', color,
+                                       DeadBody.MAX_LIFE,
+                                       position,
+                                       False)
+
+
 class Wall(Thing):
     '''Solid section of wall.'''
     MAX_LIFE = 200

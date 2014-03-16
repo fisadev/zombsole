@@ -35,6 +35,8 @@ class World(object):
 
     def step(self):
         '''Forward one instant of time.'''
+        from zombsole.things import DeadBody  # here to avoid circular import
+
         self.t += 1
         things = self.things.values()
         random.shuffle(things)
@@ -73,7 +75,7 @@ class World(object):
         # remove dead things at the end
         for thing in self.things.values():
             if thing.life <= 0:
-                del self.things[thing.position]
+                self.things[thing.position] = DeadBody(thing.position, thing.color)
                 self.event(thing, u'died')
 
     def thing_move(self, thing, destination):
