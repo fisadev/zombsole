@@ -9,7 +9,7 @@ class Box(Thing):
     MAX_LIFE = 10
 
     def __init__(self, position):
-        super(Box, self).__init__(u'box', u'\u25A0', 'yellow',
+        super(Box, self).__init__(u'box', u'\u25A4', 'yellow',
                                   Box.MAX_LIFE,
                                   position,
                                   False)
