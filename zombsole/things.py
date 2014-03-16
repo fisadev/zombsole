@@ -11,9 +11,7 @@ class Box(Thing):
     def __init__(self, position):
         super(Box, self).__init__(u'box', u'\u25A4', 'yellow',
                                   Box.MAX_LIFE,
-                                  position,
-                                  False,
-                                  False)
+                                  position)
 
 
 class DeadBody(Thing):
@@ -23,9 +21,7 @@ class DeadBody(Thing):
     def __init__(self, position, color):
         super(DeadBody, self).__init__(u'dead body', u'\u2620', color,
                                        DeadBody.MAX_LIFE,
-                                       position,
-                                       False,
-                                       False)
+                                       position)
 
 
 class Wall(Thing):
@@ -35,9 +31,7 @@ class Wall(Thing):
     def __init__(self, position):
         super(Wall, self).__init__(u'wall', u'\u2593', 'white',
                                    Wall.MAX_LIFE,
-                                   position,
-                                   False,
-                                   False)
+                                   position)
 
 
 class Building(ComplexThingBuilder):

@@ -132,7 +132,7 @@ class Thing(object):
     '''Something in the world.'''
     MAX_LIFE = 1
 
-    def __init__(self, name, icon, color, life, position, ask_for_actions, leaves_dead_body):
+    def __init__(self, name, icon, color, life, position, ask_for_actions=False, leaves_dead_body=False):
         if len(icon) != 1:
             raise Exception(u'The icon must be a 1 char unicode or string.')
 
@@ -163,7 +163,9 @@ class Weapon(object):
 class FightingThing(Thing):
     '''Thing that has a weapon.'''
     def __init__(self, name, icon, color, life, position, weapon):
-        super(FightingThing, self).__init__(name, icon, color, life, position, True, True)
+        super(FightingThing, self).__init__(name, icon, color, life, position,
+                                            ask_for_actions=True,
+                                            leaves_dead_body=True)
         self.weapon = weapon
 
 

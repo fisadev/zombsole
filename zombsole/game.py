@@ -33,7 +33,7 @@ class Game(object):
     def draw(self):
         '''Draw the world'''
         os.system('clear')
-        empty_thing = Thing(u'air', u' ', DEFAULT_COLOR, None, None, False, False)
+        empty_thing = Thing(u'air', u' ', DEFAULT_COLOR, None, None)
 
         # print the world
         print '\n'.join(u''.join(self.world.things.get((x, y), empty_thing).draw()
