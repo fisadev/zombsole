@@ -48,10 +48,15 @@ class Game(object):
             except:
                 weapon_name = 'unarmed'
 
-            life_chars_count = int((10.0 / player.MAX_LIFE) * player.life)
-            life_chars = '[%s%s]' % (life_chars_count * '*', (10 - life_chars_count) * ' ')
+            if player.life > 0:
+                life_chars_count = int((10.0 / player.MAX_LIFE) * player.life)
+                life = '[%s%s] %i' % (life_chars_count * '*',
+                                    (10 - life_chars_count) * ' ',
+                                    player.life)
+            else:
+                life = 'dead'
 
-            print colored('%s - %s: %s %i' % (player.name, weapon_name, life_chars, player.life),
+            print colored('%s - %s: %s' % (player.name, weapon_name, life),
                           player.color)
 
         # print events for debugging
