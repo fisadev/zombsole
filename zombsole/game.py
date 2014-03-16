@@ -11,14 +11,14 @@ from zombsole.things import Box, Wall, Zombie
 class Game(object):
     def __init__(self, players, size, map_file, player_spawns=None,
                  zombie_spawns=None, objetives=None, initial_zombies=0,
-                 maintain_zombies_count=0, debug=False):
+                 minimum_zombies=0, debug=False):
         self.players = players
         self.size = size
 
         self.player_spawns = player_spawns
         self.zombie_spawns = zombie_spawns
         self.objetives = objetives
-        self.maintain_zombies_count = maintain_zombies_count
+        self.minimum_zombies = minimum_zombies
         self.debug = debug
 
         self.world = World(debug=debug)
@@ -26,8 +26,11 @@ class Game(object):
         if map_file is not None:
             self.import_map(map_file)
 
-        zombies = [Zombie() for i in range(initial_zombies)]
         self.world.spawn_in_random(self.players, self.player_spawns)
+        self.spawn_zombies(initial_zombies)
+
+    def spawn_zombies(self, count):
+        zombies = [Zombie() for i in range(count)]
         self.world.spawn_in_random(zombies, self.zombie_spawns)
 
     def game_ended(self):
@@ -48,6 +51,12 @@ class Game(object):
         '''Game main loop.'''
         while True:
             self.world.step()
+
+            zombies = [thing for thing in self.world.things.values()
+                       if isinstance(thing, Zombie)]
+            if len(zombies) < self.minimum_zombies:
+                self.spawn_zombies(self.minimum_zombies - len(zombies))
+
             self.draw()
 
             if self.debug:
