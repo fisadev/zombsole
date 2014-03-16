@@ -27,8 +27,8 @@ class World(object):
             if self.things.get(thing.position) is None:
                 self.things[thing.position] = thing
             else:
-                raise Exception('Trying to place %s in a position already occupied by %s.' % (thing.name,
-                                                                                              self.things[thing.position].name))
+                raise Exception(u'Trying to place %s in a position already occupied by %s.' % (thing.name,
+                                                                                               self.things[thing.position].name))
 
     def event(self, thing, message):
         self.events.append((self.t, thing, message))
@@ -50,9 +50,9 @@ class World(object):
                     action, parameter = next_step
                     actions.append((thing, action, parameter))
                 else:
-                    self.event(thing, 'idle')
+                    self.event(thing, u'idle')
             except Exception as err:
-                self.event(thing, 'error with next_step or its result (%s)' % err.message)
+                self.event(thing, u'error with next_step or its result (%s)' % err.message)
                 if self.debug:
                     raise err
 
@@ -64,9 +64,9 @@ class World(object):
                     event = method(thing, parameter)
                     self.event(thing, event)
                 else:
-                    self.event(thing, 'unknown action "%s"' % action)
+                    self.event(thing, u'unknown action "%s"' % action)
             except Exception as err:
-                self.event(thing, 'error excuting %s action (%s)' % (action, err.message))
+                self.event(thing, u'error excuting %s action (%s)' % (action, err.message))
                 if self.debug:
                     raise err
 
@@ -74,50 +74,50 @@ class World(object):
         for thing in self.things.values():
             if thing.life <= 0:
                 del self.things[thing.position]
-                self.event(thing, 'died')
+                self.event(thing, u'died')
 
     def thing_move(self, thing, destination):
         if not isinstance(destination, tuple):
-            raise Exception('Destination of movement should be a tuple')
+            raise Exception(u'Destination of movement should be a tuple')
 
         obstacle = self.things.get(destination)
         if obstacle is not None:
-            event = 'hit %s with his head' % obstacle.name
+            event = u'hit %s with his head' % obstacle.name
         elif distance(thing.position, destination) > 1:
-            event = 'tried to walk too fast, but physics forbade it'
+            event = u'tried to walk too fast, but physics forbade it'
         else:
             self.things[destination] = thing
             del self.things[thing.position]
             thing.position = destination
 
-            event = 'moved to ' + str(destination)
+            event = u'moved to ' + str(destination)
 
         return event
 
     def thing_attack(self, thing, target):
         if not isinstance(target, Thing):
-            raise Exception('Target of attack should be a thing')
+            raise Exception(u'Target of attack should be a thing')
 
         if distance(thing.position, target.position) > thing.weapon.max_range:
-            event = 'tried to attack %s, but it is too far for a %s' % (target.name, thing.weapon.name)
+            event = u'tried to attack %s, but it is too far for a %s' % (target.name, thing.weapon.name)
         else:
             damage = random.randint(*thing.weapon.damage_range)
             target.life -= damage
-            event = 'injured %s with a %s' % (target.name, thing.weapon.name)
+            event = u'injured %s with a %s' % (target.name, thing.weapon.name)
 
         return event
 
     def thing_heal(self, thing, target):
         if not isinstance(target, Thing):
-            raise Exception('Target of healing should be a thing')
+            raise Exception(u'Target of healing should be a thing')
 
         if distance(thing.position, target.position) > HEALING_RANGE:
-            event = 'tried to heal %s, but it is too far away' % target.name
+            event = u'tried to heal %s, but it is too far away' % target.name
         else:
             # heal half max_life, avoiding health overflow
             target.life = min(target.life + target.MAX_LIFE / 2,
                               target.MAX_LIFE)
-            event = 'healed ' + target.name
+            event = u'healed ' + target.name
 
         return event
 
@@ -132,7 +132,7 @@ class Thing(object):
         self.color = color
         self.life = life
         self.position = position
-        self.status = ''
+        self.status = u''
         self.ask_for_actions = ask_for_actions
 
     def next_step(self, things):
@@ -163,4 +163,4 @@ class ComplexThingBuilder(object):
         Create the things that compose this complex thing.
         Should return a list of things.
         '''
-        raise NotImplementedError('Implement the complex thing parts builder')
+        raise NotImplementedError(u'Implement the complex thing parts builder')
