@@ -1,5 +1,5 @@
 #coding: utf-8
-from zombsole.core import World
+from zombsole.game import Game
 
-w = World((20, 20))
-w.play()
+g = Game((20, 20), [], None)
+g.play()
