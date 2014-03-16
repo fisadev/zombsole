@@ -9,9 +9,10 @@ from zombsole.weapons import ZombieClaws, Knife, Axe, Gun, Rifle, Shotgun
 class Box(Thing):
     '''Solid box.'''
     MAX_LIFE = 10
+    ICON = u'\u25A4'
 
     def __init__(self, position):
-        super(Box, self).__init__(u'box', u'\u25A4', 'yellow',
+        super(Box, self).__init__(u'box', Box.ICON, 'yellow',
                                   Box.MAX_LIFE,
                                   position)
 
@@ -19,9 +20,10 @@ class Box(Thing):
 class DeadBody(Thing):
     '''Dead body.'''
     MAX_LIFE = 50
+    ICON = u'\u2620'
 
     def __init__(self, name, color, position):
-        super(DeadBody, self).__init__(name, u'\u2620', color,
+        super(DeadBody, self).__init__(name, DeadBody.ICON, color,
                                        DeadBody.MAX_LIFE,
                                        position)
 
@@ -29,15 +31,17 @@ class DeadBody(Thing):
 class Wall(Thing):
     '''Solid section of wall.'''
     MAX_LIFE = 200
+    ICON = u'\u2593'
 
     def __init__(self, position):
-        super(Wall, self).__init__(u'wall', u'\u2593', 'white',
+        super(Wall, self).__init__(u'wall', Wall.ICON, 'white',
                                    Wall.MAX_LIFE,
                                    position)
 
 
 class Zombie(FightingThing):
     MAX_LIFE = 100
+    ICON = u'\u2A30'
 
     def __init__(self, position, life=None):
         if life is None:
@@ -45,7 +49,7 @@ class Zombie(FightingThing):
 
         dead_decoration = DeadBody('zombie remains', 'green', None)
 
-        super(Zombie, self).__init__(u'zombie', u'\u2A30', 'green',
+        super(Zombie, self).__init__(u'zombie', Zombie.ICON, 'green',
                                      life,
                                      position,
                                      ZombieClaws(),
@@ -78,6 +82,7 @@ class Zombie(FightingThing):
 
 class Human(FightingThing):
     MAX_LIFE = 100
+    ICON = u'\u2A30'
 
     def __init__(self, name, color, position, weapon=None):
         if weapon is None:
@@ -85,7 +90,7 @@ class Human(FightingThing):
 
         dead_decoration = DeadBody('dead ' + name, color, None)
 
-        super(Human, self).__init__(name, u'\u2A30', color,
+        super(Human, self).__init__(name, Human.ICON, color,
                                     Human.MAX_LIFE,
                                     position,
                                     weapon,
