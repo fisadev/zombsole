@@ -18,3 +18,31 @@ There are three different game types:
 * **Safe House**: all players must travel and get inside a single safe house. At 
   least 1 player must reach it, but to win, all the living players must be 
   inside.
+
+And the best of all: is really **simple**.
+
+Getting started
+===============
+
+The game isn't packaged for PyPI or anything, it's meant to be a playground, so just
+clone the code, install its dependencies, and get inside the ``zombsole`` folder to
+start messing around:
+
+
+.. code-block:: bash
+
+    git clone https://github.com/fisadev/zombsole.git
+    cd zombsole
+    sudo pip install -r requirements.txt
+
+
+And now lets just run a simple demo game:
+
+
+.. code-block:: bash
+
+    ./play.py extermination 50x15 sniper,troll -n 50 -m to_the_closet
+
+Depending on how lucky you are, this could either keep running forever, or quickly
+end with a very un-gory massacre of the two players (sniper and troll). If you want
+to stop the game, just press ``Ctrl-c``.
