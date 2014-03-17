@@ -4,7 +4,7 @@
 
 Usage:
     run.py --help
-    run.py GAME SIZE PLAYERS [-m MAP] [-i INITIAL_ZOMBIES] [-n MINIMUM_ZOMBIES]
+    run.py GAME SIZE PLAYERS [-m MAP] [-i INITIAL_ZOMBIES] [-n MINIMUM_ZOMBIES] [-d]
     run.py list_game_types
     run.py list_maps
 
@@ -19,6 +19,7 @@ Options:
                          Use list_maps to list available maps.
     -i INITIAL_ZOMBIES   The initial amount of zombies [default: 0]
     -n MINIMUM_ZOMBIES   The minimum amount of zombies at all times [default: 0]
+    -d                   Debug mode (lots of extra info, and step by step game play)
 '''
 from os import path, listdir
 
@@ -58,6 +59,7 @@ def run():
         map_file = path.join('maps', arguments['-m'])
         initial_zombies = int(arguments['-i'])
         minimum_zombies = int(arguments['-n'])
+        debug = arguments['-d']
 
         # create players
         players = []
@@ -73,7 +75,8 @@ def run():
                     size=size,
                     map_file=map_file,
                     initial_zombies=initial_zombies,
-                    minimum_zombies=minimum_zombies)
+                    minimum_zombies=minimum_zombies,
+                    debug=debug)
         g.play()
 
 
