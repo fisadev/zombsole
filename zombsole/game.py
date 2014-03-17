@@ -176,3 +176,18 @@ class EvacuationGame(Game):
                     return False
 
             return True
+
+
+class ExterminationGame(Game):
+    '''A kind of game where players must exterminate all zombies.
+
+       Team wins when all zombies are dead.
+    '''
+    def game_ended(self):
+        if not self.players_alive():
+            return True
+        else:
+            zombies = [thing for thing in self.world.things.values()
+                       if isinstance(thing, Zombie) and thing.life > 0]
+
+            return not zombies
