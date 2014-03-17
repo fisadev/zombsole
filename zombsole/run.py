@@ -6,6 +6,7 @@ Usage:
     run.py --help
     run.py GAME SIZE PLAYERS [-m MAP] [-i INITIAL_ZOMBIES] [-n MINIMUM_ZOMBIES]
     run.py list_game_types
+    run.py list_maps
 
     GAME:     Should be the name of a type of game. Use list_game_types to see
               a complete list.
@@ -15,10 +16,11 @@ Usage:
 Options:
     -h --help            Show this help.
     -m MAP               The map name to use (an empty world by default)
+                         Use list_maps to list available maps.
     -i INITIAL_ZOMBIES   The initial amount of zombies [default: 0]
     -n MINIMUM_ZOMBIES   The minimum amount of zombies at all times [default: 0]
 '''
-from os import path
+from os import path, listdir
 
 from docopt import docopt
 
@@ -46,6 +48,8 @@ def run():
             print name, ':'
             print game_class.__doc__.strip()
             print '--'
+    elif arguments['list_maps']:
+        print '\n'.join(listdir('maps'))
     else:
         # parse arguments
         game_class = game_classes[arguments['GAME']]
