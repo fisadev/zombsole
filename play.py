@@ -3,10 +3,10 @@
 '''Zomsole game runner.
 
 Usage:
-    run.py --help
-    run.py GAME SIZE PLAYERS [-m MAP] [-i INITIAL_ZOMBIES] [-n MINIMUM_ZOMBIES] [-d]
-    run.py list_game_types
-    run.py list_maps
+    ./play.py --help
+    ./play.py GAME SIZE PLAYERS [-m MAP] [-i INITIAL_ZOMBIES] [-n MINIMUM_ZOMBIES] [-d]
+    ./play.py list_game_types
+    ./play.py list_maps
 
     GAME:     Should be the name of a type of game. Use list_game_types to see
               a complete list.
@@ -40,7 +40,7 @@ def get_game_classes():
     return classes_dict
 
 
-def run():
+def play():
     arguments = docopt(__doc__)
     game_classes = get_game_classes()
 
@@ -81,4 +81,4 @@ def run():
 
 
 if __name__ == '__main__':
-    run()
+    play()
