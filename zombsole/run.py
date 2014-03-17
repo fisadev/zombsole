@@ -55,7 +55,9 @@ def run():
         # create players
         players = []
         for player_name in player_names:
-            player_module = __import__(player_name)
+            # uggg, hate how __import__ works for imports with paths...
+            player_module = __import__('zombsole.players.' + player_name,
+                                       fromlist=['create',])
             create_function = getattr(player_module, 'create')
             players.append(create_function())
 
