@@ -9,7 +9,7 @@ from zombsole.weapons import ZombieClaws, Knife, Axe, Gun, Rifle, Shotgun
 class Box(Thing):
     '''Solid box.'''
     MAX_LIFE = 10
-    ICON = u'\u25A4'
+    ICON = u'\u2612'
 
     def __init__(self, position):
         super(Box, self).__init__(u'box', Box.ICON, 'yellow',
