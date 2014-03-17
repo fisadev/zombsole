@@ -1,4 +1,5 @@
-#coding: utf-8
+#!/usr/bin/python
+# coding: utf-8
 '''Zomsole game runner.
 
 Usage:
@@ -50,7 +51,7 @@ def run():
         game_class = game_classes[arguments['GAME']]
         size = map(int, arguments['SIZE'].split('x'))
         player_names = arguments['PLAYERS'].split(',')
-        map_file = path.join('zombsole', 'maps', arguments['-m'] + '.map')
+        map_file = path.join('maps', arguments['-m'] + '.map')
         initial_zombies = int(arguments['-i'])
         minimum_zombies = int(arguments['-n'])
 
