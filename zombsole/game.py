@@ -6,6 +6,7 @@ from termcolor import colored
 
 from zombsole.core import World
 from zombsole.things import Box, Wall, Zombie
+from zombsole.utils import distance, closest
 
 
 class Game(object):
@@ -156,3 +157,19 @@ class SafeHouseGame(Game):
                         for player in self.players
                         if player.life > 0]
             return all(in_house)
+
+
+class EvacuationGame(Game):
+    '''A kind of game where players must get together to be evacuated.
+
+       Team wins when all of them are at most at distance=2 of another player.
+    '''
+    def game_ended(self):
+        for player in self.players:
+            others = [other for other in self.players
+                      if other is not player and other.life > 0]
+            closest_other = closest(player, others)
+            if distance(player.position, closest_other.position) > 2:
+                return False
+
+        return True
