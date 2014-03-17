@@ -3,7 +3,7 @@
 
 Usage:
     run.py --help
-    run.py GAME SIZE PLAYERS [-m MAP_FILE] [-i INITIAL_ZOMBIES] [-n MINIMUM_ZOMBIES]
+    run.py GAME SIZE PLAYERS [-m MAP] [-i INITIAL_ZOMBIES] [-n MINIMUM_ZOMBIES]
     run.py list_game_types
 
     GAME:     Should be the name of a type of game. Use list_game_types to see
@@ -13,10 +13,12 @@ Usage:
 
 Options:
     -h --help            Show this help.
-    -m MAP_FILE          The map file to use (an empty world by default)
+    -m MAP               The map name to use (an empty world by default)
     -i INITIAL_ZOMBIES   The initial amount of zombies [default: 0]
     -n MINIMUM_ZOMBIES   The minimum amount of zombies at all times [default: 0]
 '''
+from os import path
+
 from docopt import docopt
 
 import zombsole.game
@@ -48,7 +50,7 @@ def run():
         game_class = game_classes[arguments['GAME']]
         size = map(int, arguments['SIZE'].split('x'))
         player_names = arguments['PLAYERS'].split(',')
-        map_file=arguments['-m']
+        map_file = path.join('zombsole', 'maps', arguments['-m'] + '.map')
         initial_zombies = int(arguments['-i'])
         minimum_zombies = int(arguments['-n'])
 
