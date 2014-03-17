@@ -1,8 +1,7 @@
 #coding: utf-8
 import random
 
-from zombsole.utils import closest
-from zombsole.things import Human, Zombie
+from zombsole.things import Human
 
 
 class RandoMan(Human):
@@ -19,14 +18,5 @@ class RandoMan(Human):
         return action, target
 
 
-class ZombieShooter(Human):
-    def next_step(self, things):
-        zombies = [thing for thing in things.values()
-                   if isinstance(thing, Zombie)]
-        target = closest(self, zombies)
-        return 'attack', target
-
-
-class AutoHealer(Human):
-    def next_step(self, things):
-        return 'heal', self
+def create():
+    return RandoMan('randoman', 'blue')
