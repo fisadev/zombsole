@@ -25,13 +25,13 @@ from os import path, listdir
 
 from docopt import docopt
 
-import zombsole.game
+import game
 
 
 def get_game_classes():
     classes_dict = {}
-    for name in dir(zombsole.game):
-        thing = getattr(zombsole.game, name)
+    for name in dir(game):
+        thing = getattr(game, name)
         if type(thing) == type and 'Game' in name:
             name = name.replace('Game', '').lower()
             if name:
@@ -65,7 +65,7 @@ def run():
         players = []
         for player_name in player_names:
             # uggg, hate how __import__ works for imports with paths...
-            player_module = __import__('zombsole.players.' + player_name,
+            player_module = __import__('players.' + player_name,
                                        fromlist=['create',])
             create_function = getattr(player_module, 'create')
             players.append(create_function())

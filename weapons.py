@@ -1,5 +1,5 @@
 #coding: utf-8
-from zombsole.core import Weapon
+from core import Weapon
 
 
 def _new_weapon_class(name, max_range, damage_range):

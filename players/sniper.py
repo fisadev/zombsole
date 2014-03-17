@@ -1,7 +1,7 @@
 #coding: utf-8
-from zombsole.utils import closest
-from zombsole.things import Human, Zombie
-from zombsole.weapons import Rifle
+from utils import closest
+from things import Human, Zombie
+from weapons import Rifle
 
 
 class Sniper(Human):

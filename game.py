@@ -4,9 +4,9 @@ import time
 
 from termcolor import colored
 
-from zombsole.core import World
-from zombsole.things import Box, Wall, Zombie, ObjetiveLocation
-from zombsole.utils import distance, closest
+from core import World
+from things import Box, Wall, Zombie, ObjetiveLocation
+from utils import distance, closest
 
 
 class Game(object):

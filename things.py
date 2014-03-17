@@ -1,9 +1,9 @@
 #coding: utf-8
 import random
 
-from zombsole.core import Thing, FightingThing
-from zombsole.utils import closest, distance, possible_moves
-from zombsole.weapons import ZombieClaws, Knife, Axe, Gun, Rifle, Shotgun
+from core import Thing, FightingThing
+from utils import closest, distance, possible_moves
+from weapons import ZombieClaws, Knife, Axe, Gun, Rifle, Shotgun
 
 
 class Box(Thing):

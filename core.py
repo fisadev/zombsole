@@ -3,7 +3,7 @@ import random
 
 from termcolor import colored
 
-from zombsole.utils import distance
+from utils import distance
 
 
 DEFAULT_COLOR = 'white'
