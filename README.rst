@@ -46,3 +46,6 @@ And now lets just run a simple demo game:
 Depending on how lucky you are, this could either keep running forever, or quickly
 end with a very un-gory massacre of the two players (sniper and troll). If you want
 to stop the game, just press ``Ctrl-c``.
+
+(More detailed docs to come in the following days)
+==================================================
