@@ -152,7 +152,7 @@ class SafeHouseGame(Game):
         if not self.players_alive():
             return True
         else:
-            alives_in_house = [player.position in self.objetives
-                               for player in self.players
-                               if player.life > 0]
-            return all(alives_in_house)
+            in_house = [player.position in self.objetives
+                        for player in self.players
+                        if player.life > 0]
+            return all(in_house)
