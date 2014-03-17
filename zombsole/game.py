@@ -5,7 +5,7 @@ import time
 from termcolor import colored
 
 from zombsole.core import World
-from zombsole.things import Box, Wall, Zombie
+from zombsole.things import Box, Wall, Zombie, ObjetiveLocation
 from zombsole.utils import distance, closest
 
 
@@ -132,6 +132,8 @@ class Game(object):
                         zombie_spawns.append(position)
                     elif char == 'o':
                         objetives.append(position)
+                        self.world.spawn_thing(ObjetiveLocation(position),
+                                               decoration=True)
 
             if player_spawns:
                 self.player_spawns = player_spawns

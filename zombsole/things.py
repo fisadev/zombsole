@@ -19,13 +19,20 @@ class Box(Thing):
 
 class DeadBody(Thing):
     '''Dead body.'''
-    MAX_LIFE = 50
     ICON = u'\u2620'
 
     def __init__(self, name, color, position):
-        super(DeadBody, self).__init__(name, DeadBody.ICON, color,
-                                       DeadBody.MAX_LIFE,
-                                       position)
+        super(DeadBody, self).__init__(name, DeadBody.ICON, color, 0, position)
+
+
+class ObjetiveLocation(Thing):
+    '''Objetive location.'''
+    ICON = u'\u2591'
+
+    def __init__(self, position):
+        super(ObjetiveLocation, self).__init__('objetive',
+                                               ObjetiveLocation.ICON,
+                                               'blue', 0, position)
 
 
 class Wall(Thing):
