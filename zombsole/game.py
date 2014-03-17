@@ -165,11 +165,14 @@ class EvacuationGame(Game):
        Team wins when all of them are at most at distance=2 of another player.
     '''
     def game_ended(self):
-        for player in self.players:
-            others = [other for other in self.players
-                      if other is not player and other.life > 0]
-            closest_other = closest(player, others)
-            if distance(player.position, closest_other.position) > 2:
-                return False
+        if not self.players_alive():
+            return True
+        else:
+            for player in self.players:
+                others = [other for other in self.players
+                        if other is not player and other.life > 0]
+                closest_other = closest(player, others)
+                if distance(player.position, closest_other.position) > 2:
+                    return False
 
-        return True
+            return True
