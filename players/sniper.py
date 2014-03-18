@@ -1,10 +1,10 @@
 #coding: utf-8
 from utils import closest
-from things import Human, Zombie
+from things import Player, Zombie
 from weapons import Rifle
 
 
-class Sniper(Human):
+class Sniper(Player):
     def next_step(self, things):
         zombies = [thing for thing in things.values()
                    if isinstance(thing, Zombie)]

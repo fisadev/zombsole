@@ -1,10 +1,10 @@
 #coding: utf-8
 import random
 
-from things import Human
+from things import Player
 
 
-class RandoMan(Human):
+class RandoMan(Player):
     def next_step(self, things):
         action = random.choice(('move', 'attack', 'heal'))
 

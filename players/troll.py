@@ -1,8 +1,8 @@
 #coding: utf-8
-from things import Human
+from things import Player
 
 
-class Troll(Human):
+class Troll(Player):
     def next_step(self, things):
         self.status = 'healing myself'
         return 'heal', self

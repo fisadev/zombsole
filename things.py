@@ -65,7 +65,7 @@ class Zombie(FightingThing):
         action = None
 
         humans = [thing for thing in things.values()
-                  if isinstance(thing, Human)]
+                  if isinstance(thing, Player)]
         positions = possible_moves(self.position, things)
 
         if humans:
@@ -86,7 +86,7 @@ class Zombie(FightingThing):
         return action
 
 
-class Human(FightingThing):
+class Player(FightingThing):
     MAX_LIFE = 100
     ICON = u'\u2A30'
 
@@ -96,8 +96,8 @@ class Human(FightingThing):
 
         dead_decoration = DeadBody('dead ' + name, color, None)
 
-        super(Human, self).__init__(name, Human.ICON, color,
-                                    Human.MAX_LIFE,
-                                    weapon,
-                                    position,
-                                    dead_decoration)
+        super(Player, self).__init__(name, Player.ICON, color,
+                                     Player.MAX_LIFE,
+                                     weapon,
+                                     position,
+                                     dead_decoration)
