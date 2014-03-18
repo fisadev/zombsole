@@ -41,7 +41,7 @@ def play():
     if arguments['list_game_types']:
         names = [name.replace('.py', '')
                  for name in listdir('game_types')
-                 if name != '__init__.py']
+                 if '__init__' not in name and '.pyc' not in name]
         print '\n'.join(names)
     elif arguments['list_maps']:
         print '\n'.join(listdir('maps'))
