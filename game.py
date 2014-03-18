@@ -100,7 +100,10 @@ class Game(object):
             else:
                 life = u'\u2620 dead'
 
-            print colored(u'%s - %s: %s' % (player.name, weapon_name, life),
+            print colored(u'%s %s (%s): %s' % (life,
+                                               player.name,
+                                               weapon_name,
+                                               player.status or u'-'),
                           player.color)
 
         # print events for debugging
