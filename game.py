@@ -6,7 +6,6 @@ from termcolor import colored
 
 from core import World
 from things import Box, Wall, Zombie, ObjetiveLocation
-from utils import distance, closest
 
 
 class Game(object):
@@ -144,58 +143,3 @@ class Game(object):
                 self.zombie_spawns = zombie_spawns
             if objetives:
                 self.objetives = objetives
-
-
-class SafeHouseGame(Game):
-    '''A kind of game where players must get into a safe house.
-
-       Team wins when all alive players are inside the safe house.
-    '''
-    def game_ended(self):
-        if self.objetives is None:
-            raise Exception('Safe house game requires objetives defined.')
-
-        if not self.players_alive():
-            return True
-        else:
-            in_house = [player.position in self.objetives
-                        for player in self.players
-                        if player.life > 0]
-            return all(in_house)
-
-
-class EvacuationGame(Game):
-    '''A kind of game where players must get together to be evacuated.
-
-       Team wins when all alive players are at 2 or less distance from another
-       alive player, and at least half of the team must survive.
-    '''
-    def game_ended(self):
-        alive_players = [player for player in self.players
-                         if player.live > 0]
-        if len(alive_players) < len(self.players) / 2:
-            return True
-        else:
-            for player in self.players:
-                others = [other for other in self.players
-                        if other is not player and other.life > 0]
-                closest_other = closest(player, others)
-                if distance(player.position, closest_other.position) > 2:
-                    return False
-
-            return True
-
-
-class ExterminationGame(Game):
-    '''A kind of game where players must exterminate all zombies.
-
-       Team wins when all zombies are dead.
-    '''
-    def game_ended(self):
-        if not self.players_alive():
-            return True
-        else:
-            zombies = [thing for thing in self.world.things.values()
-                       if isinstance(thing, Zombie) and thing.life > 0]
-
-            return not zombies

@@ -28,32 +28,26 @@ from docopt import docopt
 import game
 
 
-def get_game_classes():
-    classes_dict = {}
-    for name in dir(game):
-        thing = getattr(game, name)
-        if type(thing) == type and 'Game' in name:
-            name = name.replace('Game', '').lower()
-            if name:
-                classes_dict[name] = thing
+def get_creator(module_name):
+    module = __import__(module_name, fromlist=['create',])
+    create_function = getattr(module, 'create')
 
-    return classes_dict
+    return create_function
 
 
 def play():
     arguments = docopt(__doc__)
-    game_classes = get_game_classes()
 
     if arguments['list_game_types']:
-        for name, game_class in game_classes.items():
-            print name, ':'
-            print game_class.__doc__.strip()
-            print '--'
+        names = [name.replace('.py', '')
+                 for name in listdir('game_types')
+                 if name != '__init__.py']
+        print '\n'.join(names)
     elif arguments['list_maps']:
         print '\n'.join(listdir('maps'))
     else:
         # parse arguments
-        game_class = game_classes[arguments['GAME']]
+        game_creator = get_creator('game_types.' + arguments['GAME'])
         size = map(int, arguments['SIZE'].split('x'))
         player_names = arguments['PLAYERS'].split(',')
         map_file = path.join('maps', arguments['-m'])
@@ -65,18 +59,16 @@ def play():
         players = []
         for player_name in player_names:
             # uggg, hate how __import__ works for imports with paths...
-            player_module = __import__('players.' + player_name,
-                                       fromlist=['create',])
-            create_function = getattr(player_module, 'create')
-            players.append(create_function())
+            player_creator = get_creator('players.' + player_name)
+            players.append(player_creator())
 
         # create and start game
-        g = game_class(players=players,
-                    size=size,
-                    map_file=map_file,
-                    initial_zombies=initial_zombies,
-                    minimum_zombies=minimum_zombies,
-                    debug=debug)
+        g = game_creator(players=players,
+                         size=size,
+                         map_file=map_file,
+                         initial_zombies=initial_zombies,
+                         minimum_zombies=minimum_zombies,
+                         debug=debug)
         g.play()
 
 
