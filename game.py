@@ -121,8 +121,16 @@ class Game(object):
             player_spawns = []
             objetives = []
 
+            max_row = 0
+            max_col = 0
+
             for row_index, line in enumerate(lines):
+                max_row = row_index
+
                 for col_index, char in enumerate(line):
+                    if char:
+                        max_col = max(col_index, max_col)
+
                     position = (col_index, row_index)
                     if char == Box.ICON:
                         self.world.spawn_thing(Box(position))
@@ -143,3 +151,7 @@ class Game(object):
                 self.zombie_spawns = zombie_spawns
             if objetives:
                 self.objetives = objetives
+
+            if max_row > self.world.size[1] or max_col > self.world.size[0]:
+                message = 'This map is bigger than the choosen size. Needs at least a %ix%i size'
+                raise Exception(message % (max_col + 1, max_row + 1))
