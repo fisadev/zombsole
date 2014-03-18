@@ -8,8 +8,14 @@ class Sniper(Human):
     def next_step(self, things):
         zombies = [thing for thing in things.values()
                    if isinstance(thing, Zombie)]
-        target = closest(self, zombies)
-        return 'attack', target
+
+        if zombies:
+            self.status = 'shooting stuff'
+            target = closest(self, zombies)
+            return 'attack', target
+        else:
+            self.status = 'waiting for targets'
+            return None
 
 
 def create():

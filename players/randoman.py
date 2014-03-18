@@ -9,8 +9,10 @@ class RandoMan(Human):
         action = random.choice(('move', 'attack', 'heal'))
 
         if action in ('attack', 'heal'):
+            self.status = action + 'ing'
             target = random.choice(things.values())
         else:
+            self.status = 'moving'
             target = list(self.position)
             target[random.choice((0, 1))] += random.choice((-1, 1))
             target = tuple(target)
