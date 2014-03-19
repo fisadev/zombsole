@@ -110,7 +110,8 @@ Actions can be:
 * ``move``: move to another location, the target must be a position (a tuple of (x, y))
 
 If your bot doesn't feel like doing anything useful, it could also return just None, and no
-action will be performed.
+action will be performed. He will just stand still, watching as his fellow bots fight endless
+hordes of zombies without his help.
 
 Some extra notes about actions:
 
