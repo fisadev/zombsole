@@ -4,12 +4,11 @@
 
 Usage:
     ./play.py --help
-    ./play.py GAME SIZE PLAYERS [-m MAP] [-i INITIAL_ZOMBIES] [-n MINIMUM_ZOMBIES] [-d]
-    ./play.py list_game_types
+    ./play.py RULES SIZE PLAYERS [-m MAP] [-i INITIAL_ZOMBIES] [-n MINIMUM_ZOMBIES] [-d]
+    ./play.py list_rules
     ./play.py list_maps
 
-    GAME:     Should be the name of a type of game. Use list_game_types to see
-              a complete list.
+    GAME:     Should be the name of a type of game. Use list_rules to see a complete list.
     SIZE:     COLUMNSxROWS
     PLAYERS:  Should be a list with the structure player1,player2,player3,...
 
@@ -40,14 +39,14 @@ def play():
 
     if arguments['list_game_types']:
         names = [name.replace('.py', '')
-                 for name in listdir('game_types')
+                 for name in listdir('rules')
                  if '__init__' not in name and '.pyc' not in name]
         print '\n'.join(names)
     elif arguments['list_maps']:
         print '\n'.join(listdir('maps'))
     else:
         # parse arguments
-        rules_creator = get_creator('game_types.' + arguments['GAME'])
+        rules_creator = get_creator('rules.' + arguments['RULES'])
         size = map(int, arguments['SIZE'].split('x'))
         player_creators = [get_creator('players.' + name)
                            for name in arguments['PLAYERS'].split(',')]
