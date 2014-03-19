@@ -37,7 +37,7 @@ def get_creator(module_name):
 def play():
     arguments = docopt(__doc__)
 
-    if arguments['list_game_types']:
+    if arguments['list_rules']:
         names = [name.replace('.py', '')
                  for name in listdir('rules')
                  if '__init__' not in name and '.pyc' not in name]
