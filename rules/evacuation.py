@@ -12,7 +12,7 @@ class EvacuationRules(Rules):
     def get_alive_players(self):
         '''Get the alive players.'''
         return [player for player in self.game.players
-                if player.live > 0]
+                if player.life > 0]
 
     def alive_players_together(self):
         '''Are the alive players together (close to each other)?'''
@@ -22,8 +22,10 @@ class EvacuationRules(Rules):
             others = [other for other in alive_players
                       if other is not player and other.life > 0]
             closest_other = closest(player, others)
-            if distance(player.position, closest_other.position) > 2:
-                return False
+            if closest_other:
+                if distance(player.position, closest_other.position) > 2:
+                    return False
+        return True
 
     def half_team_alive(self):
         '''At least half of the original team alive?'''
