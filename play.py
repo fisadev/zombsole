@@ -4,7 +4,7 @@
 
 Usage:
     ./play.py --help
-    ./play.py RULES SIZE PLAYERS [-m MAP] [-i INITIAL_ZOMBIES] [-n MINIMUM_ZOMBIES] [-d]
+    ./play.py RULES SIZE PLAYERS [-m MAP] [-i INITIAL_ZOMBIES] [-n MINIMUM_ZOMBIES] [-d] [-s]
     ./play.py list_rules
     ./play.py list_maps
 
@@ -18,6 +18,8 @@ Options:
                          Use list_maps to list available maps.
     -i INITIAL_ZOMBIES   The initial amount of zombies [default: 0]
     -n MINIMUM_ZOMBIES   The minimum amount of zombies at all times [default: 0]
+    -s                   Isolate the players process using docker, to prevent hacks to
+                         the world (you will need docker installed for this to work).
     -d                   Debug mode (lots of extra info, and step by step game play)
 '''
 from __future__ import print_function
@@ -61,6 +63,7 @@ def play():
         map_file = path.join('maps', arguments['-m'])
         initial_zombies = int(arguments['-i'])
         minimum_zombies = int(arguments['-n'])
+        docker_isolation = arguments['-s']
         debug = arguments['-d']
 
         # create and start game
