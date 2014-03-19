@@ -4,7 +4,7 @@ from things import Player
 
 class Troll(Player):
     def next_step(self, things):
-        self.status = 'healing myself'
+        self.status = u'healing myself'
         return 'heal', self
 
 # (trolls have regenerative capabilities)

@@ -12,7 +12,7 @@ class RandoMan(Player):
             self.status = action + 'ing'
             target = random.choice(things.values())
         else:
-            self.status = 'moving'
+            self.status = u'moving'
             target = list(self.position)
             target[random.choice((0, 1))] += random.choice((-1, 1))
             target = tuple(target)

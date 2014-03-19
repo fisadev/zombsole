@@ -10,11 +10,11 @@ class Sniper(Player):
                    if isinstance(thing, Zombie)]
 
         if zombies:
-            self.status = 'shooting stuff'
+            self.status = u'shooting stuff'
             target = closest(self, zombies)
             return 'attack', target
         else:
-            self.status = 'waiting for targets'
+            self.status = u'waiting for targets'
             return None
 
 
