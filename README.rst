@@ -47,16 +47,10 @@ Depending on how lucky you are, this could either keep running forever, or quick
 end with a very un-gory massacre of the two players (sniper and troll). If you want
 to stop the game, just press ``Ctrl-c``.
 
-And the parameters of the ``play.py`` script are very easy to understand. We have just
-said to it:
-
-* ``extermination``: the game rules (there are several different game types).
-* ``50x20``: the world size (columns, rows).
-* ``sniper,troll``: the list of players.
-* ``-n 50``: keep spawning zombies, trying to mantain a population of 50.
-* ``-m to_the_closet``: use the ``to_the_closet`` map.
-
-More options and help are shown running ``./play.py --help``.
+The parameters of the ``play.py`` script are very easy to understand, just run 
+``./play.py --help``. In the example we just said "run an extermination game in
+a world of 50x20 size using the to_the_closet map, with the players sniper and 
+troll and a constant population of 50 zombies."
 
 
 (More detailed docs to come in the following days)
