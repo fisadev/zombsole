@@ -53,7 +53,7 @@ def play():
         # start a game
         # parse arguments
         rules_creator = get_creator('rules.' + arguments['RULES'])
-        size = list(map(int, arguments['SIZE'].split('x')))
+        size = tuple(map(int, arguments['SIZE'].split('x')))
         player_creators = [get_creator('players.' + name)
                            for name in arguments['PLAYERS'].split(',')]
         map_file = path.join('maps', arguments['-m'])
