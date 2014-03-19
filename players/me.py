@@ -1,5 +1,4 @@
 #coding: utf-8
-
 import six
 
 from things import Player, Zombie
