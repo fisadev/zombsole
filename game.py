@@ -9,19 +9,23 @@ from things import Box, Wall, Zombie, ObjetiveLocation
 
 
 class Rules(object):
+    '''Rules to decide when a game ends, and when it's won.'''
     def __init__(self, game):
         self.game = game
 
     def players_alive(self):
+        '''Are there any alive players?'''
         for player in self.game.players:
             if player.life > 0:
                 return True
         return False
 
     def game_ended(self):
+        '''Has the game ended?'''
         return not self.players_alive()
 
     def game_won(self):
+        '''Was the game won?'''
         if self.players_alive():
             # never should happen, but ilustrative
             return True, u'you won a game that never ends (?!)'
@@ -30,6 +34,11 @@ class Rules(object):
 
 
 class Game(object):
+    '''An instance of game controls the flow of the game.
+
+       This includes player and zombies spawning, game main loop, deciding when
+       to stop, importing map data, drawing each update, etc.
+    '''
     def __init__(self, rules_creator, player_creators, size, map_file=None,
                  player_spawns=None, zombie_spawns=None, objetives=None,
                  initial_zombies=0, minimum_zombies=0, debug=False):
@@ -51,18 +60,22 @@ class Game(object):
         self.spawn_zombies(initial_zombies)
 
     def spawn_players(self, player_creators):
+        '''Spawn players using the provided player create functinons.'''
         for creator_function in player_creators:
             self.players.append(creator_function(self.rules, self.objetives))
 
         self.world.spawn_in_random(self.players, self.player_spawns)
 
     def spawn_zombies(self, count):
+        '''Spawn N zombies in the world.'''
         zombies = [Zombie() for i in range(count)]
         self.world.spawn_in_random(zombies,
                                    self.zombie_spawns,
                                    fail_if_cant=False)
 
     def position_draw(self, position):
+        '''Get the string to draw for a given position of the world.'''
+        # decorations first, then things over them
         thing = self.world.things.get(position)
         decoration = self.world.decoration.get(position)
 
@@ -74,10 +87,11 @@ class Game(object):
             return u' '
 
     def play(self, frames_per_second=2.0):
-        '''Game main loop.'''
+        '''Game main loop, ending in a game result with description.'''
         while True:
             self.world.step()
 
+            # mantain the flow of zombies if necessary
             zombies = [thing for thing in self.world.things.values()
                        if isinstance(thing, Zombie)]
             if len(zombies) < self.minimum_zombies:
@@ -94,7 +108,7 @@ class Game(object):
                 return self.rules.game_won()
 
     def draw(self):
-        '''Draw the world'''
+        '''Draw the world.'''
         os.system('clear')
 
         # print the world
@@ -111,6 +125,7 @@ class Game(object):
                 weapon_name = u'unarmed'
 
             if player.life > 0:
+                # a small "health bar" with unicode chars, from 0 to 10 chars
                 life_chars_count = int((10.0 / player.MAX_LIFE) * player.life)
                 life = u'\u2665 %s%s %i' % (life_chars_count * u'\u2588',
                                             (10 - life_chars_count) * u'\u2591',
@@ -124,7 +139,7 @@ class Game(object):
                                                player.status or u'-'),
                           player.color)
 
-        # print events for debugging
+        # print events (of last step) for debugging
         if self.debug:
             print u'\n'.join([colored(u'%s: %s' % (thing.name, event),
                                       thing.color)
@@ -171,6 +186,7 @@ class Game(object):
             if objetives:
                 self.objetives = objetives
 
+            # be sure everything in the map gets into the world size
             if max_row > self.world.size[1] or max_col > self.world.size[0]:
                 message = 'This map is bigger than the choosen size. Needs at least a %ix%i size'
                 raise Exception(message % (max_col + 1, max_row + 1))
