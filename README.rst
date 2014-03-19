@@ -196,4 +196,4 @@ these characters to draw objects and important locations:
 * ☒ or b: a box.
 * p: a player spawn point (be sure to add at least 10).
 * z: a zombie spawn point (be sure to add **many more**).
-* o: an objetive location (for safehouse games).
+* o: an objetive location (for safehouse games, be sure to add as many as player spawns).
