@@ -1,7 +1,7 @@
 Zombsole
 ========
 
-.. image:: ./screenshot.png
+.. image:: ./demo.gif
 
 Zombsole is a game in which you play **programming** simple bots, which will have 
 to survive and fight against hordes of zombies.
