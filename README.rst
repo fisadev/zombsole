@@ -103,11 +103,16 @@ And as you can see, the result of ``next_step`` must be a tuple. This tuple has 
 the first one is the action to do, and the second one is the "target" for the action.
 Actions can be:
 
-* ``attack``: attack with your weapon, the target must be a ``Thing`` (yourself, another 
-  player, zombie, wall, box...)
-* ``heal``: heal something, the target must be a ``Thing`` (yourself, another player, zombie,
-  wall, box...)
-* ``move``: move to another location, the target must be a position (a tuple of (x, y))
++-----------+---------------------------------------------------------------------------+
+| attack    | attack with your weapon, the target must be a ``Thing`` (yourself,        |
+|           | another player, zombie, wall, box...)                                     |
++-----------+---------------------------------------------------------------------------+
+| heal      | heal something, the target must be a ``Thing`` (yourself, another player, |
+|           | zombie, wall, box...)                                                     |
++-----------+---------------------------------------------------------------------------+
+| move      | move to another location, the target must be a position (a tuple of       |
+|           | (x, y))                                                                   |
++-----------+---------------------------------------------------------------------------+
 
 If your bot doesn't feel like doing anything useful, it could also return just None, and no
 action will be performed. He will just stand still, watching as his fellow bots fight endless
@@ -192,8 +197,14 @@ Creating maps
 This is super easy: create a text file under the ``maps`` folder (name without spaces), and use 
 these characters to draw objects and important locations:
 
-* ▓ or w: a wall.
-* ☒ or b: a box.
-* p: a player spawn point (be sure to add at least 10).
-* z: a zombie spawn point (be sure to add **many more**).
-* o: an objetive location (for safehouse games, be sure to add as many as player spawns).
++--------+--------------------------------------------------------------------------------------+
+| ▓ or w | a wall                                                                               |
++--------+--------------------------------------------------------------------------------------+
+| ☒ or b | a box                                                                                |
++--------+--------------------------------------------------------------------------------------+
+| p      | a player spawn point (be sure to add at least 10)                                    |
++--------+--------------------------------------------------------------------------------------+
+| z      | a zombie spawn point (be sure to add **many more**)                                  |
++--------+--------------------------------------------------------------------------------------+
+| o      | an objetive location (for safehouse games, be sure to add as many as player spawns)  |
++--------+--------------------------------------------------------------------------------------+
