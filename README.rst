@@ -180,7 +180,7 @@ And you can see other player statuses with something like this:
             return 'heal', self
 
 
-**That's it**. That's pretty much everything you need to know to create your player. And if you want to
+**That's it**. That's pretty much everything you need to know to create your own player. And if you want to
 see some inspirational examples, the ``players`` folder already has some simple examples, and even a 
 player that can be controlled in real time by a human using the keyboard! (but still, Randoman is the 
 best).
