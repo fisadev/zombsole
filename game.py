@@ -166,15 +166,15 @@ class Game(object):
                         max_col = max(col_index, max_col)
 
                     position = (col_index, row_index)
-                    if char == Box.ICON:
+                    if char in (Box.ICON, 'b', 'B'):
                         self.world.spawn_thing(Box(position))
-                    elif char == Wall.ICON:
+                    elif char in (Wall.ICON, 'w', 'W'):
                         self.world.spawn_thing(Wall(position))
-                    elif char == 'p':
+                    elif char.lower() == 'p':
                         player_spawns.append(position)
-                    elif char == 'z':
+                    elif char.lower() == 'z':
                         zombie_spawns.append(position)
-                    elif char == 'o':
+                    elif char.lower() == 'o':
                         objetives.append(position)
                         self.world.spawn_thing(ObjetiveLocation(position),
                                                decoration=True)
