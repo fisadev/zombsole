@@ -91,7 +91,7 @@ class Game(object):
                 time.sleep(1.0 / frames_per_second)
 
             if self.rules.game_ended():
-                return self.rules.game_result()
+                return self.rules.game_won()
 
     def draw(self):
         '''Draw the world'''
