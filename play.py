@@ -20,6 +20,8 @@ Options:
     -n MINIMUM_ZOMBIES   The minimum amount of zombies at all times [default: 0]
     -d                   Debug mode (lots of extra info, and step by step game play)
 '''
+from __future__ import print_function
+
 from os import path, listdir
 
 from docopt import docopt
