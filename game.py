@@ -144,13 +144,10 @@ class Game(object):
 
         # print events (of last step) for debugging
         if self.debug:
-            print(
-                u'\n'.join(
-                    [colored(u'%s: %s' % (thing.name, event), thing.color)
-                     for t, thing, event in
-                     self.world.events if t == self.world.t]
-                )
-            )
+            print(u'\n'.join([colored(u'%s: %s' % (thing.name, event),
+                                      thing.color)
+                              for t, thing, event in self.world.events
+                              if t == self.world.t]))
 
     def import_map(self, file_path):
         '''Import things from a utf-8 map file.'''
