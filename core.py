@@ -114,16 +114,16 @@ class World(object):
                 if self.debug:
                     raise err
 
-    def dead_things(self):
-        return [thing for thing in self.things.values() if thing.life <= 0]
-
     def clean_dead_things(self):
         '''Remove dead things, and add dead decorations.'''
-        for thing in self.dead_things():
+        dead_things = [thing for thing in self.things.values()
+                       if thing.life <= 0]
+        for thing in dead_things:
             if thing.dead_decoration is not None:
                 thing.dead_decoration.position = thing.position
                 self.spawn_thing(thing.dead_decoration,
                                  decoration=True)
+
             del self.things[thing.position]
             self.event(thing, u'died')
 
