@@ -18,5 +18,5 @@ class Sniper(Player):
             return None
 
 
-def create():
+def create(rules, objetives=None):
     return Sniper('sniper', 'blue', weapon=Rifle())

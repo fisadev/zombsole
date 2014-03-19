@@ -10,5 +10,5 @@ class Troll(Player):
 # (trolls have regenerative capabilities)
 
 
-def create():
+def create(rules, objetives=None):
     return Troll('troll', 'blue')

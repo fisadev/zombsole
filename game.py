@@ -52,7 +52,7 @@ class Game(object):
 
     def spawn_players(self, player_creators):
         for creator_function in player_creators:
-            self.players.append(creator_function(self.objetives))
+            self.players.append(creator_function(self.rules, self.objetives))
 
         self.world.spawn_in_random(self.players, self.player_spawns)
 
