@@ -5,6 +5,7 @@ from things import Player
 
 
 class RandoMan(Player):
+    '''A player that decides what to do with a dice.'''
     def next_step(self, things):
         action = random.choice(('move', 'attack', 'heal'))
 

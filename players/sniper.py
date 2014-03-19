@@ -5,6 +5,7 @@ from weapons import Rifle
 
 
 class Sniper(Player):
+    '''A player that stays still and shoots zombies.'''
     def next_step(self, things):
         zombies = [thing for thing in things.values()
                    if isinstance(thing, Zombie)]
