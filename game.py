@@ -138,7 +138,7 @@ class Game(object):
             player_stats = u'%s %s (%s): %s' % (life,
                                                 player.name,
                                                 weapon_name,
-                                                player.status or u'-'),
+                                                player.status or u'-')
 
             print(colored(player_stats, player.color))
 
