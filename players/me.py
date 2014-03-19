@@ -14,7 +14,10 @@ class Me(Player):
         print 'l: heal closest player'
         action = raw_input()
 
-        if action in 'wasd':
+        if not action:
+            self.status = 'sitting idle'
+            action = None
+        elif action in 'wasd':
             deltas = {
                 'w': (0, -1),
                 's': (0, 1),
