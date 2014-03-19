@@ -25,7 +25,7 @@ from os import path, listdir
 
 from docopt import docopt
 
-import game
+from game import Game
 
 
 def get_creator(module_name):
@@ -47,28 +47,23 @@ def play():
         print '\n'.join(listdir('maps'))
     else:
         # parse arguments
-        game_creator = get_creator('game_types.' + arguments['GAME'])
+        rules_creator = get_creator('game_types.' + arguments['GAME'])
         size = map(int, arguments['SIZE'].split('x'))
-        player_names = arguments['PLAYERS'].split(',')
+        player_creators = [get_creator('players.' + name)
+                           for name in arguments['PLAYERS'].split(',')]
         map_file = path.join('maps', arguments['-m'])
         initial_zombies = int(arguments['-i'])
         minimum_zombies = int(arguments['-n'])
         debug = arguments['-d']
 
-        # create players
-        players = []
-        for player_name in player_names:
-            # uggg, hate how __import__ works for imports with paths...
-            player_creator = get_creator('players.' + player_name)
-            players.append(player_creator())
-
         # create and start game
-        g = game_creator(players=players,
-                         size=size,
-                         map_file=map_file,
-                         initial_zombies=initial_zombies,
-                         minimum_zombies=minimum_zombies,
-                         debug=debug)
+        g = Game(rules_creator=rules_creator,
+                 player_creators=player_creators,
+                 size=size,
+                 map_file=map_file,
+                 initial_zombies=initial_zombies,
+                 minimum_zombies=minimum_zombies,
+                 debug=debug)
         g.play()
 
 

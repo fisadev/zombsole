@@ -8,12 +8,34 @@ from core import World
 from things import Box, Wall, Zombie, ObjetiveLocation
 
 
-class Game(object):
-    def __init__(self, players, size, map_file=None, player_spawns=None,
-                 zombie_spawns=None, objetives=None, initial_zombies=0,
-                 minimum_zombies=0, debug=False):
-        self.players = players
+class Rules(object):
+    def __init__(self, game):
+        self.game = game
 
+    def players_alive(self):
+        for player in self.game.players:
+            if player.life > 0:
+                return True
+        return False
+
+    def game_ended(self):
+        return not self.players_alive()
+
+    def game_won(self):
+        if self.players_alive():
+            # never should happen, but ilustrative
+            return True, u'you won a game that never ends (?!)'
+        else:
+            return False, u'everybody is dead :('
+
+
+class Game(object):
+    def __init__(self, rules_creator, player_creators, size, map_file=None,
+                 player_spawns=None, zombie_spawns=None, objetives=None,
+                 initial_zombies=0, minimum_zombies=0, debug=False):
+        self.players = []
+
+        self.rules = rules_creator(self)
         self.player_spawns = player_spawns
         self.zombie_spawns = zombie_spawns
         self.objetives = objetives
@@ -25,23 +47,20 @@ class Game(object):
         if map_file is not None:
             self.import_map(map_file)
 
-        self.world.spawn_in_random(self.players, self.player_spawns)
+        self.spawn_players(player_creators)
         self.spawn_zombies(initial_zombies)
+
+    def spawn_players(self, player_creators):
+        for creator_function in player_creators:
+            self.players.append(creator_function(self.objetives))
+
+        self.world.spawn_in_random(self.players, self.player_spawns)
 
     def spawn_zombies(self, count):
         zombies = [Zombie() for i in range(count)]
         self.world.spawn_in_random(zombies,
                                    self.zombie_spawns,
                                    fail_if_cant=False)
-
-    def players_alive(self):
-        for player in self.players:
-            if player.life > 0:
-                return True
-        return False
-
-    def game_ended(self):
-        return not self.players_alive()
 
     def position_draw(self, position):
         thing = self.world.things.get(position)
@@ -71,8 +90,8 @@ class Game(object):
             else:
                 time.sleep(1.0 / frames_per_second)
 
-            if self.game_ended():
-                return
+            if self.rules.game_ended():
+                return self.rules.game_result()
 
     def draw(self):
         '''Draw the world'''
