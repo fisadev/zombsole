@@ -23,11 +23,13 @@ Options:
 from os import path, listdir
 
 from docopt import docopt
+from termcolor import colored
 
 from game import Game
 
 
 def get_creator(module_name):
+    '''Get the create() function from a module.'''
     module = __import__(module_name, fromlist=['create',])
     create_function = getattr(module, 'create')
 
@@ -35,16 +37,20 @@ def get_creator(module_name):
 
 
 def play():
+    '''Initiate a game, using the command line arguments as configuration.'''
     arguments = docopt(__doc__)
 
     if arguments['list_rules']:
+        # list all posible game rules
         names = [name.replace('.py', '')
                  for name in listdir('rules')
                  if '__init__' not in name and '.pyc' not in name]
         print '\n'.join(names)
     elif arguments['list_maps']:
+        # list all posible maps
         print '\n'.join(listdir('maps'))
     else:
+        # start a game
         # parse arguments
         rules_creator = get_creator('rules.' + arguments['RULES'])
         size = map(int, arguments['SIZE'].split('x'))
@@ -63,7 +69,13 @@ def play():
                  initial_zombies=initial_zombies,
                  minimum_zombies=minimum_zombies,
                  debug=debug)
-        g.play()
+        won, description = g.play()
+        print ''
+        if won:
+            print colored(u'WIN! ', 'green'),
+        else:
+            print colored(u'GAME OVER ', 'red'),
+        print description
 
 
 if __name__ == '__main__':
