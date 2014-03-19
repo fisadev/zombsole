@@ -179,9 +179,8 @@ class World(object):
         if distance(thing.position, target.position) > HEALING_RANGE:
             event = u'tried to heal %s, but it is too far away' % target.name
         else:
-            # heal half max_life, avoiding health overflow
-            target.life = min(target.life + target.MAX_LIFE / 4,
-                              target.MAX_LIFE)
+            # heal avoiding health overflow
+            target.life = random.randint(target.life, target.MAX_LIFE)
             event = u'healed ' + target.name
 
         return event
