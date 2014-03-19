@@ -1,5 +1,5 @@
 #coding: utf-8
-import six
+import sys
 
 from things import Player, Zombie
 from utils import closest
@@ -14,7 +14,10 @@ class Me(Player):
         print('j: attack closest zombie')
         print('k: heal self')
         print('l: heal closest player')
-        action = six.moves.input()
+        if sys.version_info > (3,):
+            action = input()
+        else:
+            action = raw_input()
 
         if not action:
             self.status = 'sitting idle'

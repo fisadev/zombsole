@@ -3,7 +3,6 @@ import os
 import sys
 import time
 
-import six
 from termcolor import colored
 
 from core import World
@@ -102,7 +101,10 @@ class Game(object):
             self.draw()
 
             if self.debug:
-                six.moves.input()
+                if sys.version_info > (3,):
+                    input()
+                else:
+                    raw_input()
             else:
                 time.sleep(1.0 / frames_per_second)
 
