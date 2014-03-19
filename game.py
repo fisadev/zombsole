@@ -114,17 +114,9 @@ class Game(object):
         os.system('clear')
 
         # print the world
-        print(
-            '\n'.join(
-                u''.join(
-                    self.position_draw((x, y))
-                    for x in
-                    six.moves.range(self.world.size[0])
-                )
-                for y in
-                six.moves.range(self.world.size[1])
-            )
-        )
+        print('\n'.join(u''.join(self.position_draw((x, y))
+                                 for x in range(self.world.size[0]))
+                        for y in range(self.world.size[1])))
 
         # print player stats
         players = sorted(self.players, key=lambda x: x.name)
@@ -143,10 +135,12 @@ class Game(object):
             else:
                 life = u'\u2620 [dead]'
 
-            print(
-                colored(u'%s %s (%s): %s' % (
-                    life, player.name, weapon_name, player.status or u'-'),
-                        player.color))
+            player_stats = u'%s %s (%s): %s' % (life,
+                                                player.name,
+                                                weapon_name,
+                                                player.status or u'-'),
+
+            print(colored(player_stats, player.color))
 
         # print events (of last step) for debugging
         if self.debug:
@@ -160,6 +154,14 @@ class Game(object):
 
     def import_map(self, file_path):
         '''Import things from a utf-8 map file.'''
+        zombie_spawns = []
+        player_spawns = []
+        objetives = []
+
+        max_row = 0
+        max_col = 0
+
+        # read the file
         encoding = 'utf-8'
         if sys.version_info > (3,):
             with open(file_path, encoding=encoding) as map_file:
@@ -168,13 +170,7 @@ class Game(object):
             with open(file_path) as map_file:
                 lines = map_file.read().decode(encoding).split('\n')
 
-        zombie_spawns = []
-        player_spawns = []
-        objetives = []
-
-        max_row = 0
-        max_col = 0
-
+        # for each char, create the corresponding object
         for row_index, line in enumerate(lines):
             max_row = row_index
 
@@ -196,6 +192,7 @@ class Game(object):
                     self.world.spawn_thing(ObjetiveLocation(position),
                                            decoration=True)
 
+        # if had any info, update spawns and objetives
         if player_spawns:
             self.player_spawns = player_spawns
         if zombie_spawns:
