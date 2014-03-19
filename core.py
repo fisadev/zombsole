@@ -21,6 +21,11 @@ class World(object):
         self.events = []
 
     def spawn_thing(self, thing, decoration=False):
+        '''Add a thing to the world, or to the decoration layer.
+
+           The thing will be spawned into the position it has in its .position
+           attribute.
+        '''
         if decoration:
             self.decoration[thing.position] = thing
         else:
@@ -31,7 +36,10 @@ class World(object):
                 message = u"Can't place %s in a position occupied by %s."
                 raise Exception(message % (thing.name, other.name))
 
-    def spawn_in_random(self, things, possible_positions=None, fail_if_cant=True):
+    def spawn_in_random(self, things, possible_positions=None,
+                        fail_if_cant=True):
+        '''Spawn a group of things  in random positions.'''
+        # if no positions provided, use all the world positions
         if possible_positions is None:
             spawns = [(x, y)
                       for x in range(self.size[0])
@@ -39,10 +47,12 @@ class World(object):
         else:
             spawns = possible_positions[:]
 
+        # remove occupied positions, and shuffle
         spawns = [spawn for spawn in spawns
                   if self.things.get(spawn) is None]
         random.shuffle(spawns)
 
+        # try  to spawn each thing
         for thing in things:
             if spawns:
                 thing.position = spawns.pop()
@@ -54,6 +64,7 @@ class World(object):
                     return
 
     def event(self, thing, message):
+        '''Log an event.'''
         self.events.append((self.t, thing, message))
 
     def step(self):
@@ -90,6 +101,8 @@ class World(object):
         '''Execute actions, and add their results as events.'''
         for thing, action, parameter in actions:
             try:
+                # the method which applies the action is something like:
+                # self.thing_ACTION(parameter)
                 method = getattr(self, 'thing_' + action, None)
                 if method:
                     event = method(thing, parameter)
@@ -108,12 +121,17 @@ class World(object):
             if thing.life <= 0:
                 if thing.dead_decoration is not None:
                     thing.dead_decoration.position = thing.position
-                    self.spawn_thing(thing.dead_decoration, True)
+                    self.spawn_thing(thing.dead_decoration,
+                                     decoration=True)
 
                 del self.things[thing.position]
                 self.event(thing, u'died')
 
     def thing_move(self, thing, destination):
+        '''Apply move action of a thing.
+
+           target: the position to go to.
+        '''
         if not isinstance(destination, tuple):
             raise Exception(u'Destination of movement should be a tuple')
 
@@ -123,6 +141,8 @@ class World(object):
         elif distance(thing.position, destination) > 1:
             event = u'tried to walk too fast, but physics forbade it'
         else:
+            # we store position in the things, because they need to know it,
+            # but also in our dict, for faster access
             self.things[destination] = thing
             del self.things[thing.position]
             thing.position = destination
@@ -132,6 +152,10 @@ class World(object):
         return event
 
     def thing_attack(self, thing, target):
+        '''Apply attack action of a thing.
+
+           target: the thing to attack.
+        '''
         if not isinstance(target, Thing):
             raise Exception(u'Target of attack should be a thing')
 
@@ -146,6 +170,10 @@ class World(object):
         return event
 
     def thing_heal(self, thing, target):
+        '''Apply heal action of a thing.
+
+           target: the thing to heal.
+        '''
         if not isinstance(target, Thing):
             raise Exception(u'Target of healing should be a thing')
 
