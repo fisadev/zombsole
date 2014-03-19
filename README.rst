@@ -41,7 +41,7 @@ And now lets just run a simple demo game:
 
 .. code-block:: bash
 
-    ./play.py extermination 50x20 sniper,troll -n 50 -m to_the_closet
+    ./play.py extermination 80x20 sniper,troll -n 50 -m to_the_closet
 
 Depending on how lucky you are, this could either keep running forever, or quickly
 end with a very un-gory massacre of the two players (sniper and troll). If you want
