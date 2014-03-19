@@ -3,7 +3,7 @@ import math
 
 
 def distance(a, b):
-    '''Calculates distance between two things/positions.'''
+    '''Calculates distance between two positions.'''
     x1, y1 = a
     x2, y2 = b
 
@@ -21,6 +21,7 @@ def closest(something, others):
 
 
 def possible_moves(position, things):
+    '''Calculates the possible moves for a thing.'''
     deltas = ((0, 1),
               (0, -1),
               (1, 0),
