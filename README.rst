@@ -82,7 +82,7 @@ This ``next_step`` method will be called each game instant, so your player can t
 and decide what to do next. The method receives ``things``, which is a dictionary of
 all the things present in the world (the game world, that is. I can't know all the 
 things in the real world, because it's too much time-consuming). In this dictionary,
-the keys are the positions, and the values are the things in the positions.
+the keys are the positions, and the values are the things in those positions.
 
 Example of ``things`` you can receive:
 
