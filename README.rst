@@ -100,7 +100,7 @@ Example of ``things`` you can receive:
     }
 
 And as you can see, the result of ``next_step`` must be a tuple. This tuple has two parts:
-the first one is the action to do, and the second one is the "target" for the actions.
+the first one is the action to do, and the second one is the "target" for the action.
 Actions can be:
 
 * ``attack``: attack with your weapon, the target must be a ``Thing`` (yourself, another 
