@@ -70,9 +70,8 @@ class World(object):
     def step(self):
         '''Forward one instant of time.'''
         self.t += 1
-        things = self.things.values()
-        random.shuffle(things)
         actions = self.get_actions()
+        random.shuffle(actions)
         self.execute_actions(actions)
         self.clean_dead_things()
 
