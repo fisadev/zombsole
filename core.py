@@ -116,15 +116,16 @@ class World(object):
 
     def clean_dead_things(self):
         '''Remove dead things, and add dead decorations.'''
-        for thing in self.things.values():
-            if thing.life <= 0:
-                if thing.dead_decoration is not None:
-                    thing.dead_decoration.position = thing.position
-                    self.spawn_thing(thing.dead_decoration,
-                                     decoration=True)
+        dead_things = [thing for thing in self.things.values()
+                       if thing.life <= 0]
+        for thing in dead_things:
+            if thing.dead_decoration is not None:
+                thing.dead_decoration.position = thing.position
+                self.spawn_thing(thing.dead_decoration,
+                                 decoration=True)
 
-                del self.things[thing.position]
-                self.event(thing, u'died')
+            del self.things[thing.position]
+            self.event(thing, u'died')
 
     def thing_move(self, thing, destination):
         '''Apply move action of a thing.

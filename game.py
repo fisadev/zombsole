@@ -1,7 +1,9 @@
 #coding: utf-8
 import os
+import sys
 import time
 
+import six
 from termcolor import colored
 
 from core import World
@@ -100,7 +102,7 @@ class Game(object):
             self.draw()
 
             if self.debug:
-                raw_input()
+                six.moves.input()
             else:
                 time.sleep(1.0 / frames_per_second)
 
@@ -112,9 +114,9 @@ class Game(object):
         os.system('clear')
 
         # print the world
-        print '\n'.join(u''.join(self.position_draw((x, y))
-                                 for x in xrange(self.world.size[0]))
-                        for y in xrange(self.world.size[1]))
+        print('\n'.join(u''.join(self.position_draw((x, y))
+                                 for x in range(self.world.size[0]))
+                        for y in range(self.world.size[1])))
 
         # print player stats
         players = sorted(self.players, key=lambda x: x.name)
@@ -133,60 +135,69 @@ class Game(object):
             else:
                 life = u'\u2620 [dead]'
 
-            print colored(u'%s %s (%s): %s' % (life,
-                                               player.name,
-                                               weapon_name,
-                                               player.status or u'-'),
-                          player.color)
+            player_stats = u'%s %s (%s): %s' % (life,
+                                                player.name,
+                                                weapon_name,
+                                                player.status or u'-')
+
+            print(colored(player_stats, player.color))
 
         # print events (of last step) for debugging
         if self.debug:
-            print u'\n'.join([colored(u'%s: %s' % (thing.name, event),
+            print(u'\n'.join([colored(u'%s: %s' % (thing.name, event),
                                       thing.color)
                               for t, thing, event in self.world.events
-                              if t == self.world.t])
+                              if t == self.world.t]))
 
     def import_map(self, file_path):
         '''Import things from a utf-8 map file.'''
-        with open(file_path) as map_file:
-            lines = unicode(map_file.read(), 'utf-8').split('\n')
+        zombie_spawns = []
+        player_spawns = []
+        objetives = []
 
-            zombie_spawns = []
-            player_spawns = []
-            objetives = []
+        max_row = 0
+        max_col = 0
 
-            max_row = 0
-            max_col = 0
+        # read the file
+        encoding = 'utf-8'
+        if sys.version_info > (3,):
+            with open(file_path, encoding=encoding) as map_file:
+                lines = map_file.read().split('\n')
+        else:
+            with open(file_path) as map_file:
+                lines = map_file.read().decode(encoding).split('\n')
 
-            for row_index, line in enumerate(lines):
-                max_row = row_index
+        # for each char, create the corresponding object
+        for row_index, line in enumerate(lines):
+            max_row = row_index
 
-                for col_index, char in enumerate(line):
-                    if char:
-                        max_col = max(col_index, max_col)
+            for col_index, char in enumerate(line):
+                if char:
+                    max_col = max(col_index, max_col)
 
-                    position = (col_index, row_index)
-                    if char in (Box.ICON, 'b', 'B'):
-                        self.world.spawn_thing(Box(position))
-                    elif char in (Wall.ICON, 'w', 'W'):
-                        self.world.spawn_thing(Wall(position))
-                    elif char.lower() == 'p':
-                        player_spawns.append(position)
-                    elif char.lower() == 'z':
-                        zombie_spawns.append(position)
-                    elif char.lower() == 'o':
-                        objetives.append(position)
-                        self.world.spawn_thing(ObjetiveLocation(position),
-                                               decoration=True)
+                position = (col_index, row_index)
+                if char in (Box.ICON, 'b', 'B'):
+                    self.world.spawn_thing(Box(position))
+                elif char in (Wall.ICON, 'w', 'W'):
+                    self.world.spawn_thing(Wall(position))
+                elif char.lower() == 'p':
+                    player_spawns.append(position)
+                elif char.lower() == 'z':
+                    zombie_spawns.append(position)
+                elif char.lower() == 'o':
+                    objetives.append(position)
+                    self.world.spawn_thing(ObjetiveLocation(position),
+                                           decoration=True)
 
-            if player_spawns:
-                self.player_spawns = player_spawns
-            if zombie_spawns:
-                self.zombie_spawns = zombie_spawns
-            if objetives:
-                self.objetives = objetives
+        # if had any info, update spawns and objetives
+        if player_spawns:
+            self.player_spawns = player_spawns
+        if zombie_spawns:
+            self.zombie_spawns = zombie_spawns
+        if objetives:
+            self.objetives = objetives
 
-            # be sure everything in the map gets into the world size
-            if max_row > self.world.size[1] or max_col > self.world.size[0]:
-                message = 'This map is bigger than the choosen size. Needs at least a %ix%i size'
-                raise Exception(message % (max_col + 1, max_row + 1))
+        # be sure everything in the map gets into the world size
+        if max_row > self.world.size[1] or max_col > self.world.size[0]:
+            message = 'This map is bigger than the choosen size. Needs at least a %ix%i size'
+            raise Exception(message % (max_col + 1, max_row + 1))

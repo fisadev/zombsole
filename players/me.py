@@ -1,4 +1,6 @@
 #coding: utf-8
+import six
+
 from things import Player, Zombie
 from utils import closest
 from weapons import Rifle
@@ -7,12 +9,12 @@ from weapons import Rifle
 class Me(Player):
     '''An interactive player, controlled with the keyboard.'''
     def next_step(self, things):
-        print 'Which action?'
-        print 'w, a, s, d: movement (up, left down, right, like all games)'
-        print 'j: attack closest zombie'
-        print 'k: heal self'
-        print 'l: heal closest player'
-        action = raw_input()
+        print('Which action?')
+        print('w, a, s, d: movement (up, left down, right, like all games)')
+        print('j: attack closest zombie')
+        print('k: heal self')
+        print('l: heal closest player')
+        action = six.moves.input()
 
         if not action:
             self.status = 'sitting idle'

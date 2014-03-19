@@ -45,15 +45,15 @@ def play():
         names = [name.replace('.py', '')
                  for name in listdir('rules')
                  if '__init__' not in name and '.pyc' not in name]
-        print '\n'.join(names)
+        print('\n'.join(names))
     elif arguments['list_maps']:
         # list all posible maps
-        print '\n'.join(listdir('maps'))
+        print('\n'.join(listdir('maps')))
     else:
         # start a game
         # parse arguments
         rules_creator = get_creator('rules.' + arguments['RULES'])
-        size = map(int, arguments['SIZE'].split('x'))
+        size = tuple(map(int, arguments['SIZE'].split('x')))
         player_creators = [get_creator('players.' + name)
                            for name in arguments['PLAYERS'].split(',')]
         map_file = path.join('maps', arguments['-m'])
@@ -70,12 +70,12 @@ def play():
                  minimum_zombies=minimum_zombies,
                  debug=debug)
         won, description = g.play()
-        print ''
+        print('')
         if won:
-            print colored(u'WIN! ', 'green'),
+            print(colored(u'WIN! ', 'green'))
         else:
-            print colored(u'GAME OVER ', 'red'),
-        print description
+            print(colored(u'GAME OVER ', 'red'))
+        print(description)
 
 
 if __name__ == '__main__':
