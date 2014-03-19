@@ -131,7 +131,7 @@ class Game(object):
                                             (10 - life_chars_count) * u'\u2591',
                                             player.life)
             else:
-                life = u'\u2620 dead'
+                life = u'\u2620 [dead]'
 
             print colored(u'%s %s (%s): %s' % (life,
                                                player.name,
