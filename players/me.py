@@ -43,9 +43,6 @@ class Me(Player):
             self.status = u'healing self'
             return 'heal', self
         elif action == 'l':
-            self.status = u'healing buddy'
-            return 'heal', self
-
             players = [thing for thing in things.values()
                        if isinstance(thing, Player) and thing is not self]
 
