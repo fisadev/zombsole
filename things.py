@@ -62,24 +62,30 @@ class Zombie(FightingThing):
                                      dead_decoration)
 
     def next_step(self, things):
+        '''Zombies attack if in range, else move in direction of players.'''
         action = None
 
+        # possible targets for movement and attack
         humans = [thing for thing in things.values()
                   if isinstance(thing, Player)]
         positions = possible_moves(self.position, things)
 
         if humans:
+            # targets available
             target = closest(self, humans)
 
             if distance(self.position, target.position) < self.weapon.max_range:
+                # target in range, attack
                 action = 'attack', target
             else:
+                # target not in range, _try_ to move
                 if positions:
                     by_distance = lambda position: distance(target.position,
                                                             position)
                     best_position = sorted(positions, key=by_distance)[0]
                     action = 'move', best_position
         else:
+            # no targets, just wander around
             if positions:
                 action = 'move', random.choice(positions)
 
