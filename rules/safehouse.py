@@ -8,12 +8,14 @@ class SafeHouseRules(Rules):
        Team wins when all alive players are inside the safe house.
     '''
     def alive_players_in_house(self):
+        '''Are the alive players in the safe house (objetive locations)?'''
         in_house = [player.position in self.game.objetives
                     for player in self.game.players
                     if player.life > 0]
         return all(in_house)
 
     def game_ended(self):
+        '''Has the game ended?'''
         if self.game.objetives is None:
             raise Exception('Safe house game requires objetives defined.')
 
@@ -23,6 +25,7 @@ class SafeHouseRules(Rules):
             return True
 
     def game_won(self):
+        '''Was the game won?'''
         if self.players_alive():
             return True, u'everybody made it into the safehouse :)'
         else:

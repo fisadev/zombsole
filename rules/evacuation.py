@@ -10,10 +10,12 @@ class EvacuationRules(Rules):
        alive player, and at least half of the team must survive.
     '''
     def get_alive_players(self):
+        '''Get the alive players.'''
         return [player for player in self.game.players
                 if player.live > 0]
 
     def alive_players_together(self):
+        '''Are the alive players together (close to each other)?'''
         alive_players = self.get_alive_players()
 
         for player in alive_players:
@@ -24,16 +26,19 @@ class EvacuationRules(Rules):
                 return False
 
     def half_team_alive(self):
+        '''At least half of the original team alive?'''
         alive_players = self.get_alive_players()
         return len(alive_players) >= len(self.game.players) / 2
 
     def game_ended(self):
+        '''Has the game ended?'''
         if self.half_team_alive():
             return self.alive_players_together()
         else:
             return True
 
     def game_won(self):
+        '''Was the game won?'''
         if self.half_team_alive():
             return True, u'players got together and were evacuated :)'
         else:

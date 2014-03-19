@@ -9,17 +9,20 @@ class ExterminationRules(Rules):
        Team wins when all zombies are dead.
     '''
     def zombies_alive(self):
+        '''Is there any zombie left?'''
         zombies = [thing for thing in self.game.world.things.values()
                     if isinstance(thing, Zombie) and thing.life > 0]
         return bool(zombies)
 
     def game_ended(self):
+        '''Has the game ended?'''
         if self.players_alive():
             return not self.zombies_alive()
         else:
             return True
 
     def game_woRules(self):
+        '''Was the game won?'''
         if self.players_alive():
             return True, 'zombies exterminated! :)'
         else:
