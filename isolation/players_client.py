@@ -22,7 +22,16 @@ class IsolatedPlayer(Player):
         super(IsolatedPlayer, self).__init__(name, color, weapon=weapon)
 
     def next_step(self, things):
-        pass
+        next_step_parameters = {
+            'player_name': self.name,
+            'life': self.life,
+            'position': json.dumps(self.position),
+            'things': json.dumps(things),
+        }
+        step_result, status = self.do_at_server('next_step',
+                                                next_step_parameters)
+        self.status = status
+        return step_result
 
     def do_at_server(self, url, parameters):
         full_url = 'http://localhost:%i/%s' % (self.isolator_port, url)

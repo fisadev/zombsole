@@ -26,7 +26,19 @@ def create_server_player():
 
 @app.route('/next_step', methods=['POST'])
 def next_step():
-    return json.dumps(('move', (0, 0)))
+    player_name = request.form['player_name']
+    life = int(request.form['life'])
+    position = tuple(json.loads(request.form['position']))
+    things = json.loads(request.form['things'])
+
+    player = players[player_name]
+    player.life = life
+    player.position = position
+
+    step_result = player.next_step(things)
+    status = player.status
+
+    return json.dumps((step_result, status))
 
 
 if __name__ == '__main__':
