@@ -78,7 +78,8 @@ def play():
             # inside a docker container
             # player creators will be those proxying the real players
             port = int(arguments.get('-p', 8000))
-            from docker_isolation import player_creator, start_isolator
+            from isolation.players_server import start_isolator
+            from isolation.players_client import player_creator
 
             player_creators = [player_creator(name, port)
                                for name in player_names]
