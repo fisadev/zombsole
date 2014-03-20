@@ -33,9 +33,14 @@ def serve_players():
     pass
 
 
-def player_creator(player_name):
-    '''Create a player creator function, mimicking the real function,
+def player_creator(player_name, port):
+    '''Create a player creator function, which mimicks the real function,
        but returning a proxy to players served with serve_players.'''
+    pass
+
+
+def start_isolator(port):
+    '''Start running the isolator container, with the players server inside.'''
     pass
 
 
