@@ -205,7 +205,7 @@ This leaves a **giant** backdoor to hack, that allows you to do stuff like this:
 * Add 300 clones of you to the map (maybe you were some kind of replicant).
 * Replace every zombie's ``next_step`` function with a custom made, and make them obey you.
 * Increase your weapon range and damage.
-* Teleport to different locations.
+* Teleport to any locations.
 * etc..
 
 If you wan't a real survival challenge, just don't modify anything in ``things``, and don't modify
