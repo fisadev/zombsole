@@ -1,3 +1,2 @@
-docker-py
 flask
 requests
