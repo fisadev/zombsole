@@ -21,7 +21,7 @@ Options:
     -d                   Debug mode (lots of extra info, and step by step game play)
     -s                   Isolate the players process using docker, to prevent hacks to
                          the world (you will need docker installed for this to work).
-    -p ISOLATION_PORT    The ISOLATION_PORT is the port on which the isolator will run.
+    -p ISOLATION_PORT    The ISOLATION_PORT is the port on which the isolator is running.
 
 list_rules:
     Will list available game rules.
@@ -78,12 +78,10 @@ def play():
             # inside a docker container
             # player creators will be those proxying the real players
             port = int(arguments.get('-p', 8000))
-            from isolation.players_server import start_isolator
             from isolation.players_client import player_creator
 
             player_creators = [player_creator(name, port)
                                for name in player_names]
-            start_isolator(port)
         else:
             # just use the create functions of players
             player_creators = [get_creator('players.' + name)
