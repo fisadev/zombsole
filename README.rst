@@ -209,7 +209,7 @@ This leaves a **giant** backdoor to hack, that allows you to do stuff like this:
 * etc..
 
 If you wan't a real survival challenge, just don't modify anything in ``things``, and don't modify
-your ``self.life`` or ``self.position``.
+your ``self.life`` or ``self.position`` (neither your weapon properties).
 
 If you like a mind control challenge, use all that and create an army of coordinated zombies that
 write your player's name in the map by moving boxes.
