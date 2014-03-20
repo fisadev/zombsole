@@ -17,4 +17,4 @@ ADD . /home/docker/zombsole/
 WORKDIR /home/docker/zombsole
 
 EXPOSE 8000
-CMD isolation/players_server.py
+CMD PYTHONPATH=. isolation/players_server.py
