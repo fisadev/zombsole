@@ -10,7 +10,7 @@ ADD isolation/requirements.txt /home/docker/isolation_requirements.txt
 
 WORKDIR /home/docker
 RUN pip install -r requirements.txt
-RUN pip install -r isolat_requirements.txt
+RUN pip install -r isolation_requirements.txt
 
 # now add the rest of the folder
 ADD . /home/docker/zombsole/
