@@ -26,7 +26,7 @@ class IsolatedPlayer(Player):
             'player_name': self.name,
             'life': self.life,
             'position': self.position,
-            'things_list': things,
+            'things': things,
         }
         step_result, status, target_replace = self.do_at_server('next_step',
                                                                 parameters)
