@@ -127,6 +127,10 @@ Some extra notes about actions:
 * Movement is limited to adyacent tiles. That is, you can only move 1 block either up, down, 
   left or right. If you try to move to anywhere else, you will just stay still.
 
+And also, there are other two attributes in your player that can be useful to look at:
+
+* ``self.life``: amount of current life, from 0 (dead) to 100 (healthier than wolverine).
+* ``self.position``: your current position on the map.
 
 Your create function
 --------------------
