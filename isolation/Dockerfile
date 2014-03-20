@@ -6,11 +6,11 @@ RUN apt-get install -y python-pip
 # added before the full folder, so caching of pip installation
 # isn't broke when cached of the full zombsole folder breaks
 ADD requirements.txt /home/docker/requirements.txt
-ADD isolator_requirements.txt /home/docker/isolator_requirements.txt
+ADD isolation/requirements.txt /home/docker/isolation_requirements.txt
 
 WORKDIR /home/docker
 RUN pip install -r requirements.txt
-RUN pip install -r isolator_requirements.txt
+RUN pip install -r isolat_requirements.txt
 
 # now add the rest of the folder
 ADD . /home/docker/zombsole/
