@@ -4,7 +4,7 @@
 
 Usage:
     ./play.py --help
-    ./play.py RULES SIZE PLAYERS [-m MAP] [-i INITIAL_ZOMBIES] [-n MINIMUM_ZOMBIES] [-d] [-s]
+    ./play.py RULES SIZE PLAYERS [-m MAP] [-i INITIAL_ZOMBIES] [-n MINIMUM_ZOMBIES] [-d] [-s ISOLATION_PORT [-p]]
     ./play.py list_rules
     ./play.py list_maps
 
@@ -18,9 +18,10 @@ Options:
                          Use list_maps to list available maps.
     -i INITIAL_ZOMBIES   The initial amount of zombies [default: 0]
     -n MINIMUM_ZOMBIES   The minimum amount of zombies at all times [default: 0]
+    -d                   Debug mode (lots of extra info, and step by step game play)
     -s                   Isolate the players process using docker, to prevent hacks to
                          the world (you will need docker installed for this to work).
-    -d                   Debug mode (lots of extra info, and step by step game play)
+    -p ISOLATION_PORT    The ISOLATION_PORT is the port on which the isolator will run.
 
 list_rules:
     Will list available game rules.
@@ -76,11 +77,12 @@ def play():
             # create the player clients, and start the players server
             # inside a docker container
             # player creators will be those proxying the real players
+            port = int(arguments.get('-p', 8000))
             from docker_isolation import player_creator, start_isolator
 
-            player_creators = [player_creator(name)
+            player_creators = [player_creator(name, port)
                                for name in player_names]
-            start_isolator()
+            start_isolator(port)
         else:
             # just use the create functions of players
             player_creators = [get_creator('players.' + name)
