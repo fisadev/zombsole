@@ -210,7 +210,7 @@ If you wan't a real survival challenge, just don't modify anything in ``things``
 your ``self.life`` or ``self.position``.
 
 If you like a programming challenge, use all that and create an army of coordinated zombies that
-write your player's name in the map moving boxes :)
+write your player's name in the map by moving boxes :)
 
 And finally, the game features an advanced isolation mechanism based on `Docker <http://docker.io>`_,
 which you could use to effectively forbade any of those hacks in the scenario of some public competence
