@@ -32,13 +32,9 @@ class IsolatedPlayer(Player):
                                                                 parameters)
         self.status = status
 
-        if target_replace is not None:
+        if target_replace:
             target = step_result[1]
-            if target_replace == 'self':
-                target = self
-            elif target_replace == 'thing_at':
-                target = things[tuple(target)]
-
+            target = things[tuple(target)]
             step_result = step_result[0], target
 
         return step_result

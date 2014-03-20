@@ -45,16 +45,13 @@ def next_step():
     step_result = player.next_step(things)
     status = player.status
 
-    target_replace = None
+    target_replace = False
 
     if step_result is not None:
         target = step_result[1]
-        if target is player:
-            target = None
-            target_replace = 'self'
-        elif isinstance(target, Thing):
+        if isinstance(target, Thing):
             target = target.position
-            target_replace = 'thing_at'
+            target_replace = True
 
         step_result = step_result[0], target
 
