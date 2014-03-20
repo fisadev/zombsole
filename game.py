@@ -19,6 +19,16 @@ def get_creator(module_name):
     return create_function
 
 
+def create_player(name, rules_name, objetives):
+    creator = get_creator('players.' + name)
+    return creator(rules_name, objetives)
+
+
+def create_rules(name, game):
+    creator = get_creator('rules.' + name)
+    return creator(game)
+
+
 class Rules(object):
     '''Rules to decide when a game ends, and when it's won.'''
     def __init__(self, game):
@@ -72,28 +82,19 @@ class Game(object):
             self.import_map(map_file)
 
         if docker_isolator:
-            # create the player clients, and start the players server
-            # inside a docker container
-            # player creators will be those proxying the real players
-            from isolation.players_client import player_creator
-
-            player_creators = [player_creator(name, self.isolator_port)
+            from isolation.players_client import create_player_client
+            self.players = [create_player_client(name, rules_name, objetives,
+                                                 self.isolator_port)
                                for name in player_names]
         else:
-            # just use the create functions of players
-            player_creators = [get_creator('players.' + name)
-                               for name in player_names]
+            self.players = [create_player(name, rules_name, objetives)
+                            for name in player_names]
 
-
-        self.spawn_players(player_creators)
+        self.spawn_players()
         self.spawn_zombies(initial_zombies)
 
-    def spawn_players(self, player_creators):
+    def spawn_players(self):
         '''Spawn players using the provided player create functinons.'''
-        for creator_function in player_creators:
-            self.players.append(creator_function(self.rules_name,
-                                                 self.objetives))
-
         self.world.spawn_in_random(self.players, self.player_spawns)
 
     def spawn_zombies(self, count):

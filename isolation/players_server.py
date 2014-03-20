@@ -5,7 +5,7 @@ import json
 
 from flask import Flask, request
 
-from game import get_creator
+from game import create_player
 
 
 app = Flask('zombsole_isolator')
@@ -13,13 +13,12 @@ players = {}
 
 
 @app.route('/create_player')
-def create_player():
+def create_server_player():
     player_name = request.form['player_name']
-    rules = request.form['rules']
+    rules_name = request.form['rules_name']
     objetives = json.loads(request.form['objetives'])
 
-    player_creator = get_creator('players.' + player_name)
-    player = player_creator(rules, objetives)
+    player = create_player(player_name, rules_name, objetives)
     players[player_name] = player
 
     return 'ok'
