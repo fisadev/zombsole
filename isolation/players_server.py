@@ -21,12 +21,12 @@ def create_server_player():
     player = create_player(player_name, rules_name, objetives)
     players[player_name] = player
 
-    return 'ok'
+    return json.dumps([player.color, player.weapon.name])
 
 
 @app.route('/next_step')
 def next_step():
-    return 'ok'
+    return json.dumps(('move', (0, 0)))
 
 
 if __name__ == '__main__':
