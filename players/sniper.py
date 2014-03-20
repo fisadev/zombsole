@@ -1,4 +1,4 @@
-#coding: utf-8
+# coding: utf-8
 from things import Player, Zombie
 from utils import closest
 from weapons import Rifle
