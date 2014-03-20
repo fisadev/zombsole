@@ -195,6 +195,27 @@ to see some inspirational examples, the ``players`` folder already has some simp
 player that can be controlled in real time by a human using the keyboard! (but still, Randoman is the 
 best).
 
+Breaking the game
+=================
+
+In a normal game play, your player instance has references to all the other things in the world.
+This leaves a **giant** backdoor to hack, that allows you to do stuff like this:
+
+* Put every ``zombie.life`` to 0, effectively killing all zombies with just your thought.
+* Add 300 clones of you to the map (maybe you were some kind of replicant).
+* Replace every zombie's ``next_step`` function with a custom made, and make them obey you.
+* etc..
+
+If you wan't a real survival challenge, just don't modify anything in ``things``, and don't modify
+your ``self.life`` or ``self.position``.
+
+If you like a programming challenge, use all that and create an army of coordinated zombies that
+write your player's name in the map moving boxes :)
+
+And finally, the game features an advanced isolation mechanism based on `Docker <http://docker.io>`_,
+which you could use to effectively forbade any of those hacks in the scenario of some public competence
+or if you are running "untrusted" code. This isn't documented yet, but it's functional and quite
+simple. I promise to add docs in a few days.
 
 Creating maps
 =============
