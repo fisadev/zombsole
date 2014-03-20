@@ -11,6 +11,24 @@ from core import World
 from things import Box, Wall, Zombie, ObjetiveLocation
 
 
+def get_creator(module_name):
+    '''Get the create() function from a module.'''
+    module = __import__(module_name, fromlist=['create',])
+    create_function = getattr(module, 'create')
+
+    return create_function
+
+
+def create_player(name, rules_name, objetives):
+    creator = get_creator('players.' + name)
+    return creator(rules_name, objetives)
+
+
+def create_rules(name, game):
+    creator = get_creator('rules.' + name)
+    return creator(game)
+
+
 class Rules(object):
     '''Rules to decide when a game ends, and when it's won.'''
     def __init__(self, game):
@@ -42,16 +60,20 @@ class Game(object):
        This includes player and zombies spawning, game main loop, deciding when
        to stop, importing map data, drawing each update, etc.
     '''
-    def __init__(self, rules_creator, player_creators, size, map_file=None,
+    def __init__(self, rules_name, player_names, size, map_file=None,
                  player_spawns=None, zombie_spawns=None, objetives=None,
-                 initial_zombies=0, minimum_zombies=0, debug=False):
+                 initial_zombies=0, minimum_zombies=0, docker_isolator=False,
+                 debug=False, isolator_port=8000):
         self.players = []
 
-        self.rules = rules_creator(self)
+        self.rules_name = rules_name
+        self.rules = get_creator('rules.' + rules_name)(self)
         self.player_spawns = player_spawns
         self.zombie_spawns = zombie_spawns
         self.objetives = objetives
         self.minimum_zombies = minimum_zombies
+        self.docker_isolator = docker_isolator
+        self.isolator_port = isolator_port
         self.debug = debug
 
         self.world = World(size, debug=debug)
@@ -59,14 +81,20 @@ class Game(object):
         if map_file is not None:
             self.import_map(map_file)
 
-        self.spawn_players(player_creators)
+        if docker_isolator:
+            from isolation.players_client import create_player_client
+            self.players = [create_player_client(name, rules_name, objetives,
+                                                 self.isolator_port)
+                               for name in player_names]
+        else:
+            self.players = [create_player(name, rules_name, objetives)
+                            for name in player_names]
+
+        self.spawn_players()
         self.spawn_zombies(initial_zombies)
 
-    def spawn_players(self, player_creators):
+    def spawn_players(self):
         '''Spawn players using the provided player create functinons.'''
-        for creator_function in player_creators:
-            self.players.append(creator_function(self.rules, self.objetives))
-
         self.world.spawn_in_random(self.players, self.player_spawns)
 
     def spawn_zombies(self, count):
