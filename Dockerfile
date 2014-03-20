@@ -17,4 +17,4 @@ ADD . /home/docker/zombsole/
 WORKDIR /home/docker/zombsole
 
 EXPOSE 8000
-CMD python docker_isolation.py serve_players
+CMD isolation/players_server.py
