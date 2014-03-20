@@ -21,6 +21,12 @@ Options:
     -s                   Isolate the players process using docker, to prevent hacks to
                          the world (you will need docker installed for this to work).
     -d                   Debug mode (lots of extra info, and step by step game play)
+
+list_rules:
+    Will list available game rules.
+
+list_maps:
+    Will list available game maps.
 '''
 from __future__ import print_function
 
