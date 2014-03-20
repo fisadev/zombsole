@@ -142,7 +142,7 @@ This function must look like this:
 
 This function will be the one creating the instance of your player. You can run aditional logic
 here before game starts, and the parameters you receive will tell you the kind of game that will be
-played (``rules`` is an instance of something inheriting from ``game.Rules``), and the objetives
+played (``rules`` is a string with the name of the rules of the game), and the objetives
 locations if there are any in the current game rules (Safehouse game mode has objetive locations 
 that players must reach. Extermination and Evacuation don't have objetive locations).
 

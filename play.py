@@ -4,7 +4,7 @@
 
 Usage:
     ./play.py --help
-    ./play.py RULES SIZE PLAYERS [-m MAP] [-i INITIAL_ZOMBIES] [-n MINIMUM_ZOMBIES] [-d] [-s ISOLATION_PORT [-p]]
+    ./play.py RULES SIZE PLAYERS [-m MAP] [-i INITIAL_ZOMBIES] [-n MINIMUM_ZOMBIES] [-d] [-s [-p ISOLATOR_PORT ]]
     ./play.py list_rules
     ./play.py list_maps
 
@@ -20,8 +20,11 @@ Options:
     -n MINIMUM_ZOMBIES   The minimum amount of zombies at all times [default: 0]
     -d                   Debug mode (lots of extra info, and step by step game play)
     -s                   Isolate the players process using docker, to prevent hacks to
-                         the world (you will need docker installed for this to work).
-    -p ISOLATION_PORT    The ISOLATION_PORT is the port on which the isolator is running.
+                         the world (you will need docker installed for this to work,
+                         and the isolator built and running. See the project docs for
+                         more info).
+    -p ISOLATOR_PORT     The ISOLATOR_PORT is the port on which the isolator is
+                         running [default: 8000].
 
 list_rules:
     Will list available game rules.
@@ -37,14 +40,6 @@ from docopt import docopt
 from termcolor import colored
 
 from game import Game
-
-
-def get_creator(module_name):
-    '''Get the create() function from a module.'''
-    module = __import__(module_name, fromlist=['create',])
-    create_function = getattr(module, 'create')
-
-    return create_function
 
 
 def play():
@@ -63,37 +58,25 @@ def play():
     else:
         # start a game
         # parse arguments
-        rules_creator = get_creator('rules.' + arguments['RULES'])
+        rules_name = arguments['RULES']
         size = tuple(map(int, arguments['SIZE'].split('x')))
         player_names = arguments['PLAYERS'].split(',')
         map_file = path.join('maps', arguments['-m'])
         initial_zombies = int(arguments['-i'])
         minimum_zombies = int(arguments['-n'])
-        docker_isolation = arguments['-s']
+        docker_isolator = arguments['-s']
         debug = arguments['-d']
-
-
-        if docker_isolation:
-            # create the player clients, and start the players server
-            # inside a docker container
-            # player creators will be those proxying the real players
-            port = int(arguments.get('-p', 8000))
-            from isolation.players_client import player_creator
-
-            player_creators = [player_creator(name, port)
-                               for name in player_names]
-        else:
-            # just use the create functions of players
-            player_creators = [get_creator('players.' + name)
-                               for name in player_names]
+        isolator_port = int(arguments['-p'])
 
         # create and start game
-        g = Game(rules_creator=rules_creator,
-                 player_creators=player_creators,
+        g = Game(rules_name=rules_name,
+                 player_names=player_names,
                  size=size,
                  map_file=map_file,
                  initial_zombies=initial_zombies,
                  minimum_zombies=minimum_zombies,
+                 docker_isolator=docker_isolator,
+                 isolator_port=isolator_port,
                  debug=debug)
         won, description = g.play()
         print('')
