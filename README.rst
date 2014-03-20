@@ -144,7 +144,7 @@ This function must look like this:
         return Terminator('terminator', 'blue')
 
 
-This function will be the one creating the instance of your player. You can run aditional logic
+The create function will be the one creating the instance of your player. You can run aditional logic
 here before game starts, and the parameters you receive will tell you the kind of game that will be
 played (``rules`` is a string with the name of the rules of the game), and the objetives
 locations if there are any in the current game rules (Safehouse game mode has objetive locations 
@@ -152,8 +152,9 @@ that players must reach. Extermination and Evacuation don't have objetive locati
 
 The default parameters your ``Player`` instance will need when created are a friendly name ("terminator"
 in the example) and a color (blue, cyan, green, grey, magenta, red, white, or yellow). You can also
-specify the weapon you want to use, importing them from the ``weapons`` module.
-
+specify the weapon you want to use, importing them from the ``weapons`` module. But don't abouse this,
+try to keep it challenging (i.er, don't create an army full of shotguns, be humble, it's a zombie apocalypse,
+not WW3).
 
 Colaborative for the win
 ------------------------
