@@ -12,7 +12,7 @@ app = Flask('zombsole_isolator')
 players = {}
 
 
-@app.route('/create_player')
+@app.route('/create_player', methods=['POST'])
 def create_server_player():
     player_name = request.form['player_name']
     rules_name = request.form['rules_name']
@@ -24,7 +24,7 @@ def create_server_player():
     return json.dumps([player.color, player.weapon.name])
 
 
-@app.route('/next_step')
+@app.route('/next_step', methods=['POST'])
 def next_step():
     return json.dumps(('move', (0, 0)))
 

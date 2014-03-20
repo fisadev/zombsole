@@ -15,7 +15,8 @@ class IsolatedPlayer(Player):
             'rules_name': rules_name,
             'objetives': json.dumps(objetives),
         }
-        color, weapon_name = self.get('create_player', create_parameters)
+        color, weapon_name = self.do_at_server('create_player',
+                                               create_parameters)
         weapon = getattr(weapons, weapon_name)()
 
         super(IsolatedPlayer, self).__init__(name, color, weapon=weapon)
@@ -23,9 +24,9 @@ class IsolatedPlayer(Player):
     def next_step(self, things):
         pass
 
-    def get(self, url, parameters):
+    def do_at_server(self, url, parameters):
         full_url = 'http://localhost:%i/%s' % (self.isolator_port, url)
-        response = requests.get(full_url, parameters).content
+        response = requests.post(full_url, parameters).content
         return json.loads(response)
 
 
