@@ -28,7 +28,9 @@ def create_server_player():
 def next_step():
     player_name = request.form['player_name']
     life = int(request.form['life'])
-    position = tuple(json.loads(request.form['position']))
+    position = json.loads(request.form['position'])
+    if position is not None:
+        position = tuple(position)
     things = json.loads(request.form['things'])
 
     player = players[player_name]
