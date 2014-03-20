@@ -64,13 +64,27 @@ def play():
         # parse arguments
         rules_creator = get_creator('rules.' + arguments['RULES'])
         size = tuple(map(int, arguments['SIZE'].split('x')))
-        player_creators = [get_creator('players.' + name)
-                           for name in arguments['PLAYERS'].split(',')]
+        player_names = arguments['PLAYERS'].split(',')
         map_file = path.join('maps', arguments['-m'])
         initial_zombies = int(arguments['-i'])
         minimum_zombies = int(arguments['-n'])
         docker_isolation = arguments['-s']
         debug = arguments['-d']
+
+
+        if docker_isolation:
+            # create the player clients, and start the players server
+            # inside a docker container
+            # player creators will be those proxying the real players
+            from docker_isolation import player_creator, start_isolator
+
+            player_creators = [player_creator(name)
+                               for name in player_names]
+            start_isolator()
+        else:
+            # just use the create functions of players
+            player_creators = [get_creator('players.' + name)
+                               for name in player_names]
 
         # create and start game
         g = Game(rules_creator=rules_creator,
