@@ -16,11 +16,11 @@ players = {}
 
 @app.route('/create_player', methods=['POST'])
 def create_server_player():
-    input_data = pickle.loads(request.form['input_data'])
+    parameters = pickle.loads(request.form['parameters'])
 
-    player_name = input_data['player_name']
-    rules_name = input_data['rules_name']
-    objetives = input_data['objetives']
+    player_name = parameters['player_name']
+    rules_name = parameters['rules_name']
+    objetives = parameters['objetives']
 
     player = create_player(player_name, rules_name, objetives)
     players[player_name] = player
@@ -30,12 +30,12 @@ def create_server_player():
 
 @app.route('/next_step', methods=['POST'])
 def next_step():
-    input_data = pickle.loads(request.form['input_data'])
+    parameters = pickle.loads(request.form['parameters'])
 
-    player_name = input_data['player_name']
-    life = input_data['life']
-    position = input_data['position']
-    things = input_data['things']
+    player_name = parameters['player_name']
+    life = parameters['life']
+    position = parameters['position']
+    things = parameters['things']
 
     player = players[player_name]
     player.life = life
