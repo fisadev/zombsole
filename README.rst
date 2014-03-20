@@ -214,7 +214,7 @@ your ``self.life`` or ``self.position`` (neither your weapon properties).
 If you like a mind control challenge, use all that and create an army of coordinated zombies that
 write your player's name in the map by moving boxes.
 
-Either way, the point is to have fun programming :)
+**Either way, the point is to have fun programming :)**
 
 And finally, the game features an advanced isolation mechanism based on `Docker <http://docker.io>`_,
 which you could use to effectively forbade any of those hacks in the scenario of some public competence
