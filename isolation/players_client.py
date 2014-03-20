@@ -36,7 +36,7 @@ class IsolatedPlayer(Player):
             target = step_result[1]
             if target_replace == 'self':
                 target = self
-            elif target_replace == 'thing':
+            elif target_replace == 'thing_at':
                 target = things[tuple(target)]
 
             step_result = step_result[0], target

@@ -54,7 +54,7 @@ def next_step():
             target_replace = 'self'
         elif isinstance(target, Thing):
             target = target.position
-            target_replace = 'thing'
+            target_replace = 'thing_at'
 
         step_result = step_result[0], target
 
