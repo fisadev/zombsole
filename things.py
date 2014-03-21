@@ -20,7 +20,7 @@ class Box(Thing):
 class DeadBody(Thing):
     '''Dead body.'''
     ICON = u'\u2620'
-    ICON_BASIC = u'+'
+    ICON_BASIC = u'='
 
     def __init__(self, name, color, position):
         super(DeadBody, self).__init__(name, DeadBody.ICON,
