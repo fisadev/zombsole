@@ -83,11 +83,16 @@ class World(object):
         for thing in actors:
             try:
                 next_step = thing.next_step(self.things)
-                if next_step is not None:
+                if isinstance(next_step, tuple) or isinstance(next_step, list):
                     action, parameter = next_step
                     actions.append((thing, action, parameter))
-                else:
+                elif next_step is None:
                     self.event(thing, u'idle')
+                else:
+                    event = u'next_step returned an invalid result: %s' % repr(next_step)
+                    self.event(thing, event)
+                    if self.debug:
+                        raise Exception(event)
             except Exception as err:
                 event = u'error with next_step or its result: %s' % err.message
                 self.event(thing, event)
@@ -102,7 +107,7 @@ class World(object):
             try:
                 # the method which applies the action is something like:
                 # self.thing_ACTION(parameter)
-                method = getattr(self, 'thing_' + action, None)
+                method = getattr(self, 'thing_' + str(action), None)
                 if method:
                     event = method(thing, parameter)
                     self.event(thing, event)
