@@ -90,11 +90,10 @@ class World(object):
                 elif next_step is None:
                     self.event(thing, u'idle')
                 else:
-                    event = u'next_step returned an invalid result: %s' % repr(next_step)
+                    event = u'invalid next_step result: %s' % repr(next_step)
                     raise Exception(event)
             except Exception as err:
-                event = u'error with next_step or its result: %s' % err.message
-                self.event(thing, event)
+                self.event(thing, u'error with next_step: %s' % err.message)
                 if self.debug:
                     raise err
 
