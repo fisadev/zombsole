@@ -22,4 +22,4 @@ class RandoMan(Player):
 
 
 def create(rules, objetives=None):
-    return RandoMan('randoman', 'blue')
+    return RandoMan('randoman', 'red')
