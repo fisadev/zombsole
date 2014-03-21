@@ -13,7 +13,7 @@ from things import Box, Wall, Zombie, ObjetiveLocation
 
 def get_creator(module_name):
     '''Get the create() function from a module.'''
-    module = __import__(module_name, fromlist=['create',])
+    module = __import__(module_name, fromlist=['create', ])
     create_function = getattr(module, 'create')
 
     return create_function
@@ -85,7 +85,7 @@ class Game(object):
             from isolation.players_client import create_player_client
             self.players = [create_player_client(name, rules_name, objetives,
                                                  self.isolator_port)
-                               for name in player_names]
+                            for name in player_names]
         else:
             self.players = [create_player(name, rules_name, objetives)
                             for name in player_names]
@@ -231,5 +231,5 @@ class Game(object):
 
         # be sure everything in the map gets into the world size
         if max_row > self.world.size[1] or max_col > self.world.size[0]:
-            message = 'This map is bigger than the choosen size. Needs at least a %ix%i size'
+            message = 'This map needs at least a %ix%i world size'
             raise Exception(message % (max_col + 1, max_row + 1))
