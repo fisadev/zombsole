@@ -88,6 +88,7 @@ def play():
         else:
             print(colored(u'GAME OVER ', 'red'))
         print(description)
+        print(g.world.t, 'ticks')
 
 
 if __name__ == '__main__':
