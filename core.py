@@ -59,7 +59,8 @@ class World(object):
                 self.spawn_thing(thing)
             else:
                 if fail_if_cant:
-                    raise Exception('Not enough space to spawn %s' % thing.name)
+                    error = 'Not enough space to spawn %s' % thing.name
+                    raise Exception(error)
                 else:
                     return
 
@@ -83,16 +84,14 @@ class World(object):
         for thing in actors:
             try:
                 next_step = thing.next_step(self.things)
-                if isinstance(next_step, tuple) or isinstance(next_step, list):
+                if isinstance(next_step, (tuple, list)) and len(next_step) == 2:
                     action, parameter = next_step
                     actions.append((thing, action, parameter))
                 elif next_step is None:
                     self.event(thing, u'idle')
                 else:
                     event = u'next_step returned an invalid result: %s' % repr(next_step)
-                    self.event(thing, event)
-                    if self.debug:
-                        raise Exception(event)
+                    raise Exception(event)
             except Exception as err:
                 event = u'error with next_step or its result: %s' % err.message
                 self.event(thing, event)
