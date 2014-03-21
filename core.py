@@ -184,7 +184,8 @@ class World(object):
             event = u'tried to heal %s, but it is too far away' % target.name
         else:
             # heal avoiding health overflow
-            target.life = random.randint(target.life, target.MAX_LIFE)
+            heal = random.randint(target.MAX_LIFE / 10, target.MAX_LIFE / 4)
+            target.life = min(target.MAX_LIFE, target.life + heal)
             event = u'healed ' + target.name
 
         return event
