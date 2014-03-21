@@ -63,7 +63,7 @@ class Game(object):
     def __init__(self, rules_name, player_names, size, map_file=None,
                  player_spawns=None, zombie_spawns=None, objetives=None,
                  initial_zombies=0, minimum_zombies=0, docker_isolator=False,
-                 debug=False, isolator_port=8000):
+                 debug=False, isolator_port=8000, use_basic_icons=False):
         self.players = []
 
         self.rules_name = rules_name
@@ -75,6 +75,7 @@ class Game(object):
         self.docker_isolator = docker_isolator
         self.isolator_port = isolator_port
         self.debug = debug
+        self.use_basic_icons = use_basic_icons
 
         self.world = World(size, debug=debug)
 
@@ -107,13 +108,15 @@ class Game(object):
     def position_draw(self, position):
         '''Get the string to draw for a given position of the world.'''
         # decorations first, then things over them
-        thing = self.world.things.get(position)
-        decoration = self.world.decoration.get(position)
+        thing = self.world.things.get(position) or \
+                self.world.decoration.get(position)
 
         if thing is not None:
-            return thing.draw()
-        elif decoration is not None:
-            return decoration.draw()
+            if self.use_basic_icons:
+                icon = thing.icon_basic
+            else:
+                icon = thing.icon
+            return colored(icon, thing.color)
         else:
             return u' '
 

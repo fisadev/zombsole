@@ -213,9 +213,6 @@ class Thing(object):
     def next_step(self, things):
         return None
 
-    def draw(self):
-        return colored(self.icon, self.color)
-
 
 class Weapon(object):
     '''Weapon, capable of doing damage to things.'''

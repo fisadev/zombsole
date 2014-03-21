@@ -4,7 +4,7 @@
 
 Usage:
     ./play.py --help
-    ./play.py RULES SIZE PLAYERS [-m MAP] [-i INITIAL_ZOMBIES] [-n MINIMUM_ZOMBIES] [-d] [-s [-p ISOLATOR_PORT ]]
+    ./play.py RULES SIZE PLAYERS [-m MAP] [-i INITIAL_ZOMBIES] [-n MINIMUM_ZOMBIES] [-d] [-s [-p ISOLATOR_PORT ]] [-b]
     ./play.py list_rules
     ./play.py list_maps
 
@@ -25,6 +25,7 @@ Options:
                          more info).
     -p ISOLATOR_PORT     The ISOLATOR_PORT is the port on which the isolator is
                          running [default: 8000].
+    -b                   Use basic icons if you have trouble with the normal icons.
 
 list_rules:
     Will list available game rules.
@@ -67,6 +68,7 @@ def play():
         docker_isolator = arguments['-s']
         debug = arguments['-d']
         isolator_port = int(arguments['-p'])
+        use_basic_icons = arguments['-b']
 
         # create and start game
         g = Game(rules_name=rules_name,
@@ -77,7 +79,8 @@ def play():
                  minimum_zombies=minimum_zombies,
                  docker_isolator=docker_isolator,
                  isolator_port=isolator_port,
-                 debug=debug)
+                 debug=debug,
+                 use_basic_icons=use_basic_icons)
         won, description = g.play()
         print('')
         if won:
