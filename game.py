@@ -161,8 +161,10 @@ class Game(object):
             if player.life > 0:
                 # a small "health bar" with unicode chars, from 0 to 10 chars
                 life_chars_count = int((10.0 / player.MAX_LIFE) * player.life)
-                life = u'\u2665 %s%s %i' % (life_chars_count * u'\u2588',
-                                            (10 - life_chars_count) * u'\u2591',
+                life_chars = life_chars_count * u'\u2588'
+                no_life_chars = (10 - life_chars_count) * u'\u2591'
+                life = u'\u2665 %s%s %i' % (life_chars,
+                                            no_life_chars,
                                             player.life)
             else:
                 life = u'\u2620 [dead]'
