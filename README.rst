@@ -35,6 +35,8 @@ start messing around:
     cd zombsole
     sudo pip install -r requirements.txt
 
+(If you know about virtualenv, use it!)
+
 
 And now lets just run a simple demo game:
 
