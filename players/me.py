@@ -64,7 +64,7 @@ class Me(Player):
                 action = None
         else:
             action = None
-            self.status = u'confused, trying something which is not a valid action'
+            self.status = u'confused, pressing random keys'
 
         if action:
             return action, target
