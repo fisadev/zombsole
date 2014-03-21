@@ -11,7 +11,7 @@ class ExterminationRules(Rules):
     def zombies_alive(self):
         '''Is there any zombie left?'''
         zombies = [thing for thing in self.game.world.things.values()
-                    if isinstance(thing, Zombie) and thing.life > 0]
+                   if isinstance(thing, Zombie) and thing.life > 0]
         return bool(zombies)
 
     def game_ended(self):
