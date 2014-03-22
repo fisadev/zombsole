@@ -93,7 +93,7 @@ class World(object):
             except Exception as err:
                 self.event(thing, u'error with next_step: %s' % err.message)
                 if self.debug:
-                    raise err
+                    raise
 
         return actions
 
@@ -113,7 +113,7 @@ class World(object):
                 event = u'error excuting %s action: %s' % (action, err.message)
                 self.event(thing, event)
                 if self.debug:
-                    raise err
+                    raise
 
     def clean_dead_things(self):
         '''Remove dead things, and add dead decorations.'''
