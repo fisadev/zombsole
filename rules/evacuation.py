@@ -41,7 +41,7 @@ class EvacuationRules(Rules):
     def half_team_alive(self):
         '''At least half of the original team alive?'''
         alive_players = self.get_alive_players()
-        return len(alive_players) >= len(self.game.players) / 2
+        return len(alive_players) >= len(self.game.players) / 2.0
 
     def game_ended(self):
         '''Has the game ended?'''
