@@ -2,7 +2,8 @@
 import random
 
 from core import Thing, FightingThing
-from utils import closest, distance, possible_moves
+from utils import (closest, distance, possible_moves, adyacent_positions,
+                   sort_by_distance)
 from weapons import ZombieClaws, Knife, Axe, Gun, Rifle, Shotgun
 
 
@@ -83,10 +84,15 @@ class Zombie(FightingThing):
             else:
                 # target not in range, _try_ to move
                 if positions:
-                    by_distance = lambda position: distance(target.position,
-                                                            position)
-                    best_position = sorted(positions, key=by_distance)[0]
+                    best_position = closest(target, positions)
                     action = 'move', best_position
+                else:
+                    adyacents = sort_by_distance(target,
+                                                 adyacent_positions(self))
+                    for position in adyacents:
+                        thing = things.get(position)
+                        if isinstance(thing, (Box, Wall)):
+                            return 'attack', thing
         else:
             # no targets, just wander around
             if positions:

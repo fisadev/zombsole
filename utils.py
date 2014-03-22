@@ -2,26 +2,38 @@
 import math
 
 
+def to_position(something):
+    '''Converts something (thing/position) to a position tuple.'''
+    if isinstance(something, tuple):
+        return something
+    else:
+        return something.position
+
+
 def distance(a, b):
-    '''Calculates distance between two positions.'''
-    x1, y1 = a
-    x2, y2 = b
+    '''Calculates distance between two positions or things.'''
+    x1, y1 = to_position(a)
+    x2, y2 = to_position(b)
 
     dx = abs(x1 - x2)
     dy = abs(y1 - y2)
     return math.sqrt((dx ** 2) + (dy ** 2))
 
 
+def sort_by_distance(something, others):
+    by_distance = lambda other: distance(something, other)
+    return sorted(others, key=by_distance)
+
+
 def closest(something, others):
-    '''Returns the closest other to something.'''
+    '''Returns the closest other to something (things/positions).'''
     if others:
-        by_distance = lambda other: distance(something.position,
-                                             other.position)
-        return sorted(others, key=by_distance)[0]
+        return sort_by_distance(something, others)[0]
 
 
-def adyacent_positions(position):
-    '''Calculates the 4 adyacent positions of a position.'''
+def adyacent_positions(something):
+    '''Calculates the 4 adyacent positions of somethig (thing/position).'''
+    position = to_position(something)
     deltas = ((0, 1),
               (0, -1),
               (1, 0),
@@ -32,9 +44,9 @@ def adyacent_positions(position):
             for delta in deltas]
 
 
-def possible_moves(position, things):
+def possible_moves(something, things):
     '''Calculates the possible moves for a thing.'''
-    positions = [position for position in adyacent_positions(position)
+    positions = [position for position in adyacent_positions(something)
                  if things.get(position) is None]
 
     return positions
