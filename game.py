@@ -181,6 +181,7 @@ class Game(object):
 
         # print events (of last step) for debugging
         if self.debug:
+            screen += u'\n'
             screen += u'\n'.join([colored(u'%s: %s' % (thing.name, event),
                                           thing.color)
                                   for t, thing, event in self.world.events
