@@ -76,7 +76,7 @@ It should inherit ``things.Player``, and implement a single instance method call
 
     class Terminator(Player):
         '''Liquid metal, invincible.'''
-        def next_step(self, things):
+        def next_step(self, things, t):
             return 'heal', self
 
 
@@ -100,6 +100,9 @@ Example of ``things`` you can receive:
         (50, 34): instance of another Player,
         (51, 40): you (self),
     }
+
+The method also receives ``t``, which is an integer representing the "instant" of time, 
+in case you want to use that information.
 
 And as you can see, the result of ``next_step`` must be a tuple. This tuple has two parts:
 the first one is the action to do, and the second one is the "target" for the action.
@@ -173,7 +176,7 @@ You update your status doing something like this:
 
     class Terminator(Player):
         '''Liquid metal, invincible.'''
-        def next_step(self, things):
+        def next_step(self, things, t):
             self.status = u'Healing myself, because I am invincible'
             return 'heal', self
 
@@ -183,7 +186,7 @@ And you can see other player statuses with something like this:
 
     class Terminator(Player):
         '''Liquid metal, invincible.'''
-        def next_step(self, things):
+        def next_step(self, things, t):
             other_players = [thing for thing in things.values()
                              if isinstance(thing, Player)]
             for player in other_players:

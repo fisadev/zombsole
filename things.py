@@ -65,7 +65,7 @@ class Zombie(FightingThing):
                                      'green', life, ZombieClaws(), position,
                                      dead_decoration)
 
-    def next_step(self, things):
+    def next_step(self, things, t):
         '''Zombies attack if in range, else move in direction of players.'''
         action = None
 

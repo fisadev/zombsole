@@ -6,7 +6,7 @@ from things import Player
 
 class RandoMan(Player):
     '''A player that decides what to do with a dice.'''
-    def next_step(self, things):
+    def next_step(self, things, t):
         action = random.choice(('move', 'attack', 'heal'))
 
         if action in ('attack', 'heal'):

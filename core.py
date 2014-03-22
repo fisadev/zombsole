@@ -83,7 +83,7 @@ class World(object):
                   if thing.ask_for_actions]
         for thing in actors:
             try:
-                next_step = thing.next_step(self.things)
+                next_step = thing.next_step(self.things, self.t)
                 if isinstance(next_step, (tuple, list)) and len(next_step) == 2:
                     action, parameter = next_step
                     actions.append((thing, action, parameter))
@@ -210,7 +210,7 @@ class Thing(object):
         self.ask_for_actions = ask_for_actions
         self.dead_decoration = dead_decoration
 
-    def next_step(self, things):
+    def next_step(self, things, t):
         return None
 
 

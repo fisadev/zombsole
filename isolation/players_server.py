@@ -36,13 +36,14 @@ def next_step():
     life = parameters['life']
     position = parameters['position']
     things = parameters['things']
+    t = parameters['t']
 
     player = players[player_name]
     player.life = life
     player.position = position
     things[position] = player
 
-    step_result = player.next_step(things)
+    step_result = player.next_step(things, t)
     status = player.status
 
     target_replace = False

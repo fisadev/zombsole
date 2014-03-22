@@ -21,12 +21,13 @@ class IsolatedPlayer(Player):
 
         super(IsolatedPlayer, self).__init__(name, color, weapon=weapon)
 
-    def next_step(self, things):
+    def next_step(self, things, t):
         parameters = {
             'player_name': self.name,
             'life': self.life,
             'position': self.position,
             'things': things,
+            't': t,
         }
         step_result, status, target_replace = self.do_at_server('next_step',
                                                                 parameters)
