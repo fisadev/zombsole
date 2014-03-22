@@ -1,8 +1,6 @@
 # coding: utf-8
 import random
 
-from termcolor import colored
-
 from utils import distance
 
 
