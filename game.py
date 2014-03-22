@@ -146,12 +146,12 @@ class Game(object):
 
     def draw(self):
         '''Draw the world.'''
-        os.system('clear')
+        screen = ''
 
         # print the world
-        print('\n'.join(u''.join(self.position_draw((x, y))
-                                 for x in range(self.world.size[0]))
-                        for y in range(self.world.size[1])))
+        screen += '\n'.join(u''.join(self.position_draw((x, y))
+                                     for x in range(self.world.size[0]))
+                            for y in range(self.world.size[1]))
 
         # print player stats
         players = sorted(self.players, key=lambda x: x.name)
@@ -177,14 +177,16 @@ class Game(object):
                                                 weapon_name,
                                                 player.status or u'-')
 
-            print(colored(player_stats, player.color))
+            screen += '\n' + colored(player_stats, player.color)
 
         # print events (of last step) for debugging
         if self.debug:
-            print(u'\n'.join([colored(u'%s: %s' % (thing.name, event),
-                                      thing.color)
-                              for t, thing, event in self.world.events
-                              if t == self.world.t]))
+            screen += u'\n'.join([colored(u'%s: %s' % (thing.name, event),
+                                          thing.color)
+                                  for t, thing, event in self.world.events
+                                  if t == self.world.t])
+        os.system('clear')
+        print(screen)
 
     def import_map(self, file_path):
         '''Import things from a utf-8 map file.'''
