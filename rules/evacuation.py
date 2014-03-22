@@ -1,6 +1,6 @@
 # coding: utf-8
 from game import Rules
-from utils import closest, distance
+from utils import closest, distance, adyacent_positions
 
 
 class EvacuationRules(Rules):
@@ -14,18 +14,25 @@ class EvacuationRules(Rules):
         return [player for player in self.game.players
                 if player.life > 0]
 
+
     def alive_players_together(self):
         '''Are the alive players together (close to each other)?'''
         alive_players = self.get_alive_players()
+        players_by_pos = dict((player.position, player)
+                              for player in alive_players)
+        together = set()
 
-        # the logic is this: the area must be at most, 3 * alive players
-        positions = [player.position for player in alive_players]
-        xs, ys = zip(*positions)
-        min_x, max_x = min(xs), max(xs)
-        min_y, max_y = min(ys), max(ys)
-        area = (max_x - min_x) * (max_y - min_y)
+        def add_neighbors(player):
+            together.add(player)
+            neighbors = [players_by_pos[position]
+                         for position in adyacent_positions(player)
+                         if position in players_by_pos]
 
-        return area <= len(alive_players) * 3
+            for neighbor in neighbors:
+                if neighbor not in together:
+                    add_neighbors(neighbor)
+
+        return len(together) == len(alive_players)
 
 
     def half_team_alive(self):
