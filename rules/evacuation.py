@@ -21,16 +21,19 @@ class EvacuationRules(Rules):
         players_by_pos = dict((player.position, player)
                               for player in alive_players)
         together = set()
+        pending = [alive_players[0], ]
 
-        def add_neighbors(player):
+        while pending:
+            player = pending.pop()
             together.add(player)
+
             neighbors = [players_by_pos[position]
                          for position in adyacent_positions(player)
                          if position in players_by_pos]
 
             for neighbor in neighbors:
                 if neighbor not in together:
-                    add_neighbors(neighbor)
+                    pending.append(neighbor)
 
         return len(together) == len(alive_players)
 
