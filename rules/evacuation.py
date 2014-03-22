@@ -20,7 +20,7 @@ class EvacuationRules(Rules):
 
         # the logic is this: the area must be at most, 3 * alive players
         positions = [player.position for player in alive_players]
-        xs, ys = zip(positions)
+        xs, ys = zip(*positions)
         min_x, max_x = min(xs), max(xs)
         min_y, max_y = min(ys), max(ys)
         area = (max_x - min_x) * (max_y - min_y)
