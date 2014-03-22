@@ -18,14 +18,15 @@ class EvacuationRules(Rules):
         '''Are the alive players together (close to each other)?'''
         alive_players = self.get_alive_players()
 
-        for player in alive_players:
-            others = [other for other in alive_players
-                      if other is not player and other.life > 0]
-            closest_other = closest(player, others)
-            if closest_other:
-                if distance(player.position, closest_other.position) > 2:
-                    return False
-        return True
+        # the logic is this: the area must be at most, 3 * alive players
+        positions = [player.position for player in alive_players]
+        xs, ys = zip(positions)
+        min_x, max_x = min(xs), max(xs)
+        min_y, max_y = min(ys), max(ys)
+        area = (max_x - min_x) * (max_y - min_y)
+
+        return area <= len(alive_players) * 3
+
 
     def half_team_alive(self):
         '''At least half of the original team alive?'''
