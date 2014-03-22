@@ -84,9 +84,11 @@ class Zombie(FightingThing):
             else:
                 # target not in range, _try_ to move
                 if positions:
+                    # move
                     best_position = closest(target, positions)
                     action = 'move', best_position
                 else:
+                    # if blocked by obstacles, try to break them
                     adyacents = sort_by_distance(target,
                                                  adyacent_positions(self))
                     for position in adyacents:
