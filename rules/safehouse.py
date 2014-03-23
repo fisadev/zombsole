@@ -9,14 +9,14 @@ class SafeHouseRules(Rules):
     '''
     def alive_players_in_house(self):
         '''Are the alive players in the safe house (objetive locations)?'''
-        in_house = [player.position in self.game.objetives
+        in_house = [player.position in self.game.map.objetives
                     for player in self.game.players
                     if player.life > 0]
         return all(in_house)
 
     def game_ended(self):
         '''Has the game ended?'''
-        if self.game.objetives is None:
+        if self.game.map.objetives is None:
             raise Exception('Safe house game requires objetives defined.')
 
         if self.players_alive():
