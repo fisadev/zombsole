@@ -1,0 +1,44 @@
+Rules
+=====
+
+Teams
+-----
+
+* Each team must play with 6 bots.
+* The bots can be of different classes or not.
+* The bots can be programmed by groups of people of any size (including 1).
+
+Games and scores
+----------------
+
+* Each team will have to play 3 matches of extermination, 3 matches of 
+  safehouse and 3 matches of evacuation.
+* Each match will grant points to the team if won, and no points if lost. 
+* Extermination matches won give you 3 points. Safehouse and evacuation 
+  matches won give you 5 points.
+* We will use final alive players on each match and ticks elapsed to win,
+  to break ties, in that order of precedence.
+* Extermination matches will be played in ``fort`` map, with 300 initial 
+  zombies and no minimum zombies population to mantain.
+* Safehouse matches will be played in ``city_for_safehouse`` map, with no
+  initial zombies and a minimum zombies population to mantain of 100.
+* Evacuation matches will be played in ``village_for_evacuation`` map, with no
+  initial zombies and a minimum zombies population to mantain of 100.
+* The commands to run the matches are these:
+
+.. code-block:: bash
+
+    python play.py extermination TEAM_BOTS -z 300 -m fort -s
+    python play.py safehouse TEAM_BOTS -n 100 -m city_for_safehouse -s
+    python play.py evacuation TEAM_BOTS -n 100 -m village_for_evacuation -s
+
+
+Other rules
+-----------
+
+* Docker isolation will be used to prevent hacks.
+* If you need extra dependencies for your bots, ask before! They may be 
+  difficult to install inside the isolation container.
+* If a match is stuck in an evident infinite loop, or something were an end
+  is very unlikely in a timely fashion, the match will be stopped and 
+  re-launched. After 3 tries, the match is considered lost.
