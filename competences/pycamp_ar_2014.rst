@@ -5,7 +5,8 @@ Teams
 -----
 
 * Each team must play with 6 bots.
-* The bots can be of different classes or not.
+* You may use bots of different classes if you desire but you are not forced
+  to.
 * The bots can be programmed by groups of people of any size (including 1).
 
 Games and scores
@@ -15,7 +16,7 @@ Games and scores
   safehouse and 3 matches of evacuation.
 * Each match will grant points to the team if won, and no points if lost. 
 * Extermination matches won give you 3 points. Safehouse and evacuation 
-  matches won give you 5 points.
+  matches won give you 5 points each.
 * We will use final alive players on each match and ticks elapsed to win,
   to break ties, in that order of precedence.
 * Extermination matches will be played in ``fort`` map, with 300 initial 
@@ -39,6 +40,6 @@ Other rules
 * Docker isolation will be used to prevent hacks.
 * If you need extra dependencies for your bots, ask before! They may be 
   difficult to install inside the isolation container.
-* If a match is stuck in an evident infinite loop, or something were an end
+* If a match is stuck in an evident infinite loop, or something where an end
   is very unlikely in a timely fashion, the match will be stopped and 
   re-launched. After 3 tries, the match is considered lost.
