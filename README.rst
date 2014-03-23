@@ -136,6 +136,8 @@ And also, there are other two attributes in your player that can be useful to lo
 
 * ``self.life``: amount of current life, from 0 (dead) to 100 (healthier than wolverine).
 * ``self.position``: your current position on the map.
+* ``self.rules``: the name of the rules of the game playing.
+* ``self.objetives``: the objetive positions of the game playing (can be None).
 
 Your create function
 --------------------
@@ -146,7 +148,7 @@ This function must look like this:
 .. code-block:: python
 
     def create(rules, objetives=None):
-        return Terminator('terminator', 'blue')
+        return Terminator('terminator', 'blue', rules=rules, objetives=objetives)
 
 
 The create function will be the one creating the instance of your player. You can run aditional logic
@@ -157,9 +159,12 @@ that players must reach. Extermination and Evacuation don't have objetive locati
 
 The default parameters your ``Player`` instance will need when created are a friendly name ("terminator"
 in the example) and a color (blue, cyan, green, grey, magenta, red, white, or yellow). You can also
-specify the weapon you want to use, importing them from the ``weapons`` module. But don't abouse this,
+specify the weapon you want to use, importing them from the ``weapons`` module. But don't abuse this,
 try to keep it challenging (i.er, don't create an army full of shotguns, be humble, it's a zombie apocalypse,
 not WW3).
+
+And finally, your player receives the ``rules`` name and the ``objetives``, to store them and be able to use 
+that info later on the ``next_step``.
 
 Colaborative for the win
 ------------------------
