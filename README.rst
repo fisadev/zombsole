@@ -91,14 +91,14 @@ Example of ``things`` you can receive:
 .. code-block:: 
 
     {   
-        (0, 0): instance of Zombie,
-        (0, 1): instance of Zombie,
-        (0, 2): instance of Zombie,
-        (10, 1): instance of Wall,
-        (10, 3): instance of Wall,
-        (23, 25): instance of Box,
-        (50, 34): instance of another Player,
-        (51, 40): you (self),
+        (0, 0): <instance of Zombie>,
+        (0, 1): <instance of Zombie>,
+        (0, 2): <instance of Zombie>,
+        (10, 1): <instance of Wall>,
+        (10, 3): <instance of Wall>,
+        (23, 25): <instance of Box>,
+        (50, 34): <instance of ano>ther Player,
+        (51, 40): <you (self)>,
     }
 
 The method also receives ``t``, which is an integer representing the "instant" of time, 
