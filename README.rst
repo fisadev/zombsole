@@ -43,16 +43,16 @@ And now lets just run a simple demo game:
 
 .. code-block:: bash
 
-    ./play.py extermination 80x20 sniper,troll -n 50 -m to_the_closet
+    ./play.py extermination sniper,troll -n 50 -m to_the_closet
 
 Depending on how lucky you are, this could either keep running forever, or quickly
 end with a very un-gory massacre of the two players (sniper and troll). If you want
 to stop the game, just press ``Ctrl-c``.
 
 The parameters of the ``play.py`` script are very easy to understand, just run 
-``./play.py --help``. In the example we just said "run an extermination game in
-a world of 80x20 size using the to_the_closet map, with the players sniper and 
-troll and a constant population of 50 zombies."
+``./play.py --help``. In the example we just said "run an extermination game 
+with the to_the_closet map, the players sniper and troll, and a constant population 
+of 50 zombies."
 
 The fun part: how to create your own players
 ============================================
