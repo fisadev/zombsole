@@ -25,7 +25,8 @@ class DeadBody(Thing):
 
     def __init__(self, name, color, position):
         super(DeadBody, self).__init__(name, DeadBody.ICON,
-                                       DeadBody.ICON_BASIC, color, 0, position)
+                                       DeadBody.ICON_BASIC, color, 0, position,
+                                       is_decoration=True)
 
 
 class ObjetiveLocation(Thing):
@@ -37,7 +38,8 @@ class ObjetiveLocation(Thing):
         super(ObjetiveLocation, self).__init__('objetive',
                                                ObjetiveLocation.ICON,
                                                ObjetiveLocation.ICON_BASIC,
-                                               'blue', 0, position)
+                                               'blue', 0, position,
+                                               is_decoration=True)
 
 
 class Wall(Thing):

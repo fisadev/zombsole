@@ -226,8 +226,7 @@ class Game(object):
                     zombie_spawns.append(position)
                 elif char.lower() == 'o':
                     objetives.append(position)
-                    self.world.spawn_thing(ObjetiveLocation(position),
-                                           decoration=True)
+                    self.world.spawn_thing(ObjetiveLocation(position))
 
         # if had any info, update spawns and objetives
         if player_spawns:

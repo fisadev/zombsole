@@ -18,13 +18,13 @@ class World(object):
         self.t = -1
         self.events = []
 
-    def spawn_thing(self, thing, decoration=False):
+    def spawn_thing(self, thing):
         '''Add a thing to the world, or to the decoration layer.
 
            The thing will be spawned into the position it has in its .position
            attribute.
         '''
-        if decoration:
+        if thing.is_decoration:
             self.decoration[thing.position] = thing
         else:
             other = self.things.get(thing.position)
@@ -122,8 +122,7 @@ class World(object):
         for thing in dead_things:
             if thing.dead_decoration is not None:
                 thing.dead_decoration.position = thing.position
-                self.spawn_thing(thing.dead_decoration,
-                                 decoration=True)
+                self.spawn_thing(thing.dead_decoration)
 
             del self.things[thing.position]
             self.event(thing, u'died')
@@ -194,7 +193,8 @@ class Thing(object):
     MAX_LIFE = 1
 
     def __init__(self, name, icon, icon_basic, color, life, position=None,
-                 ask_for_actions=False, dead_decoration=None):
+                 ask_for_actions=False, dead_decoration=None,
+                 is_decoration=False):
         if len(icon) != 1:
             raise Exception(u'The icon must be a 1 char unicode or string.')
 
@@ -207,6 +207,7 @@ class Thing(object):
         self.status = u''
         self.ask_for_actions = ask_for_actions
         self.dead_decoration = dead_decoration
+        self.is_decoration = is_decoration
 
     def next_step(self, things, t):
         return None
