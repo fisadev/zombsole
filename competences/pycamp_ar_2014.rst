@@ -17,8 +17,8 @@ Games and scores
 * Each match will grant points to the team if won, and no points if lost. 
 * Extermination matches won give you 3 points. Safehouse and evacuation 
   matches won give you 5 points each.
-* We will use final alive players on each match and ticks elapsed to win,
-  to break ties, in that order of precedence.
+* We will use final alive players on each match and ticks elapsed, to break 
+  ties, in that order of precedence.
 * Extermination matches will be played in ``fort`` map, with 300 initial 
   zombies and no minimum zombies population to mantain.
 * Safehouse matches will be played in ``city_for_safehouse`` map, with no
