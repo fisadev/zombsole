@@ -9,7 +9,9 @@ Usage:
     ./play.py list_maps
 
     GAME:     Should be the name of a type of game. Use list_rules to see a complete list.
-    PLAYERS:  Should be a list with the structure player1,player2,player3,...
+    PLAYERS:  Should be a list with the structure playerA,playerB,playerC,...
+              You can also specify how much instances of each player, like this:
+              playerA:3,playerB,playerC:10,...
 
 Options:
     -h --help            Show this help.
@@ -61,7 +63,6 @@ def play():
         # start a game
         # parse arguments
         rules_name = arguments['RULES']
-        player_names = arguments['PLAYERS'].split(',')
         initial_zombies = int(arguments['-z'])
         minimum_zombies = int(arguments['-n'])
         docker_isolator = arguments['-i']
@@ -69,6 +70,16 @@ def play():
         isolator_port = int(arguments['-p'])
         use_basic_icons = arguments['-b']
         max_frames = int(arguments['-f'])
+
+        player_names = []
+        for player_part in arguments['PLAYERS'].split(','):
+            if ':' in player_part:
+                player_name, count = player_part.split(':')
+                count = int(count)
+            else:
+                player_name = player_part
+                count = 1
+            player_names.extend([player_name,] * count)
 
         size = arguments['-s']
         if size:
