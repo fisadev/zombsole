@@ -24,14 +24,14 @@ Games and scores
 * Safehouse matches will be played in ``city_for_safehouse`` map, with no
   initial zombies and a minimum zombies population to mantain of 100.
 * Evacuation matches will be played in ``village_for_evacuation`` map, with no
-  initial zombies and a minimum zombies population to mantain of 100.
+  initial zombies and a minimum zombies population to mantain of 50.
 * The commands to run the matches are these:
 
 .. code-block:: bash
 
     python play.py extermination TEAM_BOTS -z 300 -m fort -i
     python play.py safehouse TEAM_BOTS -n 100 -m city_for_safehouse -i
-    python play.py evacuation TEAM_BOTS -n 100 -m village_for_evacuation -i
+    python play.py evacuation TEAM_BOTS -n 50 -m village_for_evacuation -i
 
 
 Other rules
