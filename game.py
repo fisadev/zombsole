@@ -223,16 +223,16 @@ class Game(object):
                 life_chars_count = int((10.0 / player.MAX_LIFE) * player.life)
                 life_chars = life_chars_count * u'\u2588'
                 no_life_chars = (10 - life_chars_count) * u'\u2591'
-                life = u'\u2665 %s%s %i' % (life_chars,
-                                            no_life_chars,
-                                            player.life)
+                life_bar = u'\u2665 %s%s' % (life_chars, no_life_chars)
             else:
-                life = u'\u2620 [dead]'
+                life_bar = u'\u2620 [dead]'
 
-            player_stats = u'%s %s (%s): %s' % (life,
-                                                player.name,
-                                                weapon_name,
-                                                player.status or u'-')
+            player_stats = u'%s %s <%i %s %s>: %s' % (life_bar,
+                                                      player.name,
+                                                      player.life,
+                                                      str(player.position),
+                                                      weapon_name,
+                                                      player.status or u'-')
 
             screen += '\n' + colored(player_stats, player.color)
 
