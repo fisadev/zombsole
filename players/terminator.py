@@ -16,10 +16,8 @@ class Terminator(Player):
                 best_move = closest(target, adyacent_positions(self))
                 obstacle = things.get(best_move)
                 if obstacle:
-                    if isinstance(obstacle, Player) and \
-                       obstacle.name == 'terminator':
-                        # zombie not in range. Terminator blocking path. Heal
-                        # it.
+                    if isinstance(obstacle, Player):
+                        # zombie not in range. Player blocking path. Heal it.
                         return 'heal', obstacle
                     else:
                         # zombie not in range. Obstacle in front. Shoot it.
