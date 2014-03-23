@@ -16,12 +16,9 @@ class ExterminationRules(Rules):
 
     def game_ended(self):
         '''Has the game ended?'''
-        if self.players_alive():
-            return not self.zombies_alive()
-        else:
-            return True
+        return not self.players_alive() or not self.zombies_alive()
 
-    def game_woRules(self):
+    def game_won(self):
         '''Was the game won?'''
         if self.players_alive():
             return True, 'zombies exterminated! :)'
