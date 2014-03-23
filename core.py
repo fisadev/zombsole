@@ -38,7 +38,7 @@ class World(object):
                         fail_if_cant=True):
         '''Spawn a group of things  in random positions.'''
         # if no positions provided, use all the world positions
-        if possible_positions is None:
+        if not possible_positions:
             spawns = [(x, y)
                       for x in range(self.size[0])
                       for y in range(self.size[1])]

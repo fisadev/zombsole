@@ -54,41 +54,98 @@ class Rules(object):
             return False, u'everybody is dead :('
 
 
+class Map(object):
+    '''A map for a world.'''
+    def __init__(self, size, things, player_spawns=None, zombie_spawns=None,
+                 objetives=None):
+        self.size = size
+        self.things = things
+        self.player_spawns = player_spawns
+        self.zombie_spawns = zombie_spawns
+        self.objetives = objetives
+
+    @classmethod
+    def from_file(cls, file_path):
+        '''Import data from a utf-8 map file.'''
+        zombie_spawns = []
+        player_spawns = []
+        objetives = []
+        things = []
+
+        max_row = 0
+        max_col = 0
+
+        # read the file
+        encoding = 'utf-8'
+        if sys.version_info > (3,):
+            with open(file_path, encoding=encoding) as map_file:
+                lines = map_file.read().split('\n')
+        else:
+            with open(file_path) as map_file:
+                lines = map_file.read().decode(encoding).split('\n')
+
+        # for each char, create the corresponding object
+        for row_index, line in enumerate(lines):
+            max_row = row_index
+
+            for col_index, char in enumerate(line):
+                if char:
+                    max_col = max(col_index, max_col)
+
+                position = (col_index, row_index)
+                if char in (Box.ICON, 'b', 'B'):
+                    things.append(Box(position))
+                elif char in (Wall.ICON, 'w', 'W'):
+                    things.append(Wall(position))
+                elif char.lower() == 'p':
+                    player_spawns.append(position)
+                elif char.lower() == 'z':
+                    zombie_spawns.append(position)
+                elif char.lower() == 'o':
+                    objetives.append(position)
+                    things.append(ObjetiveLocation(position))
+
+        return Map((max_col, max_row),
+                   things,
+                   player_spawns,
+                   zombie_spawns,
+                   objetives)
+
+
 class Game(object):
     '''An instance of game controls the flow of the game.
 
        This includes player and zombies spawning, game main loop, deciding when
        to stop, importing map data, drawing each update, etc.
     '''
-    def __init__(self, rules_name, player_names, size, map_file=None,
-                 player_spawns=None, zombie_spawns=None, objetives=None,
-                 initial_zombies=0, minimum_zombies=0, docker_isolator=False,
-                 debug=False, isolator_port=8000, use_basic_icons=False):
+    def __init__(self, rules_name, player_names, map_, initial_zombies=0,
+                 minimum_zombies=0, docker_isolator=False, debug=False,
+                 isolator_port=8000, use_basic_icons=False):
         self.players = []
 
         self.rules_name = rules_name
         self.rules = get_creator('rules.' + rules_name)(self)
-        self.player_spawns = player_spawns
-        self.zombie_spawns = zombie_spawns
-        self.objetives = objetives
+        self.map = map_
         self.minimum_zombies = minimum_zombies
         self.docker_isolator = docker_isolator
         self.isolator_port = isolator_port
         self.debug = debug
         self.use_basic_icons = use_basic_icons
 
-        self.world = World(size, debug=debug)
+        self.world = World(self.map.size, debug=debug)
 
-        if map_file is not None:
-            self.import_map(map_file)
+        for thing in self.map.things:
+            self.world.spawn_thing(thing)
 
         if docker_isolator:
             from isolation.players_client import create_player_client
-            self.players = [create_player_client(name, rules_name, objetives,
+            self.players = [create_player_client(name, rules_name,
+                                                 self.map.objetives,
                                                  self.isolator_port)
                             for name in player_names]
         else:
-            self.players = [create_player(name, rules_name, objetives)
+            self.players = [create_player(name, rules_name,
+                                          self.map.objetives)
                             for name in player_names]
 
         self.spawn_players()
@@ -96,13 +153,13 @@ class Game(object):
 
     def spawn_players(self):
         '''Spawn players using the provided player create functinons.'''
-        self.world.spawn_in_random(self.players, self.player_spawns)
+        self.world.spawn_in_random(self.players, self.map.player_spawns)
 
     def spawn_zombies(self, count):
         '''Spawn N zombies in the world.'''
         zombies = [Zombie() for i in range(count)]
         self.world.spawn_in_random(zombies,
-                                   self.zombie_spawns,
+                                   self.map.zombie_spawns,
                                    fail_if_cant=False)
 
     def position_draw(self, position):
@@ -188,55 +245,3 @@ class Game(object):
                                   if t == self.world.t])
         os.system('clear')
         print(screen)
-
-    def import_map(self, file_path):
-        '''Import things from a utf-8 map file.'''
-        zombie_spawns = []
-        player_spawns = []
-        objetives = []
-
-        max_row = 0
-        max_col = 0
-
-        # read the file
-        encoding = 'utf-8'
-        if sys.version_info > (3,):
-            with open(file_path, encoding=encoding) as map_file:
-                lines = map_file.read().split('\n')
-        else:
-            with open(file_path) as map_file:
-                lines = map_file.read().decode(encoding).split('\n')
-
-        # for each char, create the corresponding object
-        for row_index, line in enumerate(lines):
-            max_row = row_index
-
-            for col_index, char in enumerate(line):
-                if char:
-                    max_col = max(col_index, max_col)
-
-                position = (col_index, row_index)
-                if char in (Box.ICON, 'b', 'B'):
-                    self.world.spawn_thing(Box(position))
-                elif char in (Wall.ICON, 'w', 'W'):
-                    self.world.spawn_thing(Wall(position))
-                elif char.lower() == 'p':
-                    player_spawns.append(position)
-                elif char.lower() == 'z':
-                    zombie_spawns.append(position)
-                elif char.lower() == 'o':
-                    objetives.append(position)
-                    self.world.spawn_thing(ObjetiveLocation(position))
-
-        # if had any info, update spawns and objetives
-        if player_spawns:
-            self.player_spawns = player_spawns
-        if zombie_spawns:
-            self.zombie_spawns = zombie_spawns
-        if objetives:
-            self.objetives = objetives
-
-        # be sure everything in the map gets into the world size
-        if max_row > self.world.size[1] or max_col > self.world.size[0]:
-            message = 'This map needs at least a %ix%i world size'
-            raise Exception(message % (max_col + 1, max_row + 1))

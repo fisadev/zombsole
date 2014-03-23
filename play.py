@@ -4,22 +4,22 @@
 
 Usage:
     ./play.py --help
-    ./play.py RULES SIZE PLAYERS [-m MAP] [-i INITIAL_ZOMBIES] [-n MINIMUM_ZOMBIES] [-d] [-s [-p ISOLATOR_PORT ]] [-b]
+    ./play.py RULES PLAYERS [-m MAP] [-s SIZE] [-z INITIAL_ZOMBIES] [-n MINIMUM_ZOMBIES] [-d] [-i [-p ISOLATOR_PORT ]] [-b]
     ./play.py list_rules
     ./play.py list_maps
 
     GAME:     Should be the name of a type of game. Use list_rules to see a complete list.
-    SIZE:     COLUMNSxROWS
     PLAYERS:  Should be a list with the structure player1,player2,player3,...
 
 Options:
     -h --help            Show this help.
     -m MAP               The map name to use (an empty world by default)
                          Use list_maps to list available maps.
-    -i INITIAL_ZOMBIES   The initial amount of zombies [default: 0]
+    -s SIZE              The size of the world. Format: COLUMNSxROWS
+    -z INITIAL_ZOMBIES   The initial amount of zombies [default: 0]
     -n MINIMUM_ZOMBIES   The minimum amount of zombies at all times [default: 0]
     -d                   Debug mode (lots of extra info, and step by step game play)
-    -s                   Isolate the players process using docker, to prevent hacks to
+    -i                   Isolate the players process using docker, to prevent hacks to
                          the world (you will need docker installed for this to work,
                          and the isolator built and running. See the project docs for
                          more info).
@@ -40,7 +40,7 @@ from os import path, listdir
 from docopt import docopt
 from termcolor import colored
 
-from game import Game
+from game import Game, Map
 
 
 def play():
@@ -60,21 +60,40 @@ def play():
         # start a game
         # parse arguments
         rules_name = arguments['RULES']
-        size = tuple(map(int, arguments['SIZE'].split('x')))
         player_names = arguments['PLAYERS'].split(',')
-        map_file = path.join('maps', arguments['-m'])
-        initial_zombies = int(arguments['-i'])
+        initial_zombies = int(arguments['-z'])
         minimum_zombies = int(arguments['-n'])
-        docker_isolator = arguments['-s']
+        docker_isolator = arguments['-i']
         debug = arguments['-d']
         isolator_port = int(arguments['-p'])
         use_basic_icons = arguments['-b']
 
+        size = arguments['-s']
+        if size:
+            size = tuple(map(int, size.split('x')))
+
+        map_name = arguments['-m']
+        if map_name:
+            map_file = path.join('maps', map_name)
+            map_ = Map.from_file(map_file)
+
+            if size:
+                if size[0] < map_.size[0] or size[1] < map_.size[1]:
+                    message = "Map (%s) doesn't fit in specified size (%s) " \
+                              "(leave it empty to use best fit)"
+                    raise Exception(message % (str(map_.size), str(size)))
+                else:
+                    map_.size = size
+        else:
+            if not size:
+                size = 30, 10
+
+            map_ = Map(size, [])
+
         # create and start game
         g = Game(rules_name=rules_name,
                  player_names=player_names,
-                 size=size,
-                 map_file=map_file,
+                 map_=map_,
                  initial_zombies=initial_zombies,
                  minimum_zombies=minimum_zombies,
                  docker_isolator=docker_isolator,
