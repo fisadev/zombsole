@@ -4,7 +4,7 @@
 
 Usage:
     ./play.py --help
-    ./play.py RULES PLAYERS [-m MAP] [-s SIZE] [-z INITIAL_ZOMBIES] [-n MINIMUM_ZOMBIES] [-d] [-i [-p ISOLATOR_PORT ]] [-b]
+    ./play.py RULES PLAYERS [-m MAP] [-s SIZE] [-z INITIAL_ZOMBIES] [-n MINIMUM_ZOMBIES] [-d] [-i [-p ISOLATOR_PORT ]] [-b] [-f MAX_FRAMES]
     ./play.py list_rules
     ./play.py list_maps
 
@@ -19,6 +19,7 @@ Options:
     -z INITIAL_ZOMBIES   The initial amount of zombies [default: 0]
     -n MINIMUM_ZOMBIES   The minimum amount of zombies at all times [default: 0]
     -d                   Debug mode (lots of extra info, and step by step game play)
+    -f MAX_FRAMES        Maximum frames per second [default: 2].
     -i                   Isolate the players process using docker, to prevent hacks to
                          the world (you will need docker installed for this to work,
                          and the isolator built and running. See the project docs for
@@ -67,6 +68,7 @@ def play():
         debug = arguments['-d']
         isolator_port = int(arguments['-p'])
         use_basic_icons = arguments['-b']
+        max_frames = int(arguments['-f'])
 
         size = arguments['-s']
         if size:
@@ -100,7 +102,7 @@ def play():
                  isolator_port=isolator_port,
                  debug=debug,
                  use_basic_icons=use_basic_icons)
-        won, description = g.play()
+        won, description = g.play(max_frames)
         print('')
         if won:
             print(colored(u'WIN! ', 'green'))
