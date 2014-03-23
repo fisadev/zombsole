@@ -110,7 +110,8 @@ class Player(FightingThing):
     ICON = u'\u2A30'
     ICON_BASIC = u'x'
 
-    def __init__(self, name, color, position=None, weapon=None):
+    def __init__(self, name, color, position=None, weapon=None, rules=None,
+                 objetives=None):
         if weapon is None:
             weapon = random.choice([Gun, Shotgun, Rifle, Knife, Axe])()
 
@@ -119,3 +120,6 @@ class Player(FightingThing):
         super(Player, self).__init__(name, Player.ICON, Player.ICON_BASIC,
                                      color, Player.MAX_LIFE, weapon, position,
                                      dead_decoration)
+
+        self.rules = rules
+        self.objetives = objetives
