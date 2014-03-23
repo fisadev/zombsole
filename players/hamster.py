@@ -15,4 +15,4 @@ class Hamster(Player):
 
 
 def create(rules, objetives=None):
-    return Hamster('hamster', 'white')
+    return Hamster('hamster', 'white', rules=rules, objetives=objetives)

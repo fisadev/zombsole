@@ -20,4 +20,4 @@ class Sniper(Player):
 
 
 def create(rules, objetives=None):
-    return Sniper('sniper', 'yellow', weapon=Rifle())
+    return Sniper('sniper', 'yellow', weapon=Rifle(), rules=rules, objetives=objetives)

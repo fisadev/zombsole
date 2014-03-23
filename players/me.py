@@ -71,4 +71,4 @@ class Me(Player):
 
 
 def create(rules, objetives=None):
-    return Me('me', 'red', weapon=Rifle())
+    return Me('me', 'red', weapon=Rifle(), rules=rules, objetives=objetives)

@@ -13,4 +13,4 @@ class Troll(Player):
 
 
 def create(rules, objetives=None):
-    return Troll('troll', 'blue')
+    return Troll('troll', 'blue', rules=rules, objetives=objetives)
