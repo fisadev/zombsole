@@ -29,9 +29,9 @@ Games and scores
 
 .. code-block:: bash
 
-    python play.py extermination TEAM_BOTS -z 300 -m fort -s
-    python play.py safehouse TEAM_BOTS -n 100 -m city_for_safehouse -s
-    python play.py evacuation TEAM_BOTS -n 100 -m village_for_evacuation -s
+    python play.py extermination TEAM_BOTS -z 300 -m fort -i
+    python play.py safehouse TEAM_BOTS -n 100 -m city_for_safehouse -i
+    python play.py evacuation TEAM_BOTS -n 100 -m village_for_evacuation -i
 
 
 Other rules
