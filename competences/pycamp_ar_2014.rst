@@ -48,7 +48,7 @@ Results
 =======
 
 +--------------------+----------------+--------+------------+-------+
-| Team               | Match rules    | Result | Bots alive | Ticks |
+| Team               | Match rules    | Result | Survivors  | Ticks |
 +====================+================+========+============+=======+
 | Lucio              | extermination  | WIN    | 6          | 375   |
 |                    |                +--------+------------+-------+
