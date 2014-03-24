@@ -33,9 +33,14 @@ class IsolatedPlayer(Player):
                                                                 parameters)
         self.status = status
 
+        if step_result:
+            action, target = step_result
+            target = tuple(target)
+            step_result = action, target
+
         if target_replace:
             target = step_result[1]
-            target = things[tuple(target)]
+            target = things[target]
             step_result = step_result[0], target
 
         return step_result
