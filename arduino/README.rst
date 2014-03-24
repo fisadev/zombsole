@@ -13,5 +13,6 @@ Connections:
 People who worked on this:
 
 * Joaquin de Andres (xcancerberox@gmail.com)
+* `José Pron <https://github.com/ViruX>`_
 * `Juan Ignacio Scarafia <https://github.com/juaniscarafia>`_
 * `Gabriel Balaudo <https://github.com/Ganiserb>`_
