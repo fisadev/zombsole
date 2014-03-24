@@ -4,7 +4,7 @@ import math
 
 def to_position(something):
     '''Converts something (thing/position) to a position tuple.'''
-    if isinstance(something, (tuple, list)):
+    if isinstance(something, tuple):
         return something
     else:
         return something.position

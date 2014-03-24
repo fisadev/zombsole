@@ -132,7 +132,7 @@ class World(object):
 
            target: the position to go to.
         '''
-        if not isinstance(destination, (tuple, list)):
+        if not isinstance(destination, tuple):
             raise Exception(u'Destination of movement should be a tuple or list')
 
         obstacle = self.things.get(destination)
