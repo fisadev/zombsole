@@ -48,7 +48,7 @@ def next_step():
 
     target_replace = False
 
-    if step_result is not None:
+    if step_result:
         target = step_result[1]
         if isinstance(target, Thing):
             target = target.position
