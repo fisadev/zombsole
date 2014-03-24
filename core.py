@@ -17,6 +17,7 @@ class World(object):
         self.decoration = {}
         self.t = -1
         self.events = []
+        self.deaths = 0
 
     def spawn_thing(self, thing):
         '''Add a thing to the world, or to the decoration layer.
@@ -126,6 +127,7 @@ class World(object):
 
             del self.things[thing.position]
             self.event(thing, u'died')
+            self.deaths += 1
 
     def thing_move(self, thing, destination):
         '''Apply move action of a thing.

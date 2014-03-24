@@ -210,6 +210,9 @@ class Game(object):
                                      for x in range(self.world.size[0]))
                             for y in range(self.world.size[1]))
 
+        # game stats
+        screen += '\nticks: %i deaths: %i' % (self.world.t, self.world.deaths)
+
         # print player stats
         players = sorted(self.players, key=lambda x: x.name)
         for player in players:
