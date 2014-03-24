@@ -124,14 +124,7 @@ def play():
                  use_arduino=use_arduino,
                  arduino_device=arduino_device,
                  arduino_bauds=arduino_bauds)
-        won, description = g.play(max_frames)
-        print('')
-        if won:
-            print(colored(u'WIN! ', 'green'))
-        else:
-            print(colored(u'GAME OVER ', 'red'))
-        print(description)
-        print(g.world.t, 'ticks')
+        g.play(max_frames)
 
 
 if __name__ == '__main__':

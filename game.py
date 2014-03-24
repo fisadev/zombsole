@@ -207,7 +207,7 @@ class Game(object):
                 time.sleep(1.0 / frames_per_second)
 
             if self.rules.game_ended():
-                won = self.rules.game_won()
+                won, description = self.rules.game_won()
 
                 if self.use_arduino:
                     if won:
@@ -215,7 +215,14 @@ class Game(object):
                     else:
                         self.arduino('l', True)  # lose
 
-                return won
+                print('')
+                if won:
+                    print(colored(u'WIN! ', 'green'))
+                else:
+                    print(colored(u'GAME OVER ', 'red'))
+                print(description)
+
+                return won, description
 
     def arduino(self, data, add_end_chars=False):
         '''Send an order to the arduino screen.'''
