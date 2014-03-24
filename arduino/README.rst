@@ -13,5 +13,5 @@ Connections:
 People who worked on this:
 
 * Joaquin de Andres (xcancerberox@gmail.com)
-* Juan Ignacio Scarafia (@juaniscarafia)
-* Gabriel Balaudo (@Ganiserb)
+* `Juan Ignacio Scarafia <https://github.com/juaniscarafia>`_
+* `Gabriel Balaudo <https://github.com/Ganiserb>`_
