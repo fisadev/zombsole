@@ -112,7 +112,8 @@ def play():
                  docker_isolator=docker_isolator,
                  isolator_port=isolator_port,
                  debug=debug,
-                 use_basic_icons=use_basic_icons)
+                 use_basic_icons=use_basic_icons,
+                 use_arduino=True)
         won, description = g.play(max_frames)
         print('')
         if won:
