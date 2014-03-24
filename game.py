@@ -214,7 +214,6 @@ class Game(object):
                         self.arduino('g', True)  # "gwin!!"
                     else:
                         self.arduino('l', True)  # lose
-                    self.arduino('r', True)
 
                 return won
 
