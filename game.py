@@ -3,7 +3,6 @@ from __future__ import print_function
 
 import os
 import sys
-from serial import Serial
 import time
 
 from termcolor import colored
@@ -156,8 +155,13 @@ class Game(object):
         self.spawn_zombies(initial_zombies)
 
         if self.use_arduino:
-            self.arduino_serial = Serial(self.arduino_device,
-                                         self.arduino_bauds)
+            self.initialize_arduino()
+
+    def initialize_arduino(self):
+        '''Initialize serial connection with arduino screen.'''
+        from serial import Serial
+        self.arduino_serial = Serial(self.arduino_device,
+                                     self.arduino_bauds)
 
     def spawn_players(self):
         '''Spawn players using the provided player create functinons.'''
