@@ -46,7 +46,6 @@ from __future__ import print_function
 from os import path, listdir
 
 from docopt import docopt
-from termcolor import colored
 
 from game import Game, Map
 
