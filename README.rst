@@ -246,5 +246,5 @@ these characters to draw objects and important locations:
 +--------+--------------------------------------------------------------------------------------+
 | z      | a zombie spawn point (be sure to add **many more**)                                  |
 +--------+--------------------------------------------------------------------------------------+
-| o      | an objective location (for safehouse games, be sure to add as many as player spawns)  |
+| o      | an objective location (for safehouse games, be sure to add as many as player spawns) |
 +--------+--------------------------------------------------------------------------------------+
