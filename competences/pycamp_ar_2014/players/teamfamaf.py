@@ -55,11 +55,11 @@ class Teamfamaf(Player):
         tgt = (self.position[0] + delta[0],
                self.position[1] + delta[1])
         if things.get(tgt) is not None:
-            adyacents = sort_by_distance(destination, adyacent_positions(self))
-            for position in adyacents:
+            adjacents = sort_by_distance(destination, adjacent_positions(self))
+            for position in adjacents:
                 thing = things.get(position)
                 if isinstance(thing, (Box, Wall)) and distance(position, tgt) < distance(self.position, tgt):
-                    ady = sort_by_distance(destination, adyacent_positions(thing))
+                    ady = sort_by_distance(destination, adjacent_positions(thing))
                     posi = (tgt[0] + delta[0],
                             tgt[1] + delta[1])
                     thg = things.get(posi)
@@ -230,10 +230,10 @@ class Teamfamaf(Player):
                         return self.koikoi(self.position, goal.position, things)
 
 
-def create(rules, objetives=None):
+def create(rules, objectives=None):
     weapon = None
     if rules == 'extermination':
         weap = Shotgun()
     else:
         weap = Shotgun()
-    return Teamfamaf('teamfamaf', 'blue', weapon=weap, rules=rules, objective=objetives)
+    return Teamfamaf('teamfamaf', 'blue', weapon=weap, rules=rules, objective=objectives)

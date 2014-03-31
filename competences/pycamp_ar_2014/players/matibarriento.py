@@ -59,19 +59,19 @@ def canAttack(self,zombies):
 	else:
 		return True
 
-def getPlayerDieying(things):
-	dieying = []
+def getPlayerDieing(things):
+	dieing = []
 	other_players = getPlayers(things)
 	for item in other_players:
-			dieying.append([item.name,item.life])
-	dieying = sorted(dieying,key = lambda x:x[1])
-	return dieying
+			dieing.append([item.name,item.life])
+	dieing = sorted(dieing,key = lambda x:x[1])
+	return dieing
 
 def getPlayers(things):
 	other = [thing for thing in things.values() if isinstance(thing, Player)]
 	return other
 
-def create(rules, objetives=None):
+def create(rules, objectives=None):
 	color = random.choice(['red','yellow','blue','white'])
 	nomb = random.choice(['Mati','Buff','ElMati','Matias','Fernet'])
-	return Mati(nomb, color, weapon = Rifle(),objetives = objetives)
+	return Mati(nomb, color, weapon = Rifle(),objectives = objectives)

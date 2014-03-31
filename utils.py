@@ -31,8 +31,8 @@ def closest(something, others):
         return sort_by_distance(something, others)[0]
 
 
-def adyacent_positions(something):
-    '''Calculates the 4 adyacent positions of somethig (thing/position).'''
+def adjacent_positions(something):
+    '''Calculates the 4 adjacent positions of something (thing/position).'''
     position = to_position(something)
     deltas = ((0, 1),
               (0, -1),
@@ -46,7 +46,7 @@ def adyacent_positions(something):
 
 def possible_moves(something, things):
     '''Calculates the possible moves for a thing.'''
-    positions = [position for position in adyacent_positions(something)
+    positions = [position for position in adjacent_positions(something)
                  if things.get(position) is None]
 
     return positions

@@ -12,5 +12,5 @@ class Troll(Player):
         return 'heal', self
 
 
-def create(rules, objetives=None):
-    return Troll('troll', 'blue', rules=rules, objetives=objetives)
+def create(rules, objectives=None):
+    return Troll('troll', 'blue', rules=rules, objectives=objectives)

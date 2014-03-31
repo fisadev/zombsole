@@ -8,7 +8,7 @@ import time
 from termcolor import colored
 
 from core import World
-from things import Box, Wall, Zombie, ObjetiveLocation, Player
+from things import Box, Wall, Zombie, ObjectiveLocation, Player
 
 def get_creator(module_name):
     '''Get the create() function from a module.'''
@@ -18,9 +18,9 @@ def get_creator(module_name):
     return create_function
 
 
-def create_player(name, rules_name, objetives):
+def create_player(name, rules_name, objectives):
     creator = get_creator('players.' + name)
-    return creator(rules_name, objetives)
+    return creator(rules_name, objectives)
 
 
 def create_rules(name, game):
@@ -56,19 +56,19 @@ class Rules(object):
 class Map(object):
     '''A map for a world.'''
     def __init__(self, size, things, player_spawns=None, zombie_spawns=None,
-                 objetives=None):
+                 objectives=None):
         self.size = size
         self.things = things
         self.player_spawns = player_spawns
         self.zombie_spawns = zombie_spawns
-        self.objetives = objetives
+        self.objectives = objectives
 
     @classmethod
     def from_file(cls, file_path):
         '''Import data from a utf-8 map file.'''
         zombie_spawns = []
         player_spawns = []
-        objetives = []
+        objectives = []
         things = []
 
         max_row = 0
@@ -101,14 +101,14 @@ class Map(object):
                 elif char.lower() == 'z':
                     zombie_spawns.append(position)
                 elif char.lower() == 'o':
-                    objetives.append(position)
-                    things.append(ObjetiveLocation(position))
+                    objectives.append(position)
+                    things.append(ObjectiveLocation(position))
 
         return Map((max_col, max_row),
                    things,
                    player_spawns,
                    zombie_spawns,
-                   objetives)
+                   objectives)
 
 
 class Game(object):
@@ -143,12 +143,12 @@ class Game(object):
         if docker_isolator:
             from isolation.players_client import create_player_client
             self.players = [create_player_client(name, rules_name,
-                                                 self.map.objetives,
+                                                 self.map.objectives,
                                                  self.isolator_port)
                             for name in player_names]
         else:
             self.players = [create_player(name, rules_name,
-                                          self.map.objetives)
+                                          self.map.objectives)
                             for name in player_names]
 
         self.spawn_players()
@@ -164,7 +164,7 @@ class Game(object):
                                      self.arduino_bauds)
 
     def spawn_players(self):
-        '''Spawn players using the provided player create functinons.'''
+        '''Spawn players using the provided player create functions.'''
         self.world.spawn_in_random(self.players, self.map.player_spawns)
 
     def spawn_zombies(self, count):

@@ -1,6 +1,6 @@
 # coding: utf-8
 from game import Rules
-from utils import closest, distance, adyacent_positions
+from utils import closest, distance, adjacent_positions
 
 
 class EvacuationRules(Rules):
@@ -28,7 +28,7 @@ class EvacuationRules(Rules):
             together.add(player)
 
             neighbors = [players_by_pos[position]
-                         for position in adyacent_positions(player)
+                         for position in adjacent_positions(player)
                          if position in players_by_pos]
 
             for neighbor in neighbors:

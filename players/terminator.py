@@ -1,6 +1,6 @@
 # coding: utf-8
 from things import Player, Zombie
-from utils import closest, distance, adyacent_positions
+from utils import closest, distance, adjacent_positions
 from weapons import Shotgun
 
 
@@ -13,7 +13,7 @@ class Terminator(Player):
         if zombies:
             target = closest(self, zombies)
             if distance(self, target) > self.weapon.max_range:
-                best_move = closest(target, adyacent_positions(self))
+                best_move = closest(target, adjacent_positions(self))
                 obstacle = things.get(best_move)
                 if obstacle:
                     if isinstance(obstacle, Player):
@@ -37,6 +37,6 @@ class Terminator(Player):
             return 'heal', self
 
 
-def create(rules, objetives=None):
+def create(rules, objectives=None):
     return Terminator('terminator', 'cyan', weapon=Shotgun(), rules=rules,
-                      objetives=objetives)
+                      objectives=objectives)

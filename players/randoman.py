@@ -21,5 +21,5 @@ class RandoMan(Player):
         return action, target
 
 
-def create(rules, objetives=None):
-    return RandoMan('randoman', 'red', rules=rules, objetives=objetives)
+def create(rules, objectives=None):
+    return RandoMan('randoman', 'red', rules=rules, objectives=objectives)

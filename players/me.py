@@ -70,5 +70,5 @@ class Me(Player):
             return action, target
 
 
-def create(rules, objetives=None):
-    return Me('me', 'red', weapon=Rifle(), rules=rules, objetives=objetives)
+def create(rules, objectives=None):
+    return Me('me', 'red', weapon=Rifle(), rules=rules, objectives=objectives)

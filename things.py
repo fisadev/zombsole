@@ -2,7 +2,7 @@
 import random
 
 from core import Thing, FightingThing
-from utils import (closest, distance, possible_moves, adyacent_positions,
+from utils import (closest, distance, possible_moves, adjacent_positions,
                    sort_by_distance)
 from weapons import ZombieClaws, Knife, Axe, Gun, Rifle, Shotgun
 
@@ -29,17 +29,17 @@ class DeadBody(Thing):
                                        is_decoration=True)
 
 
-class ObjetiveLocation(Thing):
-    '''Objetive location.'''
+class ObjectiveLocation(Thing):
+    '''Objective location.'''
     ICON = u'\u2591'
     ICON_BASIC = u'*'
 
     def __init__(self, position):
-        super(ObjetiveLocation, self).__init__('objetive',
-                                               ObjetiveLocation.ICON,
-                                               ObjetiveLocation.ICON_BASIC,
-                                               'blue', 0, position,
-                                               is_decoration=True)
+        super(ObjectiveLocation, self).__init__('objective',
+                                                ObjectiveLocation.ICON,
+                                                ObjectiveLocation.ICON_BASIC,
+                                                'blue', 0, position,
+                                                is_decoration=True)
 
 
 class Wall(Thing):
@@ -91,9 +91,9 @@ class Zombie(FightingThing):
                     action = 'move', best_position
                 else:
                     # if blocked by obstacles, try to break them
-                    adyacents = sort_by_distance(target,
-                                                 adyacent_positions(self))
-                    for position in adyacents:
+                    adjacent = sort_by_distance(target,
+                                                 adjacent_positions(self))
+                    for position in adjacent:
                         thing = things.get(position)
                         if isinstance(thing, (Box, Wall)):
                             return 'attack', thing
@@ -111,7 +111,7 @@ class Player(FightingThing):
     ICON_BASIC = u'x'
 
     def __init__(self, name, color, position=None, weapon=None, rules=None,
-                 objetives=None):
+                 objectives=None, icon=None):
         if weapon is None:
             weapon = random.choice([Gun, Shotgun, Rifle, Knife, Axe])()
 
@@ -122,4 +122,4 @@ class Player(FightingThing):
                                      dead_decoration)
 
         self.rules = rules
-        self.objetives = objetives
+        self.objectives = objectives

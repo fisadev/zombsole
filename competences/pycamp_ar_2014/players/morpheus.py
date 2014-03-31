@@ -84,5 +84,5 @@ class Morpheus(God):
             newpos[1] += (-1 if (diff[1] < 0) else 1)
         return tuple(newpos)
 
-def create(rules, objetives=None):
+def create(rules, objectives=None):
     return Morpheus('morpheus', 'red', weapon=Shotgun(), rules=rules)

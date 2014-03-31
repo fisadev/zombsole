@@ -111,7 +111,7 @@ class World(object):
                 else:
                     self.event(thing, u'unknown action "%s"' % action)
             except Exception as err:
-                event = u'error excuting %s action: %s' % (action, err.message)
+                event = u'error executing %s action: %s' % (action, err.message)
                 self.event(thing, event)
                 if self.debug:
                     raise

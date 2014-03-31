@@ -67,7 +67,7 @@ class GoalDistanceMap(object):
 
 
                     if v is None:
-                        for p in utils.adyacent_positions((x,y)):
+                        for p in utils.adjacent_positions((x, y)):
                             cv = self[p]
 
                             if cv == count:
@@ -484,8 +484,8 @@ class ComposerStrategy(object):
         return action, done, ("{%s/%s}" % (self.ptr, len(self.strategies))) +status
 
     def is_winnable(self, things):
-        def adyacent(one, two):
-            ps = utils.adyacent_positions(one)
+        def adjacent(one, two):
+            ps = utils.adjacent_positions(one)
             if two.position in ps:
                 return True
             return False
@@ -496,14 +496,14 @@ class ComposerStrategy(object):
                 if player == other:
                     continue
                 for test in close:
-                    if adyacent(test, other):
+                    if adjacent(test, other):
                         close.append(other)
             if len(close) > 2:
                 return close[0].position
 
 class PlayerSpecificStrategies(object):
-    def __init__(self, default_stategy, wait_strategy, selector, **kwargs):
-        self.default = default_stategy
+    def __init__(self, default_strategy, wait_strategy, selector, **kwargs):
+        self.default = default_strategy
         self.wait = wait_strategy
         self.selector = selector
         self.specific = kwargs
@@ -712,7 +712,7 @@ class FuturologistEvacuation(Player):
                 )
 
 
-def create(rules, objetives=None):
+def create(rules, objectives=None):
     random.shuffle(names)
     name = names.pop()
     S.number_players += 1
