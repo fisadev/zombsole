@@ -215,7 +215,7 @@ class Game(object):
 
                 if self.use_arduino:
                     if won:
-                        self.arduino('g', True)  # "win!!"
+                        self.arduino('g', True)  # "gwin!!"
                     else:
                         self.arduino('l', True)  # lose
 
