@@ -11,7 +11,7 @@ class RandoMan(Player):
 
         if action in ('attack', 'heal'):
             self.status = action + 'ing'
-            target = random.choice(things.values())
+            target = random.choice(list(things.values()))
         else:
             self.status = u'moving'
             target = list(self.position)
