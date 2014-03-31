@@ -1,16 +1,18 @@
 # coding: utf-8
+import random
 
 from things import *
 from utils import *
 from core import *
 from weapons import *
+from decimal import Decimal
+from os import system
+from time import sleep
 
 HEALTH_LIMIT = 65
 
-
 class Teamfamaf(Player):
-    """A player that pretends to be a ninja."""
-
+    '''A player that pretends to be a ninja.'''
     def __init__(self, name, color, weapon, status='chilling out', state='grouping', rules=None, objective=None):
         super(Teamfamaf, self).__init__(name, color, weapon=weapon)
         self.rules = rules
@@ -57,7 +59,7 @@ class Teamfamaf(Player):
             for position in adjacents:
                 thing = things.get(position)
                 if isinstance(thing, (Box, Wall)) and distance(position, tgt) < distance(self.position, tgt):
-                    ady = sort_by_distance(destination, adjacent_positions(thing))
+                    adj = sort_by_distance(destination, adjacent_positions(thing))
                     posi = (tgt[0] + delta[0],
                             tgt[1] + delta[1])
                     thg = things.get(posi)
@@ -81,8 +83,7 @@ class Teamfamaf(Player):
 
     def next_step(self, things, t):
         zombies = [thing for thing in things.values() if isinstance(thing, Zombie) and thing.life > 0]
-        zombies_in_range = [zombie for zombie in zombies if
-                            distance(zombie.position, self.position) <= self.weapon.max_range]
+        zombies_in_range = [zombie for zombie in zombies if distance(zombie.position, self.position) <= self.weapon.max_range]
         players = [thing for thing in things.values() if isinstance(thing, Player) and thing is not self]
         players = sort_by_distance(self, players)
         allplayers = [thing for thing in things.values() if isinstance(thing, Player)]
@@ -105,15 +106,13 @@ class Teamfamaf(Player):
     def extermination(self, zombies, zombies_in_range, players, allplayers, conex, things):
         if conex != allplayers:
             if self.state == "grouping" or self.state == "regrouping":
-                injured = [player for player in players if
-                           player.life <= HEALTH_LIMIT and distance(player.position, self.position) <= HEALING_RANGE]
+                injured = [player for player in players if player.life <= HEALTH_LIMIT and distance(player.position, self.position) <= HEALING_RANGE]
                 if self.life <= HEALTH_LIMIT:
                     self.status = u'healing myself'
                     return 'heal', self
                 elif len(conex) > 1 and len(injured):
                     return 'heal', injured[0]
-                elif len([zombie for zombie in zombies if
-                          distance(self.position, zombie.position) <= self.weapon.max_range]) >= 1:
+                elif len([zombie for zombie in zombies if distance(self.position, zombie.position) <= self.weapon.max_range]) >= 1:
                     target = closest(self, zombies)
                     self.status = u'shooting closest opponent'
                     return 'attack', target
@@ -171,15 +170,13 @@ class Teamfamaf(Player):
                 return 'heal', cf
         if conex != allplayers:
             if self.state == "grouping" or self.state == "regrouping":
-                injured = [player for player in players if
-                           player.life <= HEALTH_LIMIT and distance(player.position, self.position) <= HEALING_RANGE]
+                injured = [player for player in players if player.life <= HEALTH_LIMIT and distance(player.position, self.position) <= HEALING_RANGE]
                 if self.life <= HEALTH_LIMIT:
                     self.status = u'healing myself'
                     return 'heal', self
                 elif len(conex) > 1 and len(injured):
                     return 'heal', injured[0]
-                elif len([zombie for zombie in zombies if
-                          distance(self.position, zombie.position) <= self.weapon.max_range]) >= 1:
+                elif len([zombie for zombie in zombies if distance(self.position, zombie.position) <= self.weapon.max_range]) >= 1:
                     target = closest(self, zombies)
                     self.status = u'shooting closest opponent'
                     return 'attack', target
@@ -190,45 +187,38 @@ class Teamfamaf(Player):
                     if goal is not None:
                         return self.koikoi(self.position, goal.position, things)
             else:
-                injured = [player for player in players if
-                           player.life <= HEALTH_LIMIT and distance(player.position, self.position) <= HEALING_RANGE]
+                injured = [player for player in players if player.life <= HEALTH_LIMIT and distance(player.position, self.position) <= HEALING_RANGE]
                 if len(conex) > 1 and len(injured):
                     self.status = u'healing ally'
                     return 'heal', injured[0]
                 elif self.life <= HEALTH_LIMIT:
                     self.status = u'healing myself'
                     return 'heal', self
-                elif len([zombie for zombie in zombies if
-                          distance(self.position, zombie.position) <= self.weapon.max_range]) >= 1:
+                elif len([zombie for zombie in zombies if distance(self.position, zombie.position) <= self.weapon.max_range]) >= 1:
                     target = closest(self, zombies)
                     self.status = u'shooting closest opponent'
                     return 'attack', target
                 self.status = u'still going to safehouse'
                 return self.koikoi(self.position, self.assigned, things)
         else:
-            if len([zombie for zombie in zombies if
-                    distance(self.position, zombie.position) <= self.weapon.max_range]) >= 1:
+            if len([zombie for zombie in zombies if distance(self.position, zombie.position) <= self.weapon.max_range]) >= 1:
                 target = closest(self, zombies)
                 self.status = u'shooting closest opponent'
                 return 'attack', target
             self.state = 'advancing'
-            self.status = u'heading for safe house'
+            self.status= u'heading for safe house'
             return self.koikoi(self.position, self.assigned, things)
 
     def evacuation(self, zombies, zombies_in_range, players, allplayers, conex, things):
         if conex != allplayers:
             if self.state == "grouping" or self.state == "regrouping":
-                injured = [player for player in players if
-                           player.life <= HEALTH_LIMIT and distance(player.position, self.position) <= HEALING_RANGE]
+                injured = [player for player in players if player.life <= HEALTH_LIMIT and distance(player.position, self.position) <= HEALING_RANGE]
                 if self.life <= HEALTH_LIMIT:
                     self.status = u'healing myself'
                     return 'heal', self
                 elif len(conex) > 1 and len(injured):
                     return 'heal', injured[0]
-                elif len([zombie for zombie in zombies if
-                          distance(self.position, zombie.position) <= self.weapon.max_range]) >= 1 and len(
-                        [zombie for zombie in zombies if
-                         distance(self.position, zombie.position) <= self.weapon.max_range - 2]) <= 3:
+                elif len([zombie for zombie in zombies if distance(self.position, zombie.position) <= self.weapon.max_range]) >= 1 and len([zombie for zombie in zombies if distance(self.position, zombie.position) <= self.weapon.max_range - 2]) <= 3:
                     target = closest(self, zombies)
                     self.status = u'shooting closest opponent'
                     return 'attack', target
