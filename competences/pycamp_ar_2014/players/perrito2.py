@@ -1,83 +1,89 @@
 # coding: utf-8
-from things import Player,Zombie,Box,Wall
-from weapons import Rifle, Shotgun, Gun
-from utils import closest, possible_moves, distance, sort_by_distance
-import random
-from core import World
+from things import Player, Zombie
+from weapons import Rifle
+from utils import closest, possible_moves, distance
+
 
 class Perrito(Player):
-	"""docstring for Mati"""
-	yo = 'Perrito'
-	vida = Player.MAX_LIFE
-	next_move = 'heal'
-	
-	def next_step(self, things,t):
-		# if self.life < self.vida :
-		# 	if self.next_move == 'move':
-		# 		action = self.next_move
-		# 		target = tuple(random.choice(emptyPlace(self,things)))
-		# 		self.next_move = 'heal'
-		# 	elif self.next_move == 'heal':
-		# 		action = self.next_move
-		# 		target = self
-		# 		self.vida = self.life
-		# 		self.next_move = 'move'
-		# 	else:
-		# 		self.next_move = 'move'
-			
-		# else:
-		action = 'heal'
-		target = self
-		
-		try:
-			target = getClosestZombie(self,things)
-			if (canAttack(self,target)):
-				action = 'attack'
-			else:
-				action = 'heal'
-				target = self #closest(target,possible_moves(self,things))
-		except:
-			pass
-		try:
-			name = target.name
-		except:
-			name = target
-		self.status = 'Perrito'#, str(name)#, self.weapon.max_range
-		self.vida = self.life
-		if action:
-			return action, target
+    """docstring for Mati"""
+    yo = 'Perrito'
+    vida = Player.MAX_LIFE
+    next_move = 'heal'
 
-def moveInteligent(self,thing):
-	pass
+    def next_step(self, things, t):
+        # if self.life < self.vida :
+        # 	if self.next_move == 'move':
+        # 		action = self.next_move
+        # 		target = tuple(random.choice(emptyPlace(self,things)))
+        # 		self.next_move = 'heal'
+        # 	elif self.next_move == 'heal':
+        # 		action = self.next_move
+        # 		target = self
+        # 		self.vida = self.life
+        # 		self.next_move = 'move'
+        # 	else:
+        # 		self.next_move = 'move'
 
-def emptyPlace(self,things):
-	return possible_moves(self,things)
+        # else:
+        action = 'heal'
+        target = self
 
-def getClosestZombie(self,things):
-	zombies = []
-	other = [thing for thing in things.values() if isinstance(thing, Zombie)]
-	zombies = closest(self, other)
-	return zombies
+        try:
+            target = getClosestZombie(self, things)
+            if canAttack(self, target):
+                action = 'attack'
+            else:
+                action = 'heal'
+                target = self
+        except:
+            pass
+        try:
+            name = target.name
+        except:
+            name = target
+        self.status = 'Perrito'
+        self.vida = self.life
+        if action:
+            return action, target
 
-def canAttack(self,zombies):
-	if(distance(self,zombies) > self.weapon.max_range):
-		return False
-	else:
-		return True
+
+def moveInteligent(self, thing):
+    pass
+
+
+def emptyPlace(self, things):
+    return possible_moves(self, things)
+
+
+def getClosestZombie(self, things):
+    zombies = []
+    other = [thing for thing in things.values() if isinstance(thing, Zombie)]
+    zombies = closest(self, other)
+    return zombies
+
+
+def canAttack(self, zombies):
+    if distance(self, zombies) > self.weapon.max_range:
+        return False
+    else:
+        return True
+
 
 def getPlayerDieing(things):
-	dieing = []
-	other_players = getPlayers(things)
-	for item in other_players:
-			dieing.append([item.name,item.life])
-	dieing = sorted(dieing,key = lambda x:x[1])
-	return dieing
+    dieing = []
+    other_players = getPlayers(things)
+    for item in other_players:
+        dieing.append([item.name, item.life])
+    dieing = sorted(dieing, key=lambda x: x[1])
+    return dieing
+
 
 def getPlayers(things):
-	other = [thing for thing in things.values() if isinstance(thing, Player)]
-	return other
+    other = [thing for thing in things.values() if isinstance(thing, Player)]
+    return other
+
 
 def create(rules, objectives=None):
-	color = 'red'#,'yellow','blue','white'])
-	nomb = "Perrito"
-	return Perrito(nomb, color, weapon = Rifle(),objectives = objectives)
+    color = 'red'
+    nomb = "Perrito"
+    return Perrito(nomb, color, weapon=Rifle(), objectives=objectives)

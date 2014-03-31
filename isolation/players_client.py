@@ -56,7 +56,7 @@ class IsolatedPlayer(Player):
 
 
 def create_player_client(player_name, rules_name, objectives, isolator_port):
-    '''Create a proxy which mimics a player, but calling players on the
-       isolated server.'''
+    """Create a proxy which mimics a player, but calling players on the
+       isolated server."""
 
     return IsolatedPlayer(player_name, rules_name, objectives, isolator_port)

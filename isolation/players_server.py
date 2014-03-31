@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
-'''Serve the players logic as a http service.'''
+"""Serve the players logic as a http service."""
 import json
 import pickle
 

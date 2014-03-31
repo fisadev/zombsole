@@ -8,7 +8,7 @@ from weapons import ZombieClaws, Knife, Axe, Gun, Rifle, Shotgun
 
 
 class Box(Thing):
-    '''Solid box.'''
+    """Solid box."""
     MAX_LIFE = 10
     ICON = u'\u2612'
     ICON_BASIC = u'@'
@@ -19,7 +19,7 @@ class Box(Thing):
 
 
 class DeadBody(Thing):
-    '''Dead body.'''
+    """Dead body."""
     ICON = u'\u2620'
     ICON_BASIC = u'='
 
@@ -30,7 +30,7 @@ class DeadBody(Thing):
 
 
 class ObjectiveLocation(Thing):
-    '''Objective location.'''
+    """Objective location."""
     ICON = u'\u2591'
     ICON_BASIC = u'*'
 
@@ -43,7 +43,7 @@ class ObjectiveLocation(Thing):
 
 
 class Wall(Thing):
-    '''Solid section of wall.'''
+    """Solid section of wall."""
     MAX_LIFE = 200
     ICON = u'\u2593'
     ICON_BASIC = u'#'
@@ -68,7 +68,7 @@ class Zombie(FightingThing):
                                      dead_decoration)
 
     def next_step(self, things, t):
-        '''Zombies attack if in range, else move in direction of players.'''
+        """Zombies attack if in range, else move in direction of players."""
         action = None
 
         # possible targets for movement and attack

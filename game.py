@@ -11,7 +11,7 @@ from core import World
 from things import Box, Wall, Zombie, ObjectiveLocation, Player
 
 def get_creator(module_name):
-    '''Get the create() function from a module.'''
+    """Get the create() function from a module."""
     module = __import__(module_name, fromlist=['create', ])
     create_function = getattr(module, 'create')
 
@@ -29,32 +29,32 @@ def create_rules(name, game):
 
 
 class Rules(object):
-    '''Rules to decide when a game ends, and when it's won.'''
+    """Rules to decide when a game ends, and when it's won."""
     def __init__(self, game):
         self.game = game
 
     def players_alive(self):
-        '''Are there any alive players?'''
+        """Are there any alive players?"""
         for player in self.game.players:
             if player.life > 0:
                 return True
         return False
 
     def game_ended(self):
-        '''Has the game ended?'''
+        """Has the game ended?"""
         return not self.players_alive()
 
     def game_won(self):
-        '''Was the game won?'''
+        """Was the game won?"""
         if self.players_alive():
-            # never should happen, but ilustrative
+            # never should happen, but illustrative
             return True, u'you won a game that never ends (?!)'
         else:
             return False, u'everybody is dead :('
 
 
 class Map(object):
-    '''A map for a world.'''
+    """A map for a world."""
     def __init__(self, size, things, player_spawns=None, zombie_spawns=None,
                  objectives=None):
         self.size = size
@@ -65,7 +65,7 @@ class Map(object):
 
     @classmethod
     def from_file(cls, file_path):
-        '''Import data from a utf-8 map file.'''
+        """Import data from a utf-8 map file."""
         zombie_spawns = []
         player_spawns = []
         objectives = []
@@ -112,11 +112,11 @@ class Map(object):
 
 
 class Game(object):
-    '''An instance of game controls the flow of the game.
+    """An instance of game controls the flow of the game.
 
        This includes player and zombies spawning, game main loop, deciding when
        to stop, importing map data, drawing each update, etc.
-    '''
+    """
     def __init__(self, rules_name, player_names, map_, initial_zombies=0,
                  minimum_zombies=0, docker_isolator=False, debug=False,
                  isolator_port=8000, use_basic_icons=False, use_arduino=False,
@@ -164,21 +164,21 @@ class Game(object):
                                      self.arduino_bauds)
 
     def spawn_players(self):
-        '''Spawn players using the provided player create functions.'''
+        """Spawn players using the provided player create functions."""
         self.world.spawn_in_random(self.players, self.map.player_spawns)
 
     def spawn_zombies(self, count):
-        '''Spawn N zombies in the world.'''
-        zombies = [Zombie() for i in range(count)]
+        """Spawn N zombies in the world."""
+        zombies = [Zombie() for _ in range(count)]
         self.world.spawn_in_random(zombies,
                                    self.map.zombie_spawns,
                                    fail_if_cant=False)
 
     def position_draw(self, position):
-        '''Get the string to draw for a given position of the world.'''
+        """Get the string to draw for a given position of the world."""
         # decorations first, then things over them
-        thing = self.world.things.get(position) or \
-                self.world.decoration.get(position)
+        thing = (self.world.things.get(position) or
+                 self.world.decoration.get(position))
 
         if thing is not None:
             if self.use_basic_icons:
@@ -190,11 +190,11 @@ class Game(object):
             return u' '
 
     def play(self, frames_per_second=2.0):
-        '''Game main loop, ending in a game result with description.'''
+        """Game main loop, ending in a game result with description."""
         while True:
             self.world.step()
 
-            # mantain the flow of zombies if necessary
+            # maintain the flow of zombies if necessary
             zombies = [thing for thing in self.world.things.values()
                        if isinstance(thing, Zombie)]
             if len(zombies) < self.minimum_zombies:
@@ -215,7 +215,7 @@ class Game(object):
 
                 if self.use_arduino:
                     if won:
-                        self.arduino('g', True)  # "gwin!!"
+                        self.arduino('g', True)  # "win!!"
                     else:
                         self.arduino('l', True)  # lose
 
@@ -229,13 +229,13 @@ class Game(object):
                 return won, description
 
     def arduino(self, data, add_end_chars=False):
-        '''Send an order to the arduino screen.'''
+        """Send an order to the arduino screen."""
         if add_end_chars:
             data = data + chr(1) * 2
         self.arduino_serial.write(data)
 
     def draw(self):
-        '''Draw the world.'''
+        """Draw the world."""
         screen = ''
 
         # print the world

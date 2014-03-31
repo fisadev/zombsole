@@ -1,8 +1,5 @@
 # coding: utf-8
-import unittest
 import random
-import itertools
-import copy
 import sys
 import codecs
 
@@ -10,7 +7,7 @@ import utils
 from things import Player, Zombie, Wall, Box
 from utils import closest
 from weapons import Rifle, Shotgun
-from core import World
+
 
 names = """Chen Tuan
 Ge Hong
@@ -24,7 +21,6 @@ Zhuangzi
 Darni""".split("\n")
 
 
-
 class GoalDistanceMap(object):
     def __init__(self, goal, things):
         self.things = things
@@ -32,7 +28,7 @@ class GoalDistanceMap(object):
         my = max(t[1] for t in things) + 2
         self.size = mx, my
         self.goal = goal
-        self.map = [ [None] * my for x in range(mx) ]
+        self.map = [[None] * my for _ in range(mx)]
 
         self.build()
 
@@ -57,14 +53,13 @@ class GoalDistanceMap(object):
             changed = False
             for y in range(self.size[1]):
                 for x in range(self.size[0]):
-                    thing = self.things.get((x,y), None)
+                    thing = self.things.get((x, y), None)
 
                     if thing is not None:
                         if isinstance(thing, Wall) or isinstance(thing, Box):
                             self.map[x][y] = float("+inf")
                             continue
                     v = self.map[x][y]
-
 
                     if v is None:
                         for p in utils.adjacent_positions((x, y)):
@@ -79,12 +74,12 @@ class GoalDistanceMap(object):
 
             count += 1
 
-
     def show(self):
         for y in range(self.size[1]):
             for x in range(self.size[0]):
-                if x > 30: continue
-                thing = self.things.get((x,y), None)
+                if x > 30:
+                    continue
+                thing = self.things.get((x, y), None)
                 if thing is not None:
                     if isinstance(thing, Wall):
                         sys.stdout.write("##|")
@@ -101,8 +96,7 @@ class GoalDistanceMap(object):
                         sys.stdout.write("%02d|" % v)
                 else:
                     sys.stdout.write("XX|")
-            #print
-
+                    #print
 
 
 class State(object):
@@ -118,14 +112,15 @@ class State(object):
     next_strategy = "first_strategy"
     strategy_name = None
 
+
 S = State()
 
+
 class FuturologistSafehouse(Player):
-    '''A player that stays still and shoots zombies.'''
+    """A player that stays still and shoots zombies."""
     futurologist = True
 
     def next_step(self, things, t=None):
-        result = None
 
         if S.played == 0:
             # lead a change in strategy
@@ -139,10 +134,9 @@ class FuturologistSafehouse(Player):
         if S.played == len([x for x in things.values() if isinstance(x, Player)]):
             S.played = 0
 
-
         result = S.strategy.get_next_move(self, things)
 
-        self.status = S.strategy_name + "|"+ str(S.tick) + "|" + str(result)
+        self.status = S.strategy_name + "|" + str(S.tick) + "|" + str(result)
         return result
 
     def build_first_strategy(self, things):
@@ -172,24 +166,21 @@ class FuturologistSafehouse(Player):
     def build_nueve(self, things):
         return RushStrategy(things, (37, 0), "diez")
 
-
     def build_diez(self, things):
         return RushStrategy(things, (25, 0), "once")
-
 
     def build_once(self, things):
         return RushStrategy(things, (13, 0), "goal")
 
-
     def build_goal(self, things):
         return RushStrategy(things, (2, 2), "siete")
 
+
 class FuturologistExtermination(Player):
-    '''A player that stays still and shoots zombies.'''
+    """A player that stays still and shoots zombies."""
     futurologist = True
 
     def next_step(self, things, t=None):
-        result = None
 
         if S.played == 0:
             # lead a change in strategy
@@ -203,10 +194,9 @@ class FuturologistExtermination(Player):
         if S.played == len([x for x in things.values() if isinstance(x, Player)]):
             S.played = 0
 
-
         result = S.strategy.get_next_move(self, things)
 
-        self.status = S.strategy_name + "|"+ str(S.tick) + "|" + str(result)
+        self.status = S.strategy_name + "|" + str(S.tick) + "|" + str(result)
         return result
 
     def build_first_strategy(self, things):
@@ -223,11 +213,10 @@ class FuturologistExtermination(Player):
 
 
 class FuturologistEvacuation(Player):
-    '''A player that stays still and shoots zombies.'''
+    """A player that stays still and shoots zombies."""
     futurologist = True
 
     def next_step(self, things, t=None):
-        result = None
 
         if S.played == 0:
             # lead a change in strategy
@@ -241,14 +230,14 @@ class FuturologistEvacuation(Player):
         if S.played == len([x for x in things.values() if isinstance(x, Player)]):
             S.played = 0
 
-
         result = S.strategy.get_next_move(self, things)
 
-        self.status = S.strategy_name + "|"+ str(S.tick) + "|" + str(result)
+        self.status = S.strategy_name + "|" + str(S.tick) + "|" + str(result)
         return result
 
     def build_first_strategy(self, things):
-        return RushStrategy(things, [(4, 5), (9, 12), (6, 15), (15, 11), (22, 7), (44, 2), (43, 19), (56, 9), (89, 7), (85, 13)], "dos", 50)
+        return RushStrategy(things, [(4, 5), (9, 12), (6, 15), (15, 11), (22, 7), (44, 2), (43, 19), (56, 9), (89, 7),
+                                     (85, 13)], "dos", 50)
 
 
 class RushStrategy(object):
@@ -270,7 +259,7 @@ class RushStrategy(object):
         winner = None
 
         if player.life < 70 and random.random() < 0.3:
-                result = ('heal', player)
+            result = ('heal', player)
         #elif player.life < 40:
         #        result = ('heal', player)
         else:
@@ -278,9 +267,9 @@ class RushStrategy(object):
             moves = utils.possible_moves(player, things)
             random.shuffle(moves)
             for pos in moves:
-                    #print pos, g[pos], current
-                    if g[pos] < current:
-                        winner = pos
+                #print pos, g[pos], current
+                if g[pos] < current:
+                    winner = pos
 
             if winner:
                 result = ('move', winner)
@@ -314,9 +303,6 @@ class RushStrategy(object):
         return result
 
 
-
-
-
 class RushRushStrategy(object):
     def __init__(self, goal, wait=10, timeout=100):
         self.goal = goal
@@ -339,17 +325,17 @@ class RushRushStrategy(object):
         winner = None
 
         if player.life < 70 and random.random() < 0.3:
-                result = ('heal', player)
+            result = ('heal', player)
         elif player.life < 50:
-                result = ('heal', player)
+            result = ('heal', player)
         else:
             #print "evaluating", self, self.position
             moves = utils.possible_moves(player, things)
             random.shuffle(moves)
             for pos in moves:
-                    #print pos, g[pos], current
-                    if g[pos] < current:
-                        winner = pos
+                #print pos, g[pos], current
+                if g[pos] < current:
+                    winner = pos
 
             if winner:
                 result = ('move', winner)
@@ -360,27 +346,27 @@ class RushRushStrategy(object):
                         result = ('attack', target)
 
 
-            # target = closest(player, [x for x in things.values() if isinstance(x, Zombie)])
-            # if target is not None:
-            #     if utils.distance(target, player) <= 1.5:
-            #         result = ('attack', target)
+                        # target = closest(player, [x for x in things.values() if isinstance(x, Zombie)])
+                        # if target is not None:
+                        #     if utils.distance(target, player) <= 1.5:
+                        #         result = ('attack', target)
 
 
-            # if result is not None:
-            #     moves = utils.possible_moves(player, things)
-            #     random.shuffle(moves)
-            #     for pos in moves:
-            #             #print pos, g[pos], current
-            #             if g[pos] < current:
-            #                 winner = pos
+                        # if result is not None:
+                        #     moves = utils.possible_moves(player, things)
+                        #     random.shuffle(moves)
+                        #     for pos in moves:
+                        #             #print pos, g[pos], current
+                        #             if g[pos] < current:
+                        #                 winner = pos
 
-            #     if winner:
-            #         result = ('move', winner)
-            #     else:
-            #         target = closest(player, [x for x in things.values() if isinstance(x, Zombie)])
-            #         if target is not None:
-            #             if utils.distance(target, player) <= player.weapon.max_range:
-            #                 result = ('attack', target)
+                        #     if winner:
+                        #         result = ('move', winner)
+                        #     else:
+                        #         target = closest(player, [x for x in things.values() if isinstance(x, Zombie)])
+                        #         if target is not None:
+                        #             if utils.distance(target, player) <= player.weapon.max_range:
+                        #                 result = ('attack', target)
 
         # if result is None:
         #     if random.random() < 0.25:
@@ -403,23 +389,21 @@ class RushRushStrategy(object):
             done = True
         return result, done, "Rush(%s)" % (self.goal,)
 
+
 class DestroyThingStrategy(object):
     def __init__(self, location):
         self.location = location
 
     def get_next_move(self, player, things):
         result = None
-        done = False
 
         if player.life < 70 and random.random() < 0.3:
-                result = ('heal', player)
+            result = ('heal', player)
         else:
             target = closest(player, [x for x in things.values() if isinstance(x, Zombie)])
             if target is not None:
                 if utils.distance(target, player) <= player.weapon.max_range:
                     result = ('attack', target)
-
-
 
         done = False
         if not self.location in things:
@@ -430,16 +414,16 @@ class DestroyThingStrategy(object):
 
         return result, done, "Destroy(%s)" % (self.location,)
 
+
 class WaitStrategy(object):
     def __init__(self):
         pass
 
     def get_next_move(self, player, things):
         result = None
-        done = False
 
         if player.life < 70 and random.random() < 0.3:
-                result = ('heal', player)
+            result = ('heal', player)
         else:
             target = closest(player, [x for x in things.values() if isinstance(x, Zombie)])
             if target is not None:
@@ -450,6 +434,7 @@ class WaitStrategy(object):
             result = ('heal', player)
 
         return result, False, "Waiting"
+
 
 class ComposerStrategy(object):
     def __init__(self, *strategies):
@@ -465,7 +450,7 @@ class ComposerStrategy(object):
                 self.win_strategy = RushRushStrategy(self.going_for_win)
             s = self.win_strategy
         else:
-            s = self.strategies[(self.ptr%len(self.strategies))]
+            s = self.strategies[(self.ptr % len(self.strategies))]
         action, done, status = s.get_next_move(player, things)
 
         if done:
@@ -481,7 +466,7 @@ class ComposerStrategy(object):
 
         #print self.done, player, s
         #raw_input()
-        return action, done, ("{%s/%s}" % (self.ptr, len(self.strategies))) +status
+        return action, done, ("{%s/%s}" % (self.ptr, len(self.strategies))) + status
 
     def is_winnable(self, things):
         def adjacent(one, two):
@@ -489,6 +474,7 @@ class ComposerStrategy(object):
             if two.position in ps:
                 return True
             return False
+
         players = [x for x in things.values() if isinstance(x, Player)]
         for player in players:
             close = [player]
@@ -500,6 +486,7 @@ class ComposerStrategy(object):
                         close.append(other)
             if len(close) > 2:
                 return close[0].position
+
 
 class PlayerSpecificStrategies(object):
     def __init__(self, default_strategy, wait_strategy, selector, **kwargs):
@@ -531,6 +518,7 @@ class PlayerSpecificStrategies(object):
             done = True
         return move, done, "[%s/%s] " % (len(self.done), len(live_names)) + status
 
+
 class MapReader(object):
     def __init__(self, filename):
         self.lines = [l for l in codecs.open(filename, "r", "utf-8")]
@@ -547,7 +535,7 @@ class MapReader(object):
 
 
 class FuturologistEvacuation(Player):
-    '''A player that stays still and shoots zombies.'''
+    """A player that stays still and shoots zombies."""
     futurologist = True
 
     def next_step(self, things, t=None):
@@ -565,151 +553,147 @@ class FuturologistEvacuation(Player):
         if S.played == len([x for x in things.values() if isinstance(x, Player)]):
             S.played = 0
 
-
         result, done, status = S.strategy.get_next_move(self, things)
-        pos_code = MapReader('players/evacuation.map')[self.position ]
+        pos_code = MapReader('players/evacuation.map')[self.position]
         if not 'a' <= pos_code <= 'z':
             pos_code = ""
         self.status = "p" + str(self.position) + pos_code \
-            + "|" +str(status) + "|" + str(result)
+                      + "|" + str(status) + "|" + str(result)
         return result
 
     def build_first_strategy(self, things):
         return self._strategy
 
-
     _strategy = ComposerStrategy(
-                RushRushStrategy([
-                    (4, 5), (9, 12), (9, 14), (15, 11), (22, 7),
-                    (44, 2), (43, 19), (62, 9), (89, 7), (85, 13)
-                    ], 5),
+        RushRushStrategy([(4, 5), (9, 12), (9, 14), (15, 11), (22, 7),
+                          (44, 2), (43, 19), (62, 9), (89, 7), (85, 13)], 5),
 
-                # H to I
-                # PlayerSpecificStrategies(
-                #     WaitStrategy(), WaitStrategy(),
-                #     MapReader('players/evacuation.map'),
-                #     h=RushRushStrategy((62, 11))
-                #     ),
-                # PlayerSpecificStrategies(
-                #     WaitStrategy(), WaitStrategy(),
-                #     MapReader('players/evacuation.map'),
-                #     h=RushRushStrategy((56, 9))
-                #     ),
-                # PlayerSpecificStrategies(
-                #     WaitStrategy(), WaitStrategy(),
-                #     MapReader('players/evacuation.map'),
-                #     h=DestroyThingStrategy((56, 8)),
-                #     ),
-                # PlayerSpecificStrategies(
-                #     WaitStrategy(), WaitStrategy(),
-                #     MapReader('players/evacuation.map'),
-                #     h=RushRushStrategy((56, 8))
-                #     ),
-                # PlayerSpecificStrategies(
-                #     WaitStrategy(), WaitStrategy(),
-                #     MapReader('players/evacuation.map'),
-                #     h=RushRushStrategy((44, 2))
-                #     ),
+        # H to I
+        # PlayerSpecificStrategies(
+        #     WaitStrategy(), WaitStrategy(),
+        #     MapReader('players/evacuation.map'),
+        #     h=RushRushStrategy((62, 11))
+        #     ),
+        # PlayerSpecificStrategies(
+        #     WaitStrategy(), WaitStrategy(),
+        #     MapReader('players/evacuation.map'),
+        #     h=RushRushStrategy((56, 9))
+        #     ),
+        # PlayerSpecificStrategies(
+        #     WaitStrategy(), WaitStrategy(),
+        #     MapReader('players/evacuation.map'),
+        #     h=DestroyThingStrategy((56, 8)),
+        #     ),
+        # PlayerSpecificStrategies(
+        #     WaitStrategy(), WaitStrategy(),
+        #     MapReader('players/evacuation.map'),
+        #     h=RushRushStrategy((56, 8))
+        #     ),
+        # PlayerSpecificStrategies(
+        #     WaitStrategy(), WaitStrategy(),
+        #     MapReader('players/evacuation.map'),
+        #     h=RushRushStrategy((44, 2))
+        #     ),
 
-                # I to J
-                PlayerSpecificStrategies(
-                    WaitStrategy(), WaitStrategy(),
-                    MapReader('players/evacuation.map'),
-                    i=DestroyThingStrategy((43, 2)),
-                    ),
-                PlayerSpecificStrategies(
-                    WaitStrategy(), WaitStrategy(),
-                    MapReader('players/evacuation.map'),
-                    i=DestroyThingStrategy((42, 2)),
-                    ),
-                PlayerSpecificStrategies(
-                    WaitStrategy(), WaitStrategy(),
-                    MapReader('players/evacuation.map'),
-                    i=RushRushStrategy((22, 7))
-                    ),
+        # I to J
+        PlayerSpecificStrategies(
+            WaitStrategy(), WaitStrategy(),
+            MapReader('players/evacuation.map'),
+            i=DestroyThingStrategy((43, 2)),
+        ),
+        PlayerSpecificStrategies(
+            WaitStrategy(), WaitStrategy(),
+            MapReader('players/evacuation.map'),
+            i=DestroyThingStrategy((42, 2)),
+        ),
+        PlayerSpecificStrategies(
+            WaitStrategy(), WaitStrategy(),
+            MapReader('players/evacuation.map'),
+            i=RushRushStrategy((22, 7))
+        ),
 
-                # J to A
-                PlayerSpecificStrategies(
-                    WaitStrategy(), WaitStrategy(),
-                    MapReader('players/evacuation.map'),
-                    j=DestroyThingStrategy((21, 7)),
-                    ),
-                PlayerSpecificStrategies(
-                    WaitStrategy(), WaitStrategy(),
-                    MapReader('players/evacuation.map'),
-                    j=RushRushStrategy((4, 5))
-                    ),
+        # J to A
+        PlayerSpecificStrategies(
+            WaitStrategy(), WaitStrategy(),
+            MapReader('players/evacuation.map'),
+            j=DestroyThingStrategy((21, 7)),
+        ),
+        PlayerSpecificStrategies(
+            WaitStrategy(), WaitStrategy(),
+            MapReader('players/evacuation.map'),
+            j=RushRushStrategy((4, 5))
+        ),
 
 
-                # A to B
-                PlayerSpecificStrategies(
-                    WaitStrategy(), WaitStrategy(),
-                    MapReader('players/evacuation.map'),
-                    a=RushRushStrategy((9, 12))
-                    ),
-                PlayerSpecificStrategies(
-                    WaitStrategy(), WaitStrategy(),
-                    MapReader('players/evacuation.map'),
-                    b=DestroyThingStrategy((9, 13)),
-                    ),
-                PlayerSpecificStrategies(
-                    WaitStrategy(), WaitStrategy(),
-                    MapReader('players/evacuation.map'),
-                    b=RushRushStrategy((9, 13))
-                    ),
-                PlayerSpecificStrategies(
-                    WaitStrategy(), WaitStrategy(),
-                    MapReader('players/evacuation.map'),
-                    b=RushRushStrategy((15, 11))
-                    ),
-                PlayerSpecificStrategies(
-                    WaitStrategy(), WaitStrategy(),
-                    MapReader('players/evacuation.map'),
-                    c=RushRushStrategy((44, 20))
-                    ),
-                PlayerSpecificStrategies(
-                    WaitStrategy(), WaitStrategy(),
-                    MapReader('players/evacuation.map'),
-                    e=RushRushStrategy((92, 10))
-                    ),
-                PlayerSpecificStrategies(
-                    WaitStrategy(), WaitStrategy(),
-                    MapReader('players/evacuation.map'),
-                    e=DestroyThingStrategy((92, 11))
-                    ),
-                PlayerSpecificStrategies(
-                    WaitStrategy(), WaitStrategy(),
-                    MapReader('players/evacuation.map'),
-                    e=RushRushStrategy((93, 13)),
-                    ),
-                PlayerSpecificStrategies(
-                    WaitStrategy(), WaitStrategy(),
-                    MapReader('players/evacuation.map'),
-                    d=RushRushStrategy((88, 15)),
-                    ),
-                PlayerSpecificStrategies(
-                    WaitStrategy(), WaitStrategy(),
-                    MapReader('players/evacuation.map'),
-                    f=RushRushStrategy((78, 15)),
-                    ),
-                PlayerSpecificStrategies(
-                    WaitStrategy(), WaitStrategy(),
-                    MapReader('players/evacuation.map'),
-                    h=RushRushStrategy((82, 15)),
-                    ),
-                # PlayerSpecificStrategies(
-                #     WaitStrategy(), WaitStrategy(),
-                #     MapReader('players/evacuation.map'),
-                #     d=DestroyThingStrategy((79, 12))
-                #     ),
-                PlayerSpecificStrategies(
-                    WaitStrategy(), WaitStrategy(),
-                    MapReader('players/evacuation.map'),
-                    e=RushRushStrategy((56, 11)),
-                    d=RushRushStrategy((56, 11))
-                    ),
-                RushRushStrategy((44, 20)),
-                )
+        # A to B
+        PlayerSpecificStrategies(
+            WaitStrategy(), WaitStrategy(),
+            MapReader('players/evacuation.map'),
+            a=RushRushStrategy((9, 12))
+        ),
+        PlayerSpecificStrategies(
+            WaitStrategy(), WaitStrategy(),
+            MapReader('players/evacuation.map'),
+            b=DestroyThingStrategy((9, 13)),
+        ),
+        PlayerSpecificStrategies(
+            WaitStrategy(), WaitStrategy(),
+            MapReader('players/evacuation.map'),
+            b=RushRushStrategy((9, 13))
+        ),
+        PlayerSpecificStrategies(
+            WaitStrategy(), WaitStrategy(),
+            MapReader('players/evacuation.map'),
+            b=RushRushStrategy((15, 11))
+        ),
+        PlayerSpecificStrategies(
+            WaitStrategy(), WaitStrategy(),
+            MapReader('players/evacuation.map'),
+            c=RushRushStrategy((44, 20))
+        ),
+        PlayerSpecificStrategies(
+            WaitStrategy(), WaitStrategy(),
+            MapReader('players/evacuation.map'),
+            e=RushRushStrategy((92, 10))
+        ),
+        PlayerSpecificStrategies(
+            WaitStrategy(), WaitStrategy(),
+            MapReader('players/evacuation.map'),
+            e=DestroyThingStrategy((92, 11))
+        ),
+        PlayerSpecificStrategies(
+            WaitStrategy(), WaitStrategy(),
+            MapReader('players/evacuation.map'),
+            e=RushRushStrategy((93, 13)),
+        ),
+        PlayerSpecificStrategies(
+            WaitStrategy(), WaitStrategy(),
+            MapReader('players/evacuation.map'),
+            d=RushRushStrategy((88, 15)),
+        ),
+        PlayerSpecificStrategies(
+            WaitStrategy(), WaitStrategy(),
+            MapReader('players/evacuation.map'),
+            f=RushRushStrategy((78, 15)),
+        ),
+        PlayerSpecificStrategies(
+            WaitStrategy(), WaitStrategy(),
+            MapReader('players/evacuation.map'),
+            h=RushRushStrategy((82, 15)),
+        ),
+        # PlayerSpecificStrategies(
+        #     WaitStrategy(), WaitStrategy(),
+        #     MapReader('players/evacuation.map'),
+        #     d=DestroyThingStrategy((79, 12))
+        #     ),
+        PlayerSpecificStrategies(
+            WaitStrategy(), WaitStrategy(),
+            MapReader('players/evacuation.map'),
+            e=RushRushStrategy((56, 11)),
+            d=RushRushStrategy((56, 11))
+        ),
+        RushRushStrategy((44, 20)),
+    )
 
 
 def create(rules, objectives=None):
