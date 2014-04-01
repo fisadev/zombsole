@@ -9,12 +9,12 @@ import weapons
 
 
 class IsolatedPlayer(Player):
-    def __init__(self, name, rules_name, objetives, isolator_port):
+    def __init__(self, name, rules_name, objectives, isolator_port):
         self.isolator_port = isolator_port
         parameters = {
             'player_name': name,
             'rules_name': rules_name,
-            'objetives': objetives,
+            'objectives': objectives,
         }
         color, weapon_name = self.do_at_server('create_player', parameters)
         weapon = getattr(weapons, weapon_name)()
@@ -55,8 +55,8 @@ class IsolatedPlayer(Player):
         return json.loads(response)
 
 
-def create_player_client(player_name, rules_name, objetives, isolator_port):
-    '''Create a proxy which mimicks a player, but calling players on the
-       isolated server.'''
+def create_player_client(player_name, rules_name, objectives, isolator_port):
+    """Create a proxy which mimics a player, but calling players on the
+       isolated server."""
 
-    return IsolatedPlayer(player_name, rules_name, objetives, isolator_port)
+    return IsolatedPlayer(player_name, rules_name, objectives, isolator_port)

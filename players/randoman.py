@@ -5,13 +5,13 @@ from things import Player
 
 
 class RandoMan(Player):
-    '''A player that decides what to do with a dice.'''
+    """A player that decides what to do with a dice."""
     def next_step(self, things, t):
         action = random.choice(('move', 'attack', 'heal'))
 
         if action in ('attack', 'heal'):
             self.status = action + 'ing'
-            target = random.choice(things.values())
+            target = random.choice(list(things.values()))
         else:
             self.status = u'moving'
             target = list(self.position)
@@ -21,5 +21,5 @@ class RandoMan(Player):
         return action, target
 
 
-def create(rules, objetives=None):
-    return RandoMan('randoman', 'red', rules=rules, objetives=objetives)
+def create(rules, objectives=None):
+    return RandoMan('randoman', 'red', rules=rules, objectives=objectives)

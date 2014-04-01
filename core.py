@@ -9,7 +9,7 @@ HEALING_RANGE = 3
 
 
 class World(object):
-    '''World where to play the game.'''
+    """World where to play the game."""
     def __init__(self, size, debug=True):
         self.size = size
         self.debug = debug
@@ -20,11 +20,11 @@ class World(object):
         self.deaths = 0
 
     def spawn_thing(self, thing):
-        '''Add a thing to the world, or to the decoration layer.
+        """Add a thing to the world, or to the decoration layer.
 
            The thing will be spawned into the position it has in its .position
            attribute.
-        '''
+        """
         if thing.is_decoration:
             self.decoration[thing.position] = thing
         else:
@@ -37,7 +37,7 @@ class World(object):
 
     def spawn_in_random(self, things, possible_positions=None,
                         fail_if_cant=True):
-        '''Spawn a group of things  in random positions.'''
+        """Spawn a group of things  in random positions."""
         # if no positions provided, use all the world positions
         if not possible_positions:
             spawns = [(x, y)
@@ -64,11 +64,11 @@ class World(object):
                     return
 
     def event(self, thing, message):
-        '''Log an event.'''
+        """Log an event."""
         self.events.append((self.t, thing, message))
 
     def step(self):
-        '''Forward one instant of time.'''
+        """Forward one instant of time."""
         self.t += 1
         actions = self.get_actions()
         random.shuffle(actions)
@@ -76,7 +76,7 @@ class World(object):
         self.clean_dead_things()
 
     def get_actions(self):
-        '''For each thing, call its next_step to get its desired action.'''
+        """For each thing, call its next_step to get its desired action."""
         actions = []
         actors = [thing for thing in self.things.values()
                   if thing.ask_for_actions]
@@ -99,7 +99,7 @@ class World(object):
         return actions
 
     def execute_actions(self, actions):
-        '''Execute actions, and add their results as events.'''
+        """Execute actions, and add their results as events."""
         for thing, action, parameter in actions:
             try:
                 # the method which applies the action is something like:
@@ -111,13 +111,13 @@ class World(object):
                 else:
                     self.event(thing, u'unknown action "%s"' % action)
             except Exception as err:
-                event = u'error excuting %s action: %s' % (action, err.message)
+                event = u'error executing %s action: %s' % (action, err.message)
                 self.event(thing, event)
                 if self.debug:
                     raise
 
     def clean_dead_things(self):
-        '''Remove dead things, and add dead decorations.'''
+        """Remove dead things, and add dead decorations."""
         dead_things = [thing for thing in self.things.values()
                        if thing.life <= 0]
         for thing in dead_things:
@@ -130,10 +130,10 @@ class World(object):
             self.deaths += 1
 
     def thing_move(self, thing, destination):
-        '''Apply move action of a thing.
+        """Apply move action of a thing.
 
            target: the position to go to.
-        '''
+        """
         if not isinstance(destination, tuple):
             raise Exception(u'Destination of movement should be a tuple or list')
 
@@ -154,10 +154,10 @@ class World(object):
         return event
 
     def thing_attack(self, thing, target):
-        '''Apply attack action of a thing.
+        """Apply attack action of a thing.
 
            target: the thing to attack.
-        '''
+        """
         if not isinstance(target, Thing):
             raise Exception(u'Target of attack should be a thing')
 
@@ -172,10 +172,10 @@ class World(object):
         return event
 
     def thing_heal(self, thing, target):
-        '''Apply heal action of a thing.
+        """Apply heal action of a thing.
 
            target: the thing to heal.
-        '''
+        """
         if not isinstance(target, Thing):
             raise Exception(u'Target of healing should be a thing')
 
@@ -191,7 +191,7 @@ class World(object):
 
 
 class Thing(object):
-    '''Something in the world.'''
+    """Something in the world."""
     MAX_LIFE = 1
 
     def __init__(self, name, icon, icon_basic, color, life, position=None,
@@ -216,7 +216,7 @@ class Thing(object):
 
 
 class Weapon(object):
-    '''Weapon, capable of doing damage to things.'''
+    """Weapon, capable of doing damage to things."""
     def __init__(self, name, max_range, damage_range):
         self.name = name
         self.max_range = max_range
@@ -224,7 +224,7 @@ class Weapon(object):
 
 
 class FightingThing(Thing):
-    '''Thing that has a weapon.'''
+    """Thing that has a weapon."""
     def __init__(self, name, icon, icon_basic, color, life, weapon,
                  position=None, dead_decoration=None):
         super(FightingThing, self).__init__(name, icon, icon_basic, color,

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
-'''Zomsole game runner.
+"""Zomsole game runner.
 
 Usage:
     ./play.py --help
@@ -40,7 +40,7 @@ list_rules:
 
 list_maps:
     Will list available game maps.
-'''
+"""
 from __future__ import print_function
 
 from os import path, listdir
@@ -51,17 +51,17 @@ from game import Game, Map
 
 
 def play():
-    '''Initiate a game, using the command line arguments as configuration.'''
+    """Initiate a game, using the command line arguments as configuration."""
     arguments = docopt(__doc__)
 
     if arguments['list_rules']:
-        # list all posible game rules
+        # list all possible game rules
         names = [name.replace('.py', '')
                  for name in listdir('rules')
                  if '__init__' not in name and '.pyc' not in name]
         print('\n'.join(names))
     elif arguments['list_maps']:
-        # list all posible maps
+        # list all possible maps
         print('\n'.join(listdir('maps')))
     else:
         # start a game
@@ -86,7 +86,7 @@ def play():
             else:
                 player_name = player_part
                 count = 1
-            player_names.extend([player_name,] * count)
+            player_names.extend([player_name, ] * count)
 
         size = arguments['-s']
         if size:

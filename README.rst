@@ -12,7 +12,7 @@ different bot, and then put the bots to work together against the zombies.
 There are three different game types:
 
 * **Extermination**: you must kill all zombies, and at least 1 player must survive.
-* **Evacuation**: all players start far away from each other, and must get togheter
+* **Evacuation**: all players start far away from each other, and must get together
   to be evacuated at any place by an helicopter. At least half of the team must
   survive.
 * **Safe House**: all players must travel and get inside a single safe house. At 
@@ -97,7 +97,7 @@ Example of ``things`` you can receive:
         (10, 1): <instance of Wall>,
         (10, 3): <instance of Wall>,
         (23, 25): <instance of Box>,
-        (50, 34): <instance of ano>ther Player,
+        (50, 34): <instance of another Player>,
         (51, 40): <you (self)>,
     }
 
@@ -129,7 +129,7 @@ Some extra notes about actions:
   things that are farther away, you won't hit them. And you can use the ``distance`` function
   from the ``utils`` module to calculate distances between points.
 * Healing has a range too (visible at ``core.HEALING_RANGE``).
-* Movement is limited to adyacent tiles. That is, you can only move 1 block either up, down, 
+* Movement is limited to adjacent tiles. That is, you can only move 1 block either up, down,
   left or right. If you try to move to anywhere else, you will just stay still.
 
 And also, there are other two attributes in your player that can be useful to look at:
@@ -137,7 +137,7 @@ And also, there are other two attributes in your player that can be useful to lo
 * ``self.life``: amount of current life, from 0 (dead) to 100 (healthier than wolverine).
 * ``self.position``: your current position on the map.
 * ``self.rules``: the name of the rules of the game playing.
-* ``self.objetives``: the objetive positions of the game playing (can be None).
+* ``self.objectives``: the objective positions of the game playing (can be None).
 
 Your create function
 --------------------
@@ -147,15 +147,15 @@ This function must look like this:
 
 .. code-block:: python
 
-    def create(rules, objetives=None):
-        return Terminator('terminator', 'blue', rules=rules, objetives=objetives)
+    def create(rules, objectives=None):
+        return Terminator('terminator', 'blue', rules=rules, objectives=objectives)
 
 
-The create function will be the one creating the instance of your player. You can run aditional logic
+The create function will be the one creating the instance of your player. You can run additional logic
 here before game starts, and the parameters you receive will tell you the kind of game that will be
-played (``rules`` is a string with the name of the rules of the game), and the objetives
-locations if there are any in the current game rules (Safehouse game mode has objetive locations 
-that players must reach. Extermination and Evacuation don't have objetive locations).
+played (``rules`` is a string with the name of the rules of the game), and the objectives
+locations if there are any in the current game rules (Safehouse game mode has objective locations
+that players must reach. Extermination and Evacuation don't have objective locations).
 
 The default parameters your ``Player`` instance will need when created are a friendly name ("terminator"
 in the example) and a color (blue, cyan, green, grey, magenta, red, white, or yellow). You can also
@@ -163,13 +163,13 @@ specify the weapon you want to use, importing them from the ``weapons`` module. 
 try to keep it challenging (i.er, don't create an army full of shotguns, be humble, it's a zombie apocalypse,
 not WW3).
 
-And finally, your player receives the ``rules`` name and the ``objetives``, to store them and be able to use 
+And finally, your player receives the ``rules`` name and the ``objectives``, to store them and be able to use
 that info later on the ``next_step``.
 
-Colaborative for the win
-------------------------
+Collaborative for the win
+-------------------------
 
-Besides moving, playing doctor and smashing things, your players can comunicate with each other! And in a
+Besides moving, playing doctor and smashing things, your players can communicate with each other! And in a
 quite simple manner. You just have an instance attribute called ``status``, that you can update at any
 moment from inside your ``next_step`` method. This status is visible to other players, so you can use
 status messages to give orders, ask for help, insult players that aren't killing enough zombies, and 
@@ -218,7 +218,7 @@ This leaves a **giant** backdoor to hack, that allows you to do stuff like this:
 * Teleport to any locations.
 * etc..
 
-If you wan't a real survival challenge, just don't modify anything in ``things``, and don't modify
+If you want a real survival challenge, just don't modify anything in ``things``, and don't modify
 your ``self.life`` or ``self.position`` (neither your weapon properties).
 
 If you like a mind control challenge, use all that and create an army of coordinated zombies that
@@ -246,5 +246,5 @@ these characters to draw objects and important locations:
 +--------+--------------------------------------------------------------------------------------+
 | z      | a zombie spawn point (be sure to add **many more**)                                  |
 +--------+--------------------------------------------------------------------------------------+
-| o      | an objetive location (for safehouse games, be sure to add as many as player spawns)  |
+| o      | an objective location (for safehouse games, be sure to add as many as player spawns) |
 +--------+--------------------------------------------------------------------------------------+

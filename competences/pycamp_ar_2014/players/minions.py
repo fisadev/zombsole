@@ -1,7 +1,7 @@
 # coding: utf-8
 from things import Player,Zombie,Box,Wall
 from weapons import Rifle, Shotgun, Gun, Axe
-from utils import closest, possible_moves, distance, sort_by_distance, adyacent_positions
+from utils import closest, possible_moves, distance, sort_by_distance, adjacent_positions
 import random
 from core import World
 
@@ -30,7 +30,7 @@ class Mati(Player):
 			else:
 				self.next_move = 'move'
 		else:
-			target = sort_by_distance(self.lider.position,adyacent_positions(self))[0]
+			target = sort_by_distance(self.lider.position,adjacent_positions(self))[0]
 			if (things.get(target) is None):
 				action = 'move'
 				self.lidermove = target
@@ -76,7 +76,7 @@ def getPlayers(things):
 	other = [thing for thing in things.values() if isinstance(thing, Player)]
 	return other
 
-def create(rules, objetives=None):
+def create(rules, objectives=None):
 	color = random.choice(['yellow','blue','white'])
 	nomb = random.choice(['Mati','Buff','ElMati','Matias','Fernet'])
-	return Mati(nomb, color, weapon = Axe(),objetives = objetives)
+	return Mati(nomb, color, weapon = Axe(),objectives = objectives)

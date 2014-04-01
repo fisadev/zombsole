@@ -77,7 +77,7 @@ def getPlayers(things):
 	other = [thing for thing in things.values() if isinstance(thing, Player)]
 	return other
 
-def create(rules, objetives=None):
+def create(rules, objectives=None):
 	color = 'red'#,'yellow','blue','white'])
 	nomb = "Perrito"
-	return Perrito(nomb, color, weapon = Rifle(),objetives = objetives)
+	return Perrito(nomb, color, weapon = Rifle(),objectives = objectives)

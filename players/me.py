@@ -8,7 +8,7 @@ from weapons import Rifle
 
 
 class Me(Player):
-    '''An interactive player, controlled with the keyboard.'''
+    """An interactive player, controlled with the keyboard."""
     def next_step(self, things, t):
         print('Which action?')
         print('w, a, s, d: movement (up, left down, right, like all games)')
@@ -70,5 +70,5 @@ class Me(Player):
             return action, target
 
 
-def create(rules, objetives=None):
-    return Me('me', 'red', weapon=Rifle(), rules=rules, objetives=objetives)
+def create(rules, objectives=None):
+    return Me('me', 'red', weapon=Rifle(), rules=rules, objectives=objectives)

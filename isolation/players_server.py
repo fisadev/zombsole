@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
-'''Serve the players logic as a http service.'''
+"""Serve the players logic as a http service."""
 import json
 import pickle
 
@@ -20,9 +20,9 @@ def create_server_player():
 
     player_name = parameters['player_name']
     rules_name = parameters['rules_name']
-    objetives = parameters['objetives']
+    objectives = parameters['objectives']
 
-    player = create_player(player_name, rules_name, objetives)
+    player = create_player(player_name, rules_name, objectives)
     players[player_name] = player
 
     return json.dumps([player.color, player.weapon.name])
