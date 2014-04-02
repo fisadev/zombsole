@@ -71,7 +71,7 @@ It should inherit ``things.Player``, and implement a single instance method call
 
 .. code-block:: python
 
-    from things import Player
+    from zombsole.things import Player
 
 
     class Terminator(Player):

@@ -2,9 +2,9 @@
 from __future__ import print_function
 import sys
 
-from things import Player, Zombie
-from utils import closest
-from weapons import Rifle
+from zombsole.things import Player, Zombie
+from zombsole.utils import closest
+from zombsole.weapons import Rifle
 
 
 class Me(Player):

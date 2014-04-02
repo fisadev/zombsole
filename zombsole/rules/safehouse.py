@@ -1,5 +1,5 @@
 # coding: utf-8
-from game import Rules
+from zombsole.game import Rules
 
 
 class SafeHouseRules(Rules):

@@ -1,5 +1,5 @@
 # coding: utf-8
-from things import Player
+from zombsole.things import Player
 
 
 class Troll(Player):

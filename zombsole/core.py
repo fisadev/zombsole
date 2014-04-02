@@ -1,7 +1,7 @@
 # coding: utf-8
 import random
 
-from utils import distance
+from zombsole.utils import distance
 
 
 DEFAULT_COLOR = 'white'

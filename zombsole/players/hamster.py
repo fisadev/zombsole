@@ -1,8 +1,8 @@
 # coding: utf-8
 import random
 
-from things import Player
-from utils import possible_moves
+from zombsole.things import Player
+from zombsole.utils import possible_moves
 
 
 class Hamster(Player):

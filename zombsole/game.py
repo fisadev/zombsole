@@ -7,8 +7,8 @@ import time
 
 from termcolor import colored
 
-from core import World
-from things import Box, Wall, Zombie, ObjectiveLocation, Player
+from zombsole.core import World
+from zombsole.things import Box, Wall, Zombie, ObjectiveLocation, Player
 
 
 def get_creator(module_name):
@@ -143,7 +143,7 @@ class Game(object):
             self.world.spawn_thing(thing)
 
         if docker_isolator:
-            from isolation.players_client import create_player_client
+            from zombsole.isolation.players_client import create_player_client
             self.players = [create_player_client(name, rules_name,
                                                  self.map.objectives,
                                                  self.isolator_port)

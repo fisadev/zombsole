@@ -1,6 +1,6 @@
 # coding: utf-8
-from game import Rules
-from utils import adjacent_positions
+from zombsole.game import Rules
+from zombsole.utils import adjacent_positions
 
 
 class EvacuationRules(Rules):

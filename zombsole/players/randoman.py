@@ -1,7 +1,7 @@
 # coding: utf-8
 import random
 
-from things import Player
+from zombsole.things import Player
 
 
 class RandoMan(Player):

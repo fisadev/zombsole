@@ -4,8 +4,8 @@ import pickle
 
 import requests
 
-from things import Player
-import weapons
+from zombsole.things import Player
+from zombsole import weapons
 
 
 class IsolatedPlayer(Player):

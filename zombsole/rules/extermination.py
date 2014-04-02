@@ -1,6 +1,6 @@
 # coding: utf-8
-from game import Rules
-from things import Zombie
+from zombsole.game import Rules
+from zombsole.things import Zombie
 
 
 class ExterminationRules(Rules):

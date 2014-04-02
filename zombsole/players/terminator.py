@@ -1,7 +1,7 @@
 # coding: utf-8
-from things import Player, Zombie
-from utils import closest, distance, adjacent_positions
-from weapons import Shotgun
+from zombsole.things import Player, Zombie
+from zombsole.utils import closest, distance, adjacent_positions
+from zombsole.weapons import Shotgun
 
 
 class Terminator(Player):

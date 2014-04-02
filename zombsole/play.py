@@ -51,7 +51,7 @@ from os import path, listdir
 
 from docopt import docopt
 
-from game import Game, Map
+from zombsole.game import Game, Map
 
 
 def play():
@@ -98,7 +98,7 @@ def play():
 
         map_name = arguments['-m']
         if map_name:
-            map_file = path.join('maps', map_name)
+            map_file = path.join('zombsole/maps', map_name)
             map_ = Map.from_file(map_file)
 
             if size:

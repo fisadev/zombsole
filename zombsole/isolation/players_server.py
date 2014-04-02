@@ -5,9 +5,8 @@ import json
 import pickle
 
 from flask import Flask, request
-
-from game import create_player
-from things import Thing
+from zombsole.game import create_player
+from zombsole.things import Thing
 
 
 app = Flask('zombsole_isolator')
