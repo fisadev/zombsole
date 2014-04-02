@@ -231,7 +231,7 @@ class Game(object):
     def arduino(self, data, add_end_chars=False):
         """Send an order to the arduino screen."""
         if add_end_chars:
-            data = data + chr(1) * 2
+            data += chr(1) * 2
         self.arduino_serial.write(data)
 
     def draw(self):
