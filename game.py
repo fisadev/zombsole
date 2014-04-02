@@ -159,7 +159,7 @@ class Game(object):
             self.initialize_arduino()
 
     def initialize_arduino(self):
-        '''Initialize serial connection with arduino screen.'''
+        """Initialize serial connection with arduino screen."""
         from serial import Serial
         self.arduino_serial = Serial(self.arduino_device,
                                      self.arduino_bauds)
