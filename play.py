@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
-"""Zomsole game runner.
+"""Zombsole game runner.
 
 Usage:
     ./play.py --help
