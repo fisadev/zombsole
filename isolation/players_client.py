@@ -44,7 +44,8 @@ class IsolatedPlayer(Player):
             if target:
                 step_result = step_result[0], target
             else:
-                raise Exception('Target is not in that location anymore (outdated instance).')
+                raise Exception('Target is not in that location anymore '
+                                '(outdated instance).')
 
         return step_result
 
