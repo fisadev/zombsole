@@ -252,7 +252,7 @@ class Game(object):
         for player in players:
             try:
                 weapon_name = player.weapon.name
-            except:
+            except AttributeError:
                 weapon_name = u'unarmed'
 
             if player.life > 0:
