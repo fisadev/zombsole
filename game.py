@@ -292,7 +292,6 @@ class Game(object):
                 else:
                     icon = thing.__class__.__name__[0].lower()
 
-                self.arduino(icon + \
-                                  chr(thing.position[0]) + \
-                                  chr(thing.position[1]))
+                self.arduino(
+                    icon + chr(thing.position[0]) + chr(thing.position[1]))
             self.arduino('r', True)
