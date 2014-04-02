@@ -91,8 +91,8 @@ class Zombie(FightingThing):
                     action = 'move', best_position
                 else:
                     # if blocked by obstacles, try to break them
-                    adjacent = sort_by_distance(target,
-                                                 adjacent_positions(self))
+                    adjacent = sort_by_distance(
+                        target, adjacent_positions(self))
                     for position in adjacent:
                         thing = things.get(position)
                         if isinstance(thing, (Box, Wall)):
