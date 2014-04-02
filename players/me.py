@@ -19,6 +19,7 @@ class Me(Player):
             action = input()
         else:
             action = raw_input()
+        target = None
 
         if not action:
             self.status = 'sitting idle'
