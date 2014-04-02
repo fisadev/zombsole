@@ -10,6 +10,7 @@ from termcolor import colored
 from core import World
 from things import Box, Wall, Zombie, ObjectiveLocation, Player
 
+
 def get_creator(module_name):
     """Get the create() function from a module."""
     module = __import__(module_name, fromlist=['create', ])
