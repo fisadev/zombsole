@@ -1,6 +1,6 @@
 # coding: utf-8
 from game import Rules
-from utils import closest, distance, adjacent_positions
+from utils import adjacent_positions
 
 
 class EvacuationRules(Rules):
