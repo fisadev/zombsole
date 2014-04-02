@@ -122,6 +122,7 @@ class Game(object):
                  isolator_port=8000, use_basic_icons=False, use_arduino=False,
                  arduino_device='/dev/ttyACM0', arduino_bauds=9600):
         self.players = []
+        self.arduino_serial = None
 
         self.rules_name = rules_name
         self.rules = get_creator('rules.' + rules_name)(self)
