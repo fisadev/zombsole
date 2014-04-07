@@ -20,12 +20,12 @@ def get_creator(module_name):
 
 
 def create_player(name, rules_name, objectives):
-    creator = get_creator('players.' + name)
+    creator = get_creator('zombsole.players.' + name)
     return creator(rules_name, objectives)
 
 
 def create_rules(name, game):
-    creator = get_creator('rules.' + name)
+    creator = get_creator('zombsole.rules.' + name)
     return creator(game)
 
 
