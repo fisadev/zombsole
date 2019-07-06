@@ -92,7 +92,7 @@ class World(object):
                     event = u'invalid next_step result: %s' % repr(next_step)
                     raise Exception(event)
             except Exception as err:
-                self.event(thing, u'error with next_step: %s' % err.message)
+                self.event(thing, u'error with next_step: %s' % str(err))
                 if self.debug:
                     raise
 
